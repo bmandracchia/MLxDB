@@ -1,23 +1,23 @@
-# Introduction to Machine Learning for Biomedical Data
+# Introducción al Aprendizaje Automático para Datos Biomédicos
 
-This repository holds the Jupyter Book source for Introduction to Machine Learning for Biomedical Data.
+Este repositorio contiene el código fuente del *Jupyter Book* titulado *Introduction to Machine Learning for Biomedical Data*.
 
+## Para realizar cambios en el libro
 
-## To make a change to the book
+1. Obtén una copia de este repositorio:
 
-1. Get your copy of this repository:
-
-   ```
+   ```bash
    git clone https://github.com/bmandracchia/ML4BD.git
    ```
-2. Change the file you wish and commit it to the repository.
-3. Push your change back to the repository (ideally via a pull request).
-4. Once your pull request has been merged, you can delete your fork and start fresh for future contributions.
 
-## Build and preview the text locally
+2. Modifica el archivo que desees y haz un *commit* con los cambios en el repositorio.
 
-To build locally, `pip install -r requirements.txt` and then `jupyter-book build .`
+3. Envía tus cambios al repositorio (idealmente mediante un *pull request*).
 
-**Follow the build instructions on the Jupyter Book guide**. The guide has
-information for how to use the Jupyter Book CLI to build this book. You can find
-the [Jupyter Book build instructions here](https://jupyterbook.org/start/build.html).
+4. Una vez que tu *pull request* haya sido aceptado y fusionado, puedes eliminar tu *fork* y empezar de cero para futuras contribuciones.
+
+## Compilar y previsualizar el texto localmente
+
+Para compilar localmente, ejecuta `pip install -r requirements.txt` y luego `jupyter-book build .`
+
+**Sigue las instrucciones de compilación en la guía de Jupyter Book**. La guía incluye información sobre cómo usar la línea de comandos de *Jupyter Book* (CLI) para compilar este libro. Puedes encontrar las [instrucciones de compilación de Jupyter Book aquí](https://jupyterbook.org/start/build.html).

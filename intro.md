@@ -1,12 +1,14 @@
-#  Introduction to Machine Learning for Biomedical Data
+# Introducción al Aprendizaje Automático para Datos Biomédicos
 
-This book is designed to introduce the fundamental concepts necessary for developing models that can assist in clinical decision-making by utilizing artificial intelligence techniques on various types of biomedical data. It begins with foundational machine learning approaches that rely on specific features extracted from biomedical data (feature engineering) and progresses to more contemporary methods using deep learning, which leverage "raw" biomedical signals or images to automatically learn the relevant features for predictive modeling.
+Este libro está diseñado para introducir los conceptos fundamentales necesarios para desarrollar modelos que puedan asistir en la toma de decisiones clínicas utilizando técnicas de inteligencia artificial aplicadas a diversos tipos de datos biomédicos. Comienza con enfoques básicos de aprendizaje automático que se basan en características específicas extraídas de los datos biomédicos (*feature engineering*) y avanza hacia métodos más contemporáneos basados en *deep learning*, que utilizan señales o imágenes biomédicas "crudas" para aprender automáticamente las características relevantes para la modelización predictiva.
 
-The target readership includes students who are interested in applying machine learning techniques to process biomedical data. The book aims to provide an introductory guide on essential concepts that enable the development of tools which can serve as supportive systems for clinical decisions.
+El público objetivo incluye estudiantes interesados en aplicar técnicas de aprendizaje automático al procesamiento de datos biomédicos. El objetivo del libro es proporcionar una guía introductoria sobre conceptos esenciales que permitan el desarrollo de herramientas que puedan funcionar como sistemas de apoyo a las decisiones clínicas.
 
-## Table of Contents
+## Tabla de Contenidos
+
 ```{tableofcontents}
 ```
 
-## License
-The contents of this book are licensed for free consumption under the following license: Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
+## Licencia
+
+El contenido de este libro está licenciado para su uso gratuito bajo la siguiente licencia: Creative Commons Atribución-NoComercial-SinObraDerivada 4.0 Internacional (CC BY-NC-ND 4.0).
