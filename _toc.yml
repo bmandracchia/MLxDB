@@ -1,0 +1,34 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+parts:
+- caption: Computational Tools
+  numbered: false
+  chapters:
+  - file: chapters/01_python_primer
+  - file: chapters/02_data_science_with_pandas
+  - file: chapters/03_jupyter_markdown
+- caption: Feature Engineering
+  numbered: false
+  chapters:
+  - file: chapters/11_machine_learning_fundamentals
+  - file: chapters/12_basic_feature_engineering
+  - file: chapters/13_categorical_variables
+  - file: chapters/14_classifiers
+  - file: chapters/15_decision_trees
+  - file: chapters/16_dimensionality_reduction
+  - file: chapters/17_kmeans
+- caption: Deep Learning
+  numbered: false
+  chapters:
+  - file: chapters/21_neural networks
+  - file: chapters/22_NN_as_UA
+  - file: chapters/23_Loss_Metrics_and_Optimizers
+  - file: chapters/24_MLP
+  - file: chapters/25_convolutions
+  - file: chapters/26_resnet2
+  - file: chapters/27_transformers
+  - file: chapters/28_probabilistic
+  - file: chapters/29_PBDL
