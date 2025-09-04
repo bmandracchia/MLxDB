@@ -30,5 +30,6 @@ parts:
   - file: chapters/25_convolutions
   - file: chapters/26_resnet2
   - file: chapters/27_transformers
-  - file: chapters/28_probabilistic
+  - file: chapters/28_autoencoders
+  - file: chapters/28b_probabilistic
   - file: chapters/29_PBDL
