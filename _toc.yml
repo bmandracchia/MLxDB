@@ -13,8 +13,8 @@ parts:
 - caption: Feature Engineering
   numbered: false
   chapters:
-  - file: chapters/11_machine_learning_fundamentals
-  - file: chapters/12_basic_feature_engineering
+  - file: chapters/11_machine_learning_fundamentals_ES
+  - file: chapters/12_basic_feature_engineering_ES
   - file: chapters/13_categorical_variables
   - file: chapters/14_classifiers
   - file: chapters/15_decision_trees
