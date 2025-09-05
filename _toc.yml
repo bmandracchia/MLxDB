@@ -15,11 +15,11 @@ parts:
   chapters:
   - file: chapters/11_machine_learning_fundamentals_ES
   - file: chapters/12_basic_feature_engineering_ES
-  - file: chapters/13_categorical_variables
-  - file: chapters/14_classifiers
-  - file: chapters/15_decision_trees
-  - file: chapters/16_dimensionality_reduction
-  - file: chapters/17_kmeans
+  - file: chapters/13_categorical_variables_ES
+  - file: chapters/14_classifiers_ES
+  - file: chapters/15_decision_trees_ES
+  - file: chapters/16_dimensionality_reduction_ES
+  - file: chapters/17_kmeans_ES
 - caption: Deep Learning
   numbered: false
   chapters:
