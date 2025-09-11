@@ -23,13 +23,13 @@ parts:
 - caption: Deep Learning
   numbered: false
   chapters:
-  - file: chapters/21_neural networks
-  - file: chapters/22_NN_as_UA
-  - file: chapters/23_Loss_Metrics_and_Optimizers
-  - file: chapters/24_MLP
+  - file: chapters/21_neural networks_ES
+  - file: chapters/22_NN_as_UA_ES
+  - file: chapters/23_Loss_Metrics_and_Optimizers_ES
+  - file: chapters/24_MLP_ES
   - file: chapters/25_convolutions
   - file: chapters/26_resnet2
   - file: chapters/27_transformers
   - file: chapters/28_autoencoders
-  - file: chapters/28b_probabilistic
+  - file: chapters/28b_probabilistic_ES
   - file: chapters/29_PBDL
