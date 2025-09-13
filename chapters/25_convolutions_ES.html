@@ -1,0 +1,1655 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Redes Neuronales Convolucionales &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/25_convolutions_ES';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ResNets para Análisis de Imágenes Biomédicas" href="26_resnet2_ES.html" />
+    <link rel="prev" title="Clasificación con Multilayer Perceptrons" href="24_MLP_ES.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11_machine_learning_fundamentals_ES.html">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering_ES.html">Ingeniería de características (Feature Engineering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables_ES.html">Variables categóricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers_ES.html">Clasificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees_ES.html">Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction_ES.html">Reducción de la dimensionalidad: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans_ES.html">Extracción de Características en Manifold No Lineales</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks_ES.html">Deep Learning en Ingeniería Biomédica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_NN_as_UA_ES.html">Redes neuronales como aproximadores universales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers_ES.html">Entrenamiento de un Clasificador de Dígitos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP_ES.html">Clasificación con Multilayer Perceptrons</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Redes Neuronales Convolucionales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2_ES.html">ResNets para Análisis de Imágenes Biomédicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers_ES.html">Mecanismos de Atención y Transformadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders_ES.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic_ES.html">Aprendizaje Probabilístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL_ES.html">Aprendizaje Profundo Basado en Física</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/25_convolutions_ES.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/25_convolutions_ES.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Redes Neuronales Convolucionales</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduccion-a-las-convoluciones">Introducción a las Convoluciones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-una-convolucion">¿Qué es una Convolución?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-deteccion-de-bordes">Ejemplo: Detección de Bordes</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolucion-en-accion">Convolución en Acción</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#calculo-de-la-salida-de-la-convolucion">Cálculo de la salida de la convolución</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convoluciones-en-pytorch">Convoluciones en PyTorch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strides-y-padding">Strides y Padding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-de-padding">Ejemplo de Padding</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-de-stride">Ejemplo de Stride</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-general-para-el-tamano-de-salida">Fórmula General para el Tamaño de Salida</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-de-una-red-neuronal-convolucional">Construcción de una Red Neuronal Convolucional</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-una-cnn">Crear una CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-de-las-capas-convolucionales">Definición de las capas convolucionales</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-el-learner">Crear el <em>Learner</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comprendiendo-la-aritmetica-de-las-convoluciones">Comprendiendo la Aritmética de las Convoluciones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejorar-la-estabilidad-del-entrenamiento">Mejorar la Estabilidad del Entrenamiento</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#una-cnn-basica">Una CNN Básica</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aumentando-la-complejidad-del-modelo">Aumentando la Complejidad del Modelo</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analizando-el-entrenamiento-del-modelo-con-estadisticas-de-activacion">Analizando el Entrenamiento del Modelo con Estadísticas de Activación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tamano-de-batch-y-estabilidad-del-gradiente">Tamaño de Batch y Estabilidad del Gradiente</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-1cycle-tasas-de-aprendizaje-y-momento-dinamicos">Entrenamiento <em>1cycle</em>: Tasas de Aprendizaje y Momento Dinámicos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalizacion-por-lotes-batch-normalization">Normalización por Lotes (<em>Batch Normalization</em>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#de-capas-totalmente-conectadas-a-convoluciones">De Capas Totalmente Conectadas a Convoluciones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#invariancia-por-que-la-ubicacion-no-deberia-importar">Invariancia: Por Qué la Ubicación No Debería Importar</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#restringir-el-mlp">Restringir el MLP</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-1-invariancia-por-traslacion">Paso 1: Invariancia por Traslación</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-2-localidad">Paso 2: Localidad</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convoluciones-y-correlacion-cruzada">Convoluciones y Correlación Cruzada</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-funciona">Por Qué Funciona</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#hide</span>
+<span class="kn">from</span> <span class="nn">fastai.vision.all</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greys&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="redes-neuronales-convolucionales">
+<h1>Redes Neuronales Convolucionales<a class="headerlink" href="#redes-neuronales-convolucionales" title="Link to this heading">#</a></h1>
+<p>En esta sección, profundizaremos en los fundamentos de las <strong>convoluciones</strong> y construiremos una Red Neuronal Convolucional (CNN) desde cero. Las CNN son herramientas muy potentes para el reconocimiento de imágenes, especialmente efectivas en la captura de jerarquías espaciales dentro de las mismas. Exploraremos la mecánica de las convoluciones, discutiremos sobre kernels y mapas de características, y avanzaremos gradualmente hacia estrategias de entrenamiento que estabilicen el aprendizaje y mejoren el rendimiento.</p>
+<section id="introduccion-a-las-convoluciones">
+<h2>Introducción a las Convoluciones<a class="headerlink" href="#introduccion-a-las-convoluciones" title="Link to this heading">#</a></h2>
+<p>Uno de los conceptos más influyentes en el aprendizaje automático basado en imágenes es la <strong>extracción de características</strong>: identificar las partes esenciales de los datos que ayudan a distinguir entre clases.</p>
+<blockquote>
+<div><p>Una <em>característica</em> es una versión transformada de los datos que facilita modelar los patrones.</p>
+</div></blockquote>
+<p>En imágenes, una característica puede representar elementos visualmente distintivos como bordes, texturas y patrones. Por ejemplo, diferenciar el número 7 del número 3 implica identificar una línea horizontal cerca de la parte superior (7) y distinguirla de una estructura más curva (3). La presencia y orientación de líneas o curvas son características vitales.</p>
+<p>Así, en lugar de trabajar directamente con los valores de píxeles crudos, podemos aprovechar las <strong>convoluciones</strong> para resaltar estas características, permitiendo que el modelo “vea” partes de la imagen que son útiles para la clasificación.</p>
+<section id="que-es-una-convolucion">
+<h3>¿Qué es una Convolución?<a class="headerlink" href="#que-es-una-convolucion" title="Link to this heading">#</a></h3>
+<p>Una convolución es una operación matemática que toma una <strong>imagen de entrada</strong> y le aplica un <strong>kernel</strong>, produciendo un mapa de características que resalta estructuras específicas (bordes, texturas) en la imagen.</p>
+<p>Matemáticamente, para una imagen 2D <span class="math notranslate nohighlight">\( I \)</span> y un kernel 2D <span class="math notranslate nohighlight">\( K \)</span>, una convolución <span class="math notranslate nohighlight">\( S \)</span> en el píxel <span class="math notranslate nohighlight">\((i, j)\)</span> se define como:</p>
+<div class="math notranslate nohighlight">
+\[
+S(i, j) = \sum_{m=-k}^{k} \sum_{n=-k}^{k} I(i+m, j+n) \cdot K(m, n)
+\]</div>
+<p>donde:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( I(i+m, j+n) \)</span> es el valor del píxel en la posición <span class="math notranslate nohighlight">\((i+m, j+n)\)</span> en la imagen de entrada,</p></li>
+<li><p><span class="math notranslate nohighlight">\( K(m, n) \)</span> es el valor del kernel en <span class="math notranslate nohighlight">\((m, n)\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\( k \)</span> es la mitad del ancho del kernel (para un kernel de 3×3, <span class="math notranslate nohighlight">\( k=1 \)</span>).</p></li>
+</ul>
+<p>El <strong>kernel</strong> es una pequeña matriz, típicamente de 3×3, que se desliza por la imagen. En cada ubicación, multiplica sus valores con los valores correspondientes en la región 3×3 de la imagen y suma el resultado, creando un valor en el <strong>mapa de características de salida</strong>.</p>
+<section id="ejemplo-deteccion-de-bordes">
+<h4>Ejemplo: Detección de Bordes<a class="headerlink" href="#ejemplo-deteccion-de-bordes" title="Link to this heading">#</a></h4>
+<p>Consideremos un kernel de detección de bordes como:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+K = \begin{bmatrix} -1 &amp; -1 &amp; -1 \\ -1 &amp; 8 &amp; -1 \\ -1 &amp; -1 &amp; -1 \end{bmatrix}
+\end{split}\]</div>
+<p>Aplicar este kernel a una región de una imagen enfatizará las zonas donde los valores de píxeles cambian bruscamente, ayudando a detectar bordes. Esta capacidad de resaltar características específicas es lo que hace que las convoluciones sean tan poderosas.</p>
+</section>
+</section>
+<section id="convolucion-en-accion">
+<h3>Convolución en Acción<a class="headerlink" href="#convolucion-en-accion" title="Link to this heading">#</a></h3>
+<p>Realicemos una convolución en un pequeño fragmento de una imagen. Comenzamos creando una matriz kernel simple de 3×3:</p>
+<p>¿Quieres que continúe con la traducción de la parte práctica (aplicando la convolución en un patch con código en PyTorch/Numpy) también?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># Define a 3x3 kernel for edge detection</span>
+<span class="n">edge_kernel</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">8.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example image as a tensor (7x7 grayscale image)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="calculo-de-la-salida-de-la-convolucion">
+<h4>Cálculo de la salida de la convolución<a class="headerlink" href="#calculo-de-la-salida-de-la-convolucion" title="Link to this heading">#</a></h4>
+<p>El kernel se deslizará sobre la imagen de 7×7. En cada paso, se calculará la suma de la multiplicación elemento a elemento entre el kernel y la región 3×3 de la imagen.</p>
+<p>Por ejemplo, si el kernel está centrado sobre la esquina superior izquierda de la región con valor <code class="docutils literal notranslate"><span class="pre">255</span></code> en la imagen, calculamos:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{salida}(i, j) = \text{suma}\big(\text{multiplicación elemento a elemento entre la región de la imagen y el kernel}\big)
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reshape for convolution (add batch and channel dimensions)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Shape: (1, 1, 7, 7)</span>
+<span class="n">edge_kernel</span> <span class="o">=</span> <span class="n">edge_kernel</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Shape: (1, 1, 3, 3)</span>
+
+<span class="c1"># Apply convolution</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">edge_kernel</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  
+
+<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>  <span class="c1"># Display the output</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[ 1530.,  1275.,  1530.,  1275.,  1530.],
+        [ 1275., -1275.,  -765., -1275.,  1275.],
+        [ 1530.,  -765.,     0.,  -765.,  1530.],
+        [ 1275., -1275.,  -765., -1275.,  1275.],
+        [ 1530.,  1275.,  1530.,  1275.,  1530.]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Mira la forma del resultado.
+Si la imagen original tiene una altura <code class="docutils literal notranslate"><span class="pre">h</span></code> y un ancho <code class="docutils literal notranslate"><span class="pre">w</span></code>, ¿cuántas ventanas de 3×3 podemos encontrar? Como puedes ver en el ejemplo, hay <code class="docutils literal notranslate"><span class="pre">h-2</span></code> por <code class="docutils literal notranslate"><span class="pre">w-2</span></code> ventanas, por lo que la imagen resultante tiene una altura de <code class="docutils literal notranslate"><span class="pre">h-2</span></code> y un ancho de <code class="docutils literal notranslate"><span class="pre">w-2</span></code>.</p>
+<p>Las convoluciones están en el corazón de las CNNs, ayudando a crear capas de mapas de características cada vez más abstractos que capturan la información esencial necesaria para un reconocimiento de imágenes efectivo.</p>
+</section>
+</section>
+<section id="convoluciones-en-pytorch">
+<h3>Convoluciones en PyTorch<a class="headerlink" href="#convoluciones-en-pytorch" title="Link to this heading">#</a></h3>
+<p>Las convoluciones son una operación fundamental en visión por computador, y PyTorch proporciona soporte optimizado para ellas con la función <code class="docutils literal notranslate"><span class="pre">F.conv2d</span></code>. Esta función forma parte del módulo <code class="docutils literal notranslate"><span class="pre">torch.nn.functional</span></code>, que fastai importa como <code class="docutils literal notranslate"><span class="pre">F</span></code>. Según la documentación de PyTorch, <code class="docutils literal notranslate"><span class="pre">F.conv2d</span></code> requiere dos parámetros principales:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">input</span></code></strong>: un tensor de forma <code class="docutils literal notranslate"><span class="pre">(minibatch,</span> <span class="pre">in_channels,</span> <span class="pre">iH,</span> <span class="pre">iW)</span></code>, donde <code class="docutils literal notranslate"><span class="pre">iH</span></code> y <code class="docutils literal notranslate"><span class="pre">iW</span></code> representan la altura y el ancho de la imagen de entrada.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">weight</span></code></strong>: un tensor de filtros (kernels) de forma <code class="docutils literal notranslate"><span class="pre">(out_channels,</span> <span class="pre">in_channels,</span> <span class="pre">kH,</span> <span class="pre">kW)</span></code>, donde <code class="docutils literal notranslate"><span class="pre">kH</span></code> y <code class="docutils literal notranslate"><span class="pre">kW</span></code> son la altura y el ancho del kernel.</p></li>
+</ul>
+<p>Aquí tienes un ejemplo de código de una convolución 2D simple sobre un lote de imágenes en escala de grises con PyTorch:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+
+<span class="c1"># Example input tensor (batch of 1 grayscale 4x4 image)</span>
+<span class="n">input_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># 3x3 kernel (filter) for convolution</span>
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                         <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                         <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># Apply convolution</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[[[-1.,  1.],
+          [-3.,  1.]]]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="strides-y-padding">
+<h3>Strides y Padding<a class="headerlink" href="#strides-y-padding" title="Link to this heading">#</a></h3>
+<p>Para controlar el tamaño del mapa de características de salida, usamos <strong>padding</strong> y <strong>strides</strong>.</p>
+<ol class="arabic simple">
+<li><p><strong>Padding</strong> nos permite mantener el mismo tamaño de salida que la entrada añadiendo píxeles extra (normalmente ceros) alrededor de los bordes. Esto es especialmente útil para asegurarnos de que la salida de la convolución tenga las mismas dimensiones espaciales que la entrada.</p></li>
+<li><p><strong>Strides</strong> definen cuántos píxeles deslizamos el kernel sobre la entrada en cada paso. Por ejemplo, un <em>stride</em> de 1 mueve el kernel un píxel a la vez, mientras que un <em>stride</em> de 2 lo mueve dos píxeles a la vez, reduciendo efectivamente el tamaño de la imagen (downsampling).</p></li>
+</ol>
+<p>Veamos cómo estos parámetros afectan el tamaño de la salida con algo de código y diagramas.</p>
+<section id="ejemplo-de-padding">
+<h4>Ejemplo de Padding<a class="headerlink" href="#ejemplo-de-padding" title="Link to this heading">#</a></h4>
+<p>Aquí hay un ejemplo que añade <em>padding</em> a la imagen para asegurarse de que la salida tenga el mismo tamaño que la entrada:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply convolution with padding</span>
+<span class="n">output_with_padding</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output with padding:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output_with_padding</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output with padding:
+tensor([[[[-3., -2.,  1.,  3.],
+          [-5., -1.,  1.,  3.],
+          [-4., -3.,  1.,  4.],
+          [-3.,  0.,  1.,  1.]]]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Este código añade un borde de 1 píxel alrededor del tensor de entrada, permitiendo que el kernel se aplique en todas las regiones sin reducir el tamaño de la salida.</p>
+<p><em>Diagrama de Padding con Kernel 3×3 y Entrada 4×4</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Input</span> <span class="p">(</span><span class="mi">4</span><span class="n">x4</span><span class="p">):</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">3</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="n">Kernel</span> <span class="p">(</span><span class="mi">3</span><span class="n">x3</span><span class="p">):</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">Output</span> <span class="n">con</span> <span class="n">Padding</span> <span class="p">(</span><span class="mi">4</span><span class="n">x4</span><span class="p">):</span>
+<span class="p">[</span><span class="o">-</span><span class="mi">3</span> <span class="o">-</span><span class="mi">4</span>  <span class="mi">1</span>  <span class="mi">3</span><span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">3</span> <span class="o">-</span><span class="mi">1</span>  <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span> <span class="mi">2</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span>  <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Este <em>padding</em> permite que el kernel se aplique en todos los bordes de la entrada sin reducir el tamaño del mapa de características.</p>
+</section>
+<section id="ejemplo-de-stride">
+<h4>Ejemplo de Stride<a class="headerlink" href="#ejemplo-de-stride" title="Link to this heading">#</a></h4>
+<p>Si queremos reducir las dimensiones espaciales de la salida, podemos aplicar un <em>stride</em> mayor que 1. Aquí un ejemplo con <em>stride</em> de 2:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aplicar convolución con stride de 2</span>
+<span class="n">output_with_stride</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output con stride 2:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output_with_stride</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>En este caso, el kernel se desplaza dos píxeles a la vez sobre la entrada, dando como resultado un mapa de características más pequeño.</p>
+<p><em>Diagrama de Convolución con Stride 2 usando Kernel 3×3 sobre Entrada 4×4</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Input</span> <span class="p">(</span><span class="mi">4</span><span class="n">x4</span><span class="p">):</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">3</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="n">Kernel</span> <span class="p">(</span><span class="mi">3</span><span class="n">x3</span><span class="p">):</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">Output</span> <span class="n">con</span> <span class="n">Stride</span><span class="o">-</span><span class="mi">2</span> <span class="p">(</span><span class="mi">2</span><span class="n">x2</span><span class="p">):</span>
+<span class="p">[</span><span class="o">-</span><span class="mi">1</span>  <span class="mi">3</span><span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span>  <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="formula-general-para-el-tamano-de-salida">
+<h3>Fórmula General para el Tamaño de Salida<a class="headerlink" href="#formula-general-para-el-tamano-de-salida" title="Link to this heading">#</a></h3>
+<p>Para cada dimensión (alto o ancho), el tamaño de la salida <code class="docutils literal notranslate"><span class="pre">out_dim</span></code> está dado por la fórmula:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{out-dim} = \left\lfloor \frac{\text{input-dim} + 2 \times \text{padding} - \text{kernel-size}}{\text{stride}} \right\rfloor + 1 
+\]</div>
+<p>donde:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">input_dim</span></code> es el tamaño de la entrada en esa dimensión,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">padding</span></code> es la cantidad de píxeles añadidos a cada lado,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kernel_size</span></code> es el tamaño del kernel (filtro),</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stride</span></code> es el paso utilizado en la convolución.</p></li>
+</ul>
+</section>
+</section>
+<section id="construccion-de-una-red-neuronal-convolucional">
+<h2>Construcción de una Red Neuronal Convolucional<a class="headerlink" href="#construccion-de-una-red-neuronal-convolucional" title="Link to this heading">#</a></h2>
+<p>Al construir una CNN buscamos aprender automáticamente características efectivas de las imágenes en lugar de diseñar filtros manualmente. Específicamente, optimizaremos los valores de los kernels convolucionales mediante <strong>Stochastic Gradient Descent (SGD)</strong>, permitiendo que el modelo aprenda directamente las características más informativas a partir de los datos.</p>
+<p>Este enfoque es crucial, ya que ciertos patrones complejos (especialmente en capas más profundas) son difíciles de diseñar manualmente. Cuando usamos convoluciones en lugar de (o además de) capas totalmente conectadas, construimos lo que se conoce como una <strong>Red Neuronal Convolucional (CNN)</strong>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">untar_data</span><span class="p">(</span><span class="n">URLs</span><span class="o">.</span><span class="n">MNIST_SAMPLE</span><span class="p">)</span>
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">((</span><span class="n">ImageBlock</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="n">PILImageBW</span><span class="p">),</span> <span class="n">CategoryBlock</span><span class="p">),</span> 
+                  <span class="n">get_items</span><span class="o">=</span><span class="n">get_image_files</span><span class="p">,</span> 
+                  <span class="n">splitter</span><span class="o">=</span><span class="n">GrandparentSplitter</span><span class="p">(),</span>
+                  <span class="n">get_y</span><span class="o">=</span><span class="n">parent_label</span><span class="p">)</span>
+
+<span class="n">dls</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">xb</span><span class="p">,</span><span class="n">yb</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">dls</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
+<span class="n">xb</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([64, 1, 28, 28])
+</pre></div>
+</div>
+</div>
+</div>
+<section id="crear-una-cnn">
+<h3>Crear una CNN<a class="headerlink" href="#crear-una-cnn" title="Link to this heading">#</a></h3>
+<p>Empezemos con una red básica:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">broken_cnn</span> <span class="o">=</span> <span class="n">sequential</span><span class="p">(</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<div><p>Aquí, <code class="docutils literal notranslate"><span class="pre">nn.Conv2d</span></code> es el módulo de PyTorch que inicializa capas convolucionales con pesos aprendidos. Esto resulta más conveniente que <code class="docutils literal notranslate"><span class="pre">F.conv2d</span></code> (que realiza las operaciones de convolución directamente), ya que crea y gestiona automáticamente las matrices de pesos necesarias para la optimización mediante SGD.</p>
+</div></blockquote>
+<p>En este modelo, no especificamos el tamaño de entrada como 28×28 porque, a diferencia de las capas totalmente conectadas que requieren un peso distinto para cada píxel, las capas convolucionales aplican los mismos pesos en todos los píxeles. Por ello, solo necesitamos definir el número de canales de entrada/salida y el tamaño del kernel.</p>
+<p>Veamos ahora la forma de la salida tras aplicar <code class="docutils literal notranslate"><span class="pre">broken_cnn</span></code> a un <em>batch</em>:</p>
+<p>¿Quieres que lo muestre con código en PyTorch y que calculemos explícitamente las dimensiones de salida paso a paso?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">broken_cnn</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([64, 1, 28, 28])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Este modelo, sin embargo, devuelve un <em>activation map</em> de 28×28 en lugar de una única salida de clasificación por imagen. Para corregir esto, necesitamos reducir las dimensiones espaciales hasta un tamaño 1×1. Una solución es utilizar múltiples convoluciones con <code class="docutils literal notranslate"><span class="pre">stride=2</span></code>, reduciendo el mapa de activaciones a la mitad en cada paso:</p>
+<ul class="simple">
+<li><p>28×28 → 14×14 (tras la primera convolución con stride=2)</p></li>
+<li><p>14×14 → 7×7 (tras la segunda convolución con stride=2)</p></li>
+<li><p>7×7 → 4×4 → 2×2 → 1×1 (repitiendo convoluciones con stride=2)</p></li>
+</ul>
+</section>
+<section id="definicion-de-las-capas-convolucionales">
+<h3>Definición de las capas convolucionales<a class="headerlink" href="#definicion-de-las-capas-convolucionales" title="Link to this heading">#</a></h3>
+<p>Construyamos una función para simplificar la adición de capas con convolución de <code class="docutils literal notranslate"><span class="pre">stride=2</span></code>, tamaño de kernel y activación opcional:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">ks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">ks</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">ks</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">act</span><span class="p">:</span> <span class="n">res</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>La refactorización de esta forma hace que el código sea más legible y ayuda a evitar inconsistencias al construir redes neuronales.</p>
+<p>A medida que reducimos las dimensiones espaciales con convoluciones de <em>stride=2</em>, también aumentaremos el número de canales para mantener la capacidad del modelo. Típicamente, conforme disminuye la cuadrícula de entrada, el número de <em>feature maps</em> (o canales) debería aumentar para permitir que el modelo capture patrones más ricos y abstractos. De esta manera, evitamos una reducción en la capacidad computacional a medida que la red se hace más profunda.</p>
+<p>Aquí tienes un ejemplo sencillo de CNN:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_cnn</span> <span class="o">=</span> <span class="n">sequential</span><span class="p">(</span>
+    <span class="n">conv</span><span class="p">(</span><span class="mi">1</span> <span class="p">,</span><span class="mi">4</span><span class="p">),</span>            <span class="c1">#14x14</span>
+    <span class="n">conv</span><span class="p">(</span><span class="mi">4</span> <span class="p">,</span><span class="mi">8</span><span class="p">),</span>            <span class="c1">#7x7</span>
+    <span class="n">conv</span><span class="p">(</span><span class="mi">8</span> <span class="p">,</span><span class="mi">16</span><span class="p">),</span>           <span class="c1">#4x4</span>
+    <span class="n">conv</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">32</span><span class="p">),</span>           <span class="c1">#2x2</span>
+    <span class="n">conv</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="c1">#1x1</span>
+    <span class="n">Flatten</span><span class="p">(),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ahora, la salida del modelo son dos activaciones que corresponden a las dos clases que queremos predecir.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_cnn</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([64, 2])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="crear-el-learner">
+<h3>Crear el <em>Learner</em><a class="headerlink" href="#crear-el-learner" title="Link to this heading">#</a></h3>
+<p>Vamos a crear un <code class="docutils literal notranslate"><span class="pre">Learner</span></code> para entrenar este modelo:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">simple_cnn</span><span class="p">,</span> <span class="n">loss_func</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">accuracy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Para ver exáctamente lo que va a pasar nel modelo, podemos usar el método <code class="docutils literal notranslate"><span class="pre">summary</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequential (Input shape: 64 x 1 x 28 x 28)
+============================================================================
+Layer (type)         Output Shape         Param #    Trainable 
+============================================================================
+                     64 x 4 x 14 x 14    
+Conv2d                                    40         True      
+ReLU                                                           
+____________________________________________________________________________
+                     64 x 8 x 7 x 7      
+Conv2d                                    296        True      
+ReLU                                                           
+____________________________________________________________________________
+                     64 x 16 x 4 x 4     
+Conv2d                                    1168       True      
+ReLU                                                           
+____________________________________________________________________________
+                     64 x 32 x 2 x 2     
+Conv2d                                    4640       True      
+ReLU                                                           
+____________________________________________________________________________
+                     64 x 2 x 1 x 1      
+Conv2d                                    578        True      
+____________________________________________________________________________
+                     64 x 2              
+Flatten                                                        
+____________________________________________________________________________
+
+Total params: 6,722
+Total trainable params: 6,722
+Total non-trainable params: 0
+
+Optimizer used: &lt;function Adam at 0x00000211C6C9BBA0&gt;
+Loss function: &lt;function cross_entropy at 0x00000211BC6F40E0&gt;
+
+Callbacks:
+  - TrainEvalCallback
+  - CastToTensor
+  - Recorder
+  - ProgressCallback
+</pre></div>
+</div>
+</div>
+</div>
+<p>Observa que la salida de la capa final <code class="docutils literal notranslate"><span class="pre">Conv2d</span></code> es <code class="docutils literal notranslate"><span class="pre">64x2x1x1</span></code>. Necesitamos eliminar esos ejes extra <code class="docutils literal notranslate"><span class="pre">1x1</span></code>; eso es lo que hace <code class="docutils literal notranslate"><span class="pre">Flatten</span></code>. Es básicamente lo mismo que el método <code class="docutils literal notranslate"><span class="pre">squeeze</span></code> de PyTorch, pero en forma de módulo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.061466</td>
+      <td>0.031233</td>
+      <td>0.987733</td>
+      <td>00:18</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.022755</td>
+      <td>0.019546</td>
+      <td>0.994603</td>
+      <td>00:15</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="comprendiendo-la-aritmetica-de-las-convoluciones">
+<h3>Comprendiendo la Aritmética de las Convoluciones<a class="headerlink" href="#comprendiendo-la-aritmetica-de-las-convoluciones" title="Link to this heading">#</a></h3>
+<p>Al examinar el resumen del modelo se observa una forma de entrada de <code class="docutils literal notranslate"><span class="pre">64x1x28x28</span></code>, donde:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">64</span></code> es el tamaño del lote (batch size)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> es el número de canales de entrada (por ejemplo, imágenes en escala de grises)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">28x28</span></code> son la altura y el ancho de las imágenes de entrada.</p></li>
+</ul>
+<p>Analicemos la primera capa:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">learn</span><span class="o">.</span><span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">m</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequential(
+  (0): Conv2d(1, 4, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+  (1): ReLU()
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>La primera capa convolucional tiene 1 canal de entrada, 4 canales de salida y un kernel de tamaño 3×3. Revisando sus pesos:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([4, 1, 3, 3])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Los 40 parámetros incluyen 36 para el kernel (<code class="docutils literal notranslate"><span class="pre">4*1*3*3=36</span></code>) y 4 para el sesgo (<em>bias</em>). Cada canal tiene un parámetro de sesgo:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([4])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Cada convolución con <em>stride</em> 2 reduce el tamaño de la rejilla, mientras que el número de filtros aumenta para mantener la capacidad general. Por ejemplo, la primera capa mapea una entrada de 28×28 a una salida de 14×14, y la siguiente capa mapea de 14×14 a 7×7.</p>
+<p>El cálculo del total de operaciones en cada capa es el siguiente:</p>
+<ul class="simple">
+<li><p><em>Número de multiplicaciones por mapa de características</em>:
+<span class="math notranslate nohighlight">\(H \times W \times C \times kH \times kW\)</span></p></li>
+<li><p>Donde:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(H, W\)</span> son la altura y la anchura del mapa de activación</p></li>
+<li><p><span class="math notranslate nohighlight">\(C\)</span> es el número de canales de salida</p></li>
+<li><p><span class="math notranslate nohighlight">\(kH, kW\)</span> son la altura y la anchura del kernel</p></li>
+</ul>
+</li>
+</ul>
+<p>Por ejemplo, si el mapa de activación de entrada es de 14×14 con 4 canales de salida y un kernel de 3×3, el cálculo sería:</p>
+<div class="math notranslate nohighlight">
+\[
+14 \times 14 \times 4 \times 3 \times 3 = 7,056 \text{ multiplicaciones por mapa de características.}
+\]</div>
+<p>Al duplicar el número de canales tras cada operación con <em>stride</em> 2, mantenemos un cómputo consistente a medida que reducimos el tamaño de la rejilla. Este diseño permite que las capas más profundas extraigan características cada vez más abstractas y con mayor riqueza semántica, equilibrando la capacidad y la eficiencia en la red.</p>
+</section>
+</section>
+<section id="mejorar-la-estabilidad-del-entrenamiento">
+<h2>Mejorar la Estabilidad del Entrenamiento<a class="headerlink" href="#mejorar-la-estabilidad-del-entrenamiento" title="Link to this heading">#</a></h2>
+<p>Después de haber reconocido correctamente los dígitos 3 y 7, abordemos ahora una tarea más desafiante: reconocer los 10 dígitos completos del conjunto de datos MNIST.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">untar_data</span><span class="p">(</span><span class="n">URLs</span><span class="o">.</span><span class="n">MNIST</span><span class="p">)</span>
+<span class="n">Path</span><span class="o">.</span><span class="n">BASE_PATH</span> <span class="o">=</span> <span class="n">path</span>
+<span class="n">path</span><span class="o">.</span><span class="n">ls</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(#2) [Path(&#39;testing&#39;),Path(&#39;training&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Los datos están organizados en carpetas de <em>training</em> y <em>testing</em>. Usamos <code class="docutils literal notranslate"><span class="pre">GrandparentSplitter</span></code> para dividir los datos correctamente, ya que los nombres de las carpetas difieren de las etiquetas predeterminadas <code class="docutils literal notranslate"><span class="pre">train</span></code> y <code class="docutils literal notranslate"><span class="pre">valid</span></code>.</p>
+<p>Para facilitar la experimentación con distintos tamaños de <em>batch</em>, definimos una función <code class="docutils literal notranslate"><span class="pre">get_dls</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_dls</span><span class="p">(</span><span class="n">bs</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">DataBlock</span><span class="p">(</span>
+        <span class="n">blocks</span><span class="o">=</span><span class="p">(</span><span class="n">ImageBlock</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="n">PILImageBW</span><span class="p">),</span> <span class="n">CategoryBlock</span><span class="p">),</span> 
+        <span class="n">get_items</span><span class="o">=</span><span class="n">get_image_files</span><span class="p">,</span> 
+        <span class="n">splitter</span><span class="o">=</span><span class="n">GrandparentSplitter</span><span class="p">(</span><span class="s1">&#39;training&#39;</span><span class="p">,</span><span class="s1">&#39;testing&#39;</span><span class="p">),</span>
+        <span class="n">get_y</span><span class="o">=</span><span class="n">parent_label</span><span class="p">,</span>
+        <span class="n">batch_tfms</span><span class="o">=</span><span class="n">Normalize</span><span class="p">()</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">bs</span><span class="o">=</span><span class="n">bs</span><span class="p">)</span>
+
+<span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Antes de continuar, es buena práctica inspeccionar visualmente los datos para asegurarnos de que están correctos:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dls</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">max_n</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/de2feec508ca94d8369131944d1e5cb625b7a8a8d2c3924194463a0111a32502.png" src="../_images/de2feec508ca94d8369131944d1e5cb625b7a8a8d2c3924194463a0111a32502.png" />
+</div>
+</div>
+<section id="una-cnn-basica">
+<h3>Una CNN Básica<a class="headerlink" href="#una-cnn-basica" title="Link to this heading">#</a></h3>
+<p>Empecemos construyendo una red neuronal convolucional (CNN) básica como nuestro modelo de referencia. Podemos reutilizar la función <code class="docutils literal notranslate"><span class="pre">conv</span></code> que vimos antes, lo que facilita la creación de capas convolucionales con opciones configurables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">ks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">ks</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">ks</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">act</span><span class="p">:</span> <span class="n">res</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="aumentando-la-complejidad-del-modelo">
+<h4>Aumentando la Complejidad del Modelo<a class="headerlink" href="#aumentando-la-complejidad-del-modelo" title="Link to this heading">#</a></h4>
+<p>Dado que ahora nuestra tarea consiste en distinguir entre 10 clases en lugar de solo dos, probablemente necesitemos un modelo más complejo con filtros adicionales. En general, duplicar el número de filtros en cada capa convolucional con stride 2 es beneficioso, ya que compensa la reducción en las dimensiones espaciales.</p>
+<p>Sin embargo, hay un problema sutil a considerar. En las redes convolucionales, la extracción de características es efectiva solo si el número de salidas en cada capa es significativamente menor que el número de entradas. Por ejemplo, si usamos un kernel de 3×3 (que cubre 9 píxeles) y generamos solo cuatro filtros de salida, el modelo aún se verá obligado a comprimir la información de manera significativa. Pero si aumentamos el número de filtros sin ajustar el tamaño del kernel, corremos el riesgo de tener muy pocas entradas por característica de salida, reduciendo la capacidad del modelo para aprender de manera efectiva.</p>
+<p>Para abordar esto, incrementamos el tamaño del kernel en la primera capa a 5×5, cubriendo 25 píxeles. Esta configuración proporciona una entrada más sustancial para cada característica de salida, mejorando la extracción de características.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simple_cnn</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">sequential</span><span class="p">(</span>
+        <span class="n">conv</span><span class="p">(</span><span class="mi">1</span> <span class="p">,</span><span class="mi">8</span><span class="p">,</span> <span class="n">ks</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>        <span class="c1">#14x14</span>
+        <span class="n">conv</span><span class="p">(</span><span class="mi">8</span> <span class="p">,</span><span class="mi">16</span><span class="p">),</span>             <span class="c1">#7x7</span>
+        <span class="n">conv</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">32</span><span class="p">),</span>             <span class="c1">#4x4</span>
+        <span class="n">conv</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span>             <span class="c1">#2x2</span>
+        <span class="n">conv</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1">#1x1</span>
+        <span class="n">Flatten</span><span class="p">(),</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="analizando-el-entrenamiento-del-modelo-con-estadisticas-de-activacion">
+<h3>Analizando el Entrenamiento del Modelo con Estadísticas de Activación<a class="headerlink" href="#analizando-el-entrenamiento-del-modelo-con-estadisticas-de-activacion" title="Link to this heading">#</a></h3>
+<p>Para comprender mejor el comportamiento de nuestro modelo durante el entrenamiento, podemos usar el <em>callback</em> <code class="docutils literal notranslate"><span class="pre">ActivationStats</span></code>. Este <em>callback</em> registra la media, la desviación estándar y el histograma de las activaciones en cada capa. Examinar estas estadísticas nos permite detectar problemas como valores de activación que se vuelven demasiado pequeños (cercanos a cero) o demasiado grandes, ambos casos pueden conducir a inestabilidad en el entrenamiento.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastai.callback.hook</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">simple_cnn</span><span class="p">(),</span> <span class="n">loss_func</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">,</span>
+                    <span class="n">metrics</span><span class="o">=</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="n">ActivationStats</span><span class="p">(</span><span class="n">with_hist</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">learn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">learn</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Este intento inicial puede dar lugar a un entrenamiento deficiente. Vamos a diagnosticar por qué examinando las estadísticas de activación. <code class="docutils literal notranslate"><span class="pre">ActivationStats</span></code> proporciona una utilidad, <code class="docutils literal notranslate"><span class="pre">plot_layer_stats(idx)</span></code>, para visualizar la media, la desviación estándar y el porcentaje de activaciones cercanas a cero en cada capa. Aquí tienes un ejemplo para la primera capa:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">activation_stats</span><span class="o">.</span><span class="n">plot_layer_stats</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d8eaea7ec610a07dabd0e2cd3254027d47915011db24a2a795ae622a08adeada.png" src="../_images/d8eaea7ec610a07dabd0e2cd3254027d47915011db24a2a795ae622a08adeada.png" />
+</div>
+</div>
+<p>Idealmente, la media y la desviación estándar deberían mantenerse estables o seguir una tendencia suave. Un porcentaje alto de activaciones cercanas a cero indica que una parte significativa del modelo está inactiva o contribuye muy poco, lo cual puede propagarse a través de las capas y empeorar en los niveles más profundos.</p>
+<p>Ahora revisemos la penúltima capa:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">activation_stats</span><span class="o">.</span><span class="n">plot_layer_stats</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f20d37b7ff5a148113354159a9bee7264a7641171cecb55a522190d661833c17.png" src="../_images/f20d37b7ff5a148113354159a9bee7264a7641171cecb55a522190d661833c17.png" />
+</div>
+</div>
+<p>Como era de esperar, la inestabilidad y las activaciones nulas suelen aumentar hacia el final de la red, lo que sugiere que algunas capas están “muertas” y transmiten valores cero de manera efectiva hacia adelante. Este problema se acumula a lo largo de las capas, lo que dificulta el entrenamiento.</p>
+</section>
+<section id="tamano-de-batch-y-estabilidad-del-gradiente">
+<h3>Tamaño de Batch y Estabilidad del Gradiente<a class="headerlink" href="#tamano-de-batch-y-estabilidad-del-gradiente" title="Link to this heading">#</a></h3>
+<p>Incrementar el tamaño del <em>batch</em> es una técnica común para estabilizar el entrenamiento. Matemáticamente, un <em>batch</em> más grande proporciona una mejor aproximación del gradiente poblacional al reducir la varianza de la estimación del gradiente <span class="math notranslate nohighlight">\(\nabla L\)</span>, donde <span class="math notranslate nohighlight">\(L\)</span> es la función de pérdida. Formalmente, si el gradiente verdadero de la pérdida <span class="math notranslate nohighlight">\(L\)</span> sobre todo el conjunto de datos se representa como <span class="math notranslate nohighlight">\(\nabla L\)</span>, entonces el gradiente calculado con un mini-batch <span class="math notranslate nohighlight">\(B\)</span> de tamaño <span class="math notranslate nohighlight">\(N\)</span> puede escribirse como:</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla L_B = \frac{1}{N} \sum_{i=1}^N \nabla L(x_i, y_i)
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> son los pares de datos y etiquetas en el batch. A medida que <span class="math notranslate nohighlight">\(N\)</span> aumenta, <span class="math notranslate nohighlight">\(\nabla L_B\)</span> converge hacia <span class="math notranslate nohighlight">\(\nabla L\)</span>, lo que en general resulta en actualizaciones de gradiente más estables. Sin embargo, los batches más grandes reducen el número de actualizaciones de parámetros por época, lo que puede ralentizar la convergencia en ciertos casos.</p>
+<p>Usemos una batch size de 512:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>2.308856</td>
+      <td>2.304741</td>
+      <td>0.113500</td>
+      <td>01:10</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>Veamos cómo se comporta la penúltima capa:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">activation_stats</span><span class="o">.</span><span class="n">plot_layer_stats</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/783c6ba0cc045207c2af93281c07520343d4fd29ed2ed9f97eb26e3dc353e481.png" src="../_images/783c6ba0cc045207c2af93281c07520343d4fd29ed2ed9f97eb26e3dc353e481.png" />
+</div>
+</div>
+<p>De nuevo, la mayoría de nuestras activaciones están cerca de cero. Veamos qué más podemos hacer para mejorar la estabilidad del entrenamiento.</p>
+</section>
+<section id="entrenamiento-1cycle-tasas-de-aprendizaje-y-momento-dinamicos">
+<h3>Entrenamiento <em>1cycle</em>: Tasas de Aprendizaje y Momento Dinámicos<a class="headerlink" href="#entrenamiento-1cycle-tasas-de-aprendizaje-y-momento-dinamicos" title="Link to this heading">#</a></h3>
+<p>El entrenamiento <em>1cycle</em>, introducido en <a class="reference external" href="https://arxiv.org/abs/1708.07120"><em>“Super-Convergence”</em> de Smith</a>, consiste en un esquema de tasa de aprendizaje de dos fases para estabilizar y acelerar el entrenamiento. La tasa de aprendizaje <span class="math notranslate nohighlight">\( \alpha \)</span> sigue una trayectoria que primero aumenta durante una fase de <em>warmup</em> y luego disminuye durante una fase de <em>annealing</em>, describiendo así un ciclo completo. Matemáticamente, este esquema se expresa como:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\alpha(t) = 
+\begin{cases} 
+      \alpha_{\text{min}} + \frac{t}{T} \left( \alpha_{\text{max}} - \alpha_{\text{min}} \right) &amp; \text{si} \; t \leq T \\
+      \alpha_{\text{max}} - \frac{(t - T)}{T} \left( \alpha_{\text{max}} - \alpha_{\text{min}} \right) &amp; \text{si} \; t &gt; T 
+   \end{cases}
+\end{split}\]</div>
+<p>donde <span class="math notranslate nohighlight">\(t\)</span> es la iteración actual, <span class="math notranslate nohighlight">\(T\)</span> es el punto intermedio, y <span class="math notranslate nohighlight">\(\alpha_{\text{min}}\)</span> y <span class="math notranslate nohighlight">\(\alpha_{\text{max}}\)</span> son las tasas de aprendizaje mínima y máxima, respectivamente. Este esquema cíclico permite a los modelos evitar mínimos locales pobres, aprovechando tasas de aprendizaje altas para una convergencia rápida y tasas bajas para un ajuste fino.</p>
+<p>El entrenamiento <em>1cycle</em> nos permite usar una tasa de aprendizaje máxima mucho mayor que en otros métodos, lo que aporta dos beneficios:</p>
+<ul class="simple">
+<li><p>Con tasas más altas, el entrenamiento es más rápido —de ahí la <em>super-convergencia</em>.</p></li>
+<li><p>Con tasas más altas, el sobreajuste disminuye porque se evitan mínimos locales pronunciados, llegando a zonas más suaves (y por tanto más generalizables) de la función de pérdida.</p></li>
+</ul>
+<p>El segundo punto es sutil pero importante: un modelo que generaliza bien es aquel cuya pérdida no cambia mucho ante pequeñas variaciones en la entrada. Si un modelo entrena durante bastante tiempo con una tasa de aprendizaje alta y logra mantener una pérdida baja, es porque ha encontrado una región que generaliza bien, ya que está “saltando” bastante entre lotes (esa es, en esencia, la definición de una tasa alta). El problema es que, como ya discutimos, simplemente empezar con una tasa muy alta tiende a provocar pérdidas divergentes en lugar de mejorarlas.</p>
+<p>Por ello, no comenzamos directamente con una tasa elevada. Empezamos con una tasa baja, donde la pérdida no diverge, y permitimos que el optimizador explore gradualmente regiones más suaves aumentando progresivamente la tasa de aprendizaje.</p>
+<p>Una vez que hemos encontrado una región estable y suave, queremos localizar la mejor parte de ella, lo que implica reducir de nuevo la tasa de aprendizaje. Esta es la razón de que el entrenamiento <em>1cycle</em> tenga una fase inicial de <em>warmup</em> y otra final de <em>cooldown</em>. Muchos investigadores han comprobado que, en la práctica, este enfoque produce modelos más precisos y se entrena más rápido.</p>
+<p>Podemos usar <em>1cycle</em> en <strong>fastai</strong> llamando a <code class="docutils literal notranslate"><span class="pre">fit_one_cycle</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.06</span><span class="p">):</span>
+    <span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">simple_cnn</span><span class="p">(),</span> <span class="n">loss_func</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">,</span>
+                    <span class="n">metrics</span><span class="o">=</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="n">ActivationStats</span><span class="p">(</span><span class="n">with_hist</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">lr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">learn</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.210347</td>
+      <td>0.074806</td>
+      <td>0.974900</td>
+      <td>01:09</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>¡Por fin estamos avanzando! Ahora obtenemos una exactitud razonable.</p>
+<p>Podemos visualizar la tasa de aprendizaje y el momento a lo largo del entrenamiento llamando a <code class="docutils literal notranslate"><span class="pre">plot_sched</span></code> sobre <code class="docutils literal notranslate"><span class="pre">learn.recorder</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">learn.recorder</span></code> (como sugiere el nombre) registra todo lo que ocurre durante el entrenamiento, incluidas las pérdidas, métricas e hiperparámetros como la tasa de aprendizaje y el momento:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">plot_sched</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e73e43add5a345de3e79c047169ed3da1fd6cb2039079f3436a20ec9f84c2b7c.png" src="../_images/e73e43add5a345de3e79c047169ed3da1fd6cb2039079f3436a20ec9f84c2b7c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">activation_stats</span><span class="o">.</span><span class="n">plot_layer_stats</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/735bf24962f2250fce13e93abeb03675598d10c04bb5b498782b762aec21cd5b.png" src="../_images/735bf24962f2250fce13e93abeb03675598d10c04bb5b498782b762aec21cd5b.png" />
+</div>
+</div>
+<p>El porcentaje de pesos cercanos a cero está mejorando bastante, aunque sigue siendo bastante alto.</p>
+<p>Esto muestra un ejemplo clásico de “mal entrenamiento”. Empezamos con casi todas las activaciones en cero. Luego, en los primeros lotes vemos cómo el número de activaciones distintas de cero aumenta exponencialmente. Pero se va demasiado lejos y ¡colapsa! Casi parece como si el entrenamiento empezara de nuevo desde cero.</p>
+<p>Es mucho mejor si el entrenamiento puede ser fluido desde el principio. Los ciclos de aumento exponencial y posterior colapso tienden a dar lugar a muchas activaciones cercanas a cero, lo que resulta en un entrenamiento lento y malos resultados finales. Una forma de resolver este problema es utilizar <em>batch normalization</em>.</p>
+</section>
+<section id="normalizacion-por-lotes-batch-normalization">
+<h3>Normalización por Lotes (<em>Batch Normalization</em>)<a class="headerlink" href="#normalizacion-por-lotes-batch-normalization" title="Link to this heading">#</a></h3>
+<p>La <strong>normalización por lotes</strong> (<code class="docutils literal notranslate"><span class="pre">BatchNorm</span></code>) mitiga el problema del <strong>cambio de covariadas interno</strong> (<em>internal covariate shift</em>), es decir, la variación en la distribución de las entradas de las capas durante el entrenamiento. Al normalizar las activaciones dentro de cada mini-lote, BatchNorm ayuda a estabilizar y acelerar el entrenamiento.</p>
+<p>Matemáticamente, para cada mini-lote, BatchNorm calcula la media y varianza de las activaciones <span class="math notranslate nohighlight">\( \mu_B \)</span> y <span class="math notranslate nohighlight">\( \sigma_B^2 \)</span>, y luego normaliza cada activación <span class="math notranslate nohighlight">\( x_i \)</span> como:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\( \epsilon \)</span> es una constante pequeña añadida para la estabilidad numérica. Esta activación normalizada <span class="math notranslate nohighlight">\( \hat{x}_i \)</span> se escala y desplaza mediante parámetros aprendibles <span class="math notranslate nohighlight">\(\gamma\)</span> y <span class="math notranslate nohighlight">\(\beta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+y_i = \gamma \hat{x}_i + \beta
+\]</div>
+<p>Los parámetros <span class="math notranslate nohighlight">\(\gamma\)</span> y <span class="math notranslate nohighlight">\(\beta\)</span> permiten que el modelo mantenga cualquier media y desviación estándar que considere óptima en cada capa, aumentando así su flexibilidad y capacidad. Durante la inferencia, se usan las medias y varianzas acumuladas (promedios móviles calculados durante el entrenamiento) para una normalización consistente.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">ks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">ks</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">ks</span><span class="o">//</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">act</span><span class="p">:</span> <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">nf</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.133975</td>
+      <td>0.058637</td>
+      <td>0.985600</td>
+      <td>01:10</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>¡Esto es aún mejor! Veamos las estadísticas de activación:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">activation_stats</span><span class="o">.</span><span class="n">plot_layer_stats</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8faec7fd93a7d6e679b279e32e5ff46178544cf68da30e5ad35fb459f2d6f3de.png" src="../_images/8faec7fd93a7d6e679b279e32e5ff46178544cf68da30e5ad35fb459f2d6f3de.png" />
+</div>
+</div>
+<p>Esto se acerca más a lo que esperamos: un desarrollo suave de las activaciones, sin “colapsos”. Esto nos da una pista de por qué <em>BatchNorm</em> ha tenido tanto éxito, hasta el punto de que lo encontramos (o alguna variante muy similar) en casi todas las redes neuronales modernas.</p>
+<p>BatchNorm actúa también como una forma de <strong>regularización</strong>, introduciendo una ligera estocasticidad en las activaciones del modelo durante el entrenamiento, ya que las estadísticas de cada mini-lote varían levemente. Esta aleatoriedad hace que el modelo sea más robusto a pequeñas variaciones, lo que conduce a una mejor generalización. Se ha observado empíricamente que BatchNorm a menudo mejora el rendimiento en los conjuntos de prueba y reduce el sobreajuste en comparación con redes que no lo incluyen.</p>
+<p>BatchNorm acts as a form of <strong>regularization</strong> by introducing slight stochasticity to the model’s activations during training, as each mini-batch’s statistics vary slightly. This randomness makes the model robust to small variations, leading to improved generalization. It has been empirically observed that BatchNorm often leads to better test performance and a reduction in overfitting compared to networks that do not include it.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="de-capas-totalmente-conectadas-a-convoluciones">
+<h2>De Capas Totalmente Conectadas a Convoluciones<a class="headerlink" href="#de-capas-totalmente-conectadas-a-convoluciones" title="Link to this heading">#</a></h2>
+<p>Las redes neuronales totalmente conectadas (MLP) funcionan bien para <strong>datos tabulares</strong>, donde cada fila corresponde a un ejemplo y cada columna a una característica. En este contexto, no hacemos suposiciones sobre cómo interactúan las características; todas las dependencias deben aprenderse directamente.</p>
+<p>Sin embargo, cuando pasamos a <strong>datos perceptuales de alta dimensión</strong>, como imágenes o audio, este enfoque se desmorona rápidamente. Pensemos en la clasificación de imágenes. Supongamos que queremos distinguir gatos de perros usando fotografías de <span class="math notranslate nohighlight">\(1000 \times 1000\)</span> píxeles (un megapíxel). Aplanar la imagen produce un millón de características de entrada. Incluso si reducimos a solo <span class="math notranslate nohighlight">\(1000\)</span> unidades ocultas, una capa totalmente conectada requeriría</p>
+<div class="math notranslate nohighlight">
+\[
+10^6 \times 10^3 = 10^9 \quad \text{parámetros},
+\]</div>
+<p>solo para una capa. Escalar tal red exigiría conjuntos de datos masivos, optimización distribuida en muchas GPU y muchísima paciencia. Y en la práctica, los modelos efectivos requerirían capas ocultas aún <em>más grandes</em>, empujando el número de parámetros a miles de millones.</p>
+<p>Los humanos, por supuesto, reconocen gatos y perros sin esfuerzo. Las computadoras también lo logran con los modelos modernos de aprendizaje profundo. La resolución de esta aparente contradicción es que <strong>las imágenes no son solo vectores arbitrarios: tienen estructura</strong>. Los píxeles vecinos están relacionados, los objetos aparecen en distintas ubicaciones pero mantienen su identidad, y los patrones se repiten en el espacio. Las redes neuronales convolucionales (CNN) fueron diseñadas específicamente para aprovechar esta estructura.</p>
+<section id="invariancia-por-que-la-ubicacion-no-deberia-importar">
+<h3>Invariancia: Por Qué la Ubicación No Debería Importar<a class="headerlink" href="#invariancia-por-que-la-ubicacion-no-deberia-importar" title="Link to this heading">#</a></h3>
+<p>Imagina intentar detectar una manzana en una imagen. La manzana se ve igual esté arriba o abajo en la imagen. Queremos un detector que lo reconozca <em>independientemente de la ubicación</em>. Este es el principio de la <strong>invariancia por traslación</strong> (o más precisamente, <em>equivarianza por traslación</em> en capas intermedias).</p>
+<p>Los humanos lo explotamos de forma natural: podemos reconocer formas incluso si aparecen desplazadas. Las CNN codifican esta propiedad escaneando la imagen con pequeños filtros que aplican los mismos pesos en todas las posiciones. Así, en lugar de aprender un parámetro distinto para cada posible conexión píxel–unidad, reutilizamos el mismo filtro en todo el espacio.</p>
+<p>Surgen tres principios rectores:</p>
+<ol class="arabic simple">
+<li><p><strong>Invariancia por traslación:</strong> desplazar la entrada debe corresponder a desplazar la representación, no a cambiarla fundamentalmente.</p></li>
+<li><p><strong>Localidad:</strong> las primeras características deben depender solo de regiones locales, no de toda la imagen a la vez.</p></li>
+<li><p><strong>Jerarquía:</strong> las capas más profundas combinan características locales en representaciones más amplias y abstractas.</p></li>
+</ol>
+<p>Juntos, estos principios permiten que las CNN aprendan modelos efectivos con muchos menos parámetros.</p>
+</section>
+<section id="restringir-el-mlp">
+<h3>Restringir el MLP<a class="headerlink" href="#restringir-el-mlp" title="Link to this heading">#</a></h3>
+<p>Para ver cómo surgen las convoluciones, partamos de una capa totalmente conectada. Supongamos que la imagen de entrada es <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> y la representación oculta es <span class="math notranslate nohighlight">\(\mathbf{H}\)</span>, ambas tratadas como matrices 2D de la misma forma. Entonces, cada unidad oculta <span class="math notranslate nohighlight">\([\mathbf{H}]_{i,j}\)</span> depende de todos los píxeles de entrada:</p>
+<div class="math notranslate nohighlight">
+\[
+[\mathbf{H}]_{i,j} = [\mathbf{U}]_{i,j} + \sum_k \sum_l [\mathsf{W}]_{i,j,k,l} \,[\mathbf{X}]_{k,l},
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(\mathsf{W}\)</span> es un tensor de pesos de cuarto orden y <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> contiene sesgos.</p>
+<p>Esto ya es irreal: para una imagen de <span class="math notranslate nohighlight">\(1000 \times 1000\)</span>, <span class="math notranslate nohighlight">\(\mathsf{W}\)</span> contiene <span class="math notranslate nohighlight">\(10^{12}\)</span> parámetros, muy por encima de los límites del hardware actual.</p>
+<section id="paso-1-invariancia-por-traslacion">
+<h4>Paso 1: Invariancia por Traslación<a class="headerlink" href="#paso-1-invariancia-por-traslacion" title="Link to this heading">#</a></h4>
+<p>Si exigimos que al desplazar <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> simplemente se desplace <span class="math notranslate nohighlight">\(\mathbf{H}\)</span>, entonces los pesos no pueden depender de <span class="math notranslate nohighlight">\((i,j)\)</span> explícitamente. En cambio, los pesos dependen solo de los desplazamientos <span class="math notranslate nohighlight">\((a,b)\)</span> relativos a la ubicación actual:</p>
+<div class="math notranslate nohighlight">
+\[
+[\mathbf{H}]_{i,j} = u + \sum_a \sum_b [\mathbf{V}]_{a,b}\,[\mathbf{X}]_{i+a, j+b}.
+\]</div>
+<p>Aquí <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> se comparte en toda la imagen, y <span class="math notranslate nohighlight">\(u\)</span> es un sesgo global. Esta es exactamente la definición de una <strong>convolución</strong>. Ya con esto, el número de parámetros cae drásticamente, pues ya no necesitamos un tensor de pesos distinto para cada ubicación.</p>
+</section>
+<section id="paso-2-localidad">
+<h4>Paso 2: Localidad<a class="headerlink" href="#paso-2-localidad" title="Link to this heading">#</a></h4>
+<p>Ahora imponemos <strong>localidad</strong>: los píxeles cercanos son los más relevantes. Esto significa que los desplazamientos se limitan a un vecindario pequeño:</p>
+<div class="math notranslate nohighlight">
+\[
+[\mathbf{H}]_{i,j} = u + \sum_{a=-\Delta}^{\Delta} \sum_{b=-\Delta}^{\Delta} [\mathbf{V}]_{a,b}\,[\mathbf{X}]_{i+a, j+b}.
+\]</div>
+<p>Esta es la <strong>capa convolucional</strong>, donde <span class="math notranslate nohighlight">\(\Delta\)</span> controla el <em>tamaño del campo receptivo</em>. Típicamente, <span class="math notranslate nohighlight">\(\Delta \leq 3\)</span>, por lo que los filtros son pequeños (<span class="math notranslate nohighlight">\(3\times 3\)</span> o <span class="math notranslate nohighlight">\(5\times 5\)</span>). El número de parámetros ahora se reduce de billones a apenas unas decenas por filtro.</p>
+<p>Apilando muchas de estas capas, las redes más profundas capturan un contexto más amplio: los pequeños filtros se combinan en campos receptivos más grandes, lo que permite reconocer estructuras globales a partir de bloques locales.</p>
+</section>
+</section>
+<section id="convoluciones-y-correlacion-cruzada">
+<h3>Convoluciones y Correlación Cruzada<a class="headerlink" href="#convoluciones-y-correlacion-cruzada" title="Link to this heading">#</a></h3>
+<p>Matemáticamente, la convolución entre funciones <span class="math notranslate nohighlight">\(f,g:\mathbb{R}^d\to\mathbb{R}\)</span> se define como</p>
+<div class="math notranslate nohighlight">
+\[
+(f * g)(\mathbf{x}) = \int f(\mathbf{z})\, g(\mathbf{x}-\mathbf{z})\, d\mathbf{z}.
+\]</div>
+<p>En forma discreta 2D:</p>
+<div class="math notranslate nohighlight">
+\[
+(f * g)(i,j) = \sum_a \sum_b f(a,b)\, g(i-a, j-b).
+\]</div>
+<p>En las librerías de <em>deep learning</em>, sin embargo, la operación suele implementarse como <strong>correlación cruzada</strong>, que reemplaza <span class="math notranslate nohighlight">\((i-a,j-b)\)</span> por <span class="math notranslate nohighlight">\((i+a,j+b)\)</span>. La diferencia es solo un volteo en los índices, y en la práctica ambas se llaman “convolución”.</p>
+</section>
+<section id="por-que-funciona">
+<h3>Por Qué Funciona<a class="headerlink" href="#por-que-funciona" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Eficiencia en parámetros:</strong> miles de millones de parámetros se reducen a unos pocos miles.</p></li>
+<li><p><strong>Sesgo inductivo:</strong> la convolución codifica la invariancia por traslación y la localidad, propiedades que se cumplen en imágenes naturales.</p></li>
+<li><p><strong>Aprendizaje jerárquico:</strong> los filtros superficiales capturan bordes, los más profundos los combinan en texturas, formas y objetos semánticos.</p></li>
+</ul>
+<p>El costo es que imponemos ciertas suposiciones (p. ej., invariancia por traslación). Si estas suposiciones fallan, las CNN pueden tener problemas. Pero en visión y muchas tareas perceptuales, se alinean bien con la realidad, lo que hace a las CNN la columna vertebral de la visión por computadora moderna.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="24_MLP_ES.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Clasificación con Multilayer Perceptrons</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="26_resnet2_ES.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">ResNets para Análisis de Imágenes Biomédicas</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduccion-a-las-convoluciones">Introducción a las Convoluciones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-una-convolucion">¿Qué es una Convolución?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-deteccion-de-bordes">Ejemplo: Detección de Bordes</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolucion-en-accion">Convolución en Acción</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#calculo-de-la-salida-de-la-convolucion">Cálculo de la salida de la convolución</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convoluciones-en-pytorch">Convoluciones en PyTorch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strides-y-padding">Strides y Padding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-de-padding">Ejemplo de Padding</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-de-stride">Ejemplo de Stride</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-general-para-el-tamano-de-salida">Fórmula General para el Tamaño de Salida</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-de-una-red-neuronal-convolucional">Construcción de una Red Neuronal Convolucional</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-una-cnn">Crear una CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-de-las-capas-convolucionales">Definición de las capas convolucionales</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-el-learner">Crear el <em>Learner</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comprendiendo-la-aritmetica-de-las-convoluciones">Comprendiendo la Aritmética de las Convoluciones</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejorar-la-estabilidad-del-entrenamiento">Mejorar la Estabilidad del Entrenamiento</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#una-cnn-basica">Una CNN Básica</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aumentando-la-complejidad-del-modelo">Aumentando la Complejidad del Modelo</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analizando-el-entrenamiento-del-modelo-con-estadisticas-de-activacion">Analizando el Entrenamiento del Modelo con Estadísticas de Activación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tamano-de-batch-y-estabilidad-del-gradiente">Tamaño de Batch y Estabilidad del Gradiente</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-1cycle-tasas-de-aprendizaje-y-momento-dinamicos">Entrenamiento <em>1cycle</em>: Tasas de Aprendizaje y Momento Dinámicos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalizacion-por-lotes-batch-normalization">Normalización por Lotes (<em>Batch Normalization</em>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#de-capas-totalmente-conectadas-a-convoluciones">De Capas Totalmente Conectadas a Convoluciones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#invariancia-por-que-la-ubicacion-no-deberia-importar">Invariancia: Por Qué la Ubicación No Debería Importar</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#restringir-el-mlp">Restringir el MLP</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-1-invariancia-por-traslacion">Paso 1: Invariancia por Traslación</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-2-localidad">Paso 2: Localidad</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convoluciones-y-correlacion-cruzada">Convoluciones y Correlación Cruzada</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-funciona">Por Qué Funciona</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

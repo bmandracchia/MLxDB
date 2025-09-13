@@ -1,0 +1,1920 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Entrenamiento de un Clasificador de Dígitos &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/23_Loss_Metrics_and_Optimizers_ES';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Clasificación con Multilayer Perceptrons" href="24_MLP_ES.html" />
+    <link rel="prev" title="Redes neuronales como aproximadores universales" href="22_NN_as_UA_ES.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11_machine_learning_fundamentals_ES.html">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering_ES.html">Ingeniería de características (Feature Engineering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables_ES.html">Variables categóricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers_ES.html">Clasificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees_ES.html">Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction_ES.html">Reducción de la dimensionalidad: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans_ES.html">Extracción de Características en Manifold No Lineales</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks_ES.html">Deep Learning en Ingeniería Biomédica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_NN_as_UA_ES.html">Redes neuronales como aproximadores universales</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Entrenamiento de un Clasificador de Dígitos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP_ES.html">Clasificación con Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_convolutions_ES.html">Redes Neuronales Convolucionales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2_ES.html">ResNets para Análisis de Imágenes Biomédicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers_ES.html">Mecanismos de Atención y Transformadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders_ES.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic_ES.html">Aprendizaje Probabilístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL_ES.html">Aprendizaje Profundo Basado en Física</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/23_Loss_Metrics_and_Optimizers_ES.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/23_Loss_Metrics_and_Optimizers_ES.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Entrenamiento de un Clasificador de Dígitos</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificacion-de-imagenes">Clasificación de Imágenes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pixeles-las-bases-de-la-vision-por-computador">Píxeles: Las Bases de la Visión por Computador</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similitud-de-pixeles">Similitud de Píxeles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculo-de-metricas">Cálculo de Métricas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tensores-en-pytorch-y-broadcasting">Tensores en PyTorch y Broadcasting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definiendo-una-funcion-de-distancia-con-broadcasting">Definiendo una Función de Distancia con Broadcasting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificacion-de-una-imagen-con-distancia">Clasificación de una Imagen con Distancia</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculo-de-la-exactitud">Cálculo de la Exactitud</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definir-una-funcion-de-perdida">Definir una Función de Pérdida</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-no-usar-la-exactitud-como-funcion-de-perdida">¿Por qué no usar la Exactitud como Función de Pérdida?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-de-perdida-para-clasificacion-binaria">Función de Pérdida para Clasificación Binaria</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementar-una-funcion-de-perdida-simple">Implementar una Función de Pérdida Simple</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asegurando-predicciones-entre-0-y-1-con-la-funcion-sigmoide">Asegurando predicciones entre 0 y 1 con la función Sigmoide</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actualizando-la-funcion-de-perdida-con-sigmoide">Actualizando la función de pérdida con Sigmoide</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-necesitamos-una-funcion-de-perdida-separada">¿Por qué necesitamos una función de pérdida separada?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizacion-con-descenso-estocastico-de-gradiente-sgd-y-mini-batches">Optimización con Descenso Estocástico de Gradiente (SGD) y Mini-Batches</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-usar-mini-batches">¿Por qué usar Mini-Batches?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eleccion-del-tamano-del-lote">Elección del Tamaño del Lote</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#barajar-los-datos">Barajar los datos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-mini-batches-to-images-and-labels">Applying Mini-Batches to Images and Labels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-un-paso-de-sgd-con-mini-batches">Implementación de un paso de SGD con Mini-Batches</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actualizacion-de-parametros-con-optimizer-step">Actualización de parámetros con <code class="docutils literal notranslate"><span class="pre">optimizer.step()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculo-de-la-exactitud-en-mini-batches">Cálculo de la exactitud en mini-batches</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#juntando-todo">Juntando todo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creando-un-optimizador">Creando un Optimizador</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-necesitamos-un-optimizador">¿Por qué necesitamos un optimizador?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizadores-comunes-en-deep-learning">Optimizadores comunes en Deep Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizador-basico-personalizado">Optimizador básico personalizado</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usando-basicoptim-con-un-modelo">Usando <code class="docutils literal notranslate"><span class="pre">BasicOptim</span></code> con un Modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usando-los-optimizadores-incorporados-de-pytorch">Usando los Optimizadores Incorporados de PyTorch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cambiando-al-optimizador-adam">Cambiando al Optimizador Adam</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anadir-una-no-linealidad">Añadir una no linealidad</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#hide</span>
+<span class="kn">from</span> <span class="nn">fastai.vision.all</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greys&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="entrenamiento-de-un-clasificador-de-digitos">
+<h1>Entrenamiento de un Clasificador de Dígitos<a class="headerlink" href="#entrenamiento-de-un-clasificador-de-digitos" title="Link to this heading">#</a></h1>
+<p>Exploraremos los pasos involucrados en la construcción de un clasificador simple de dígitos. Vamos a:</p>
+<ul class="simple">
+<li><p>Discutir el papel de los <em>arrays</em> y tensores, e introducir el concepto de <em>broadcasting</em>, una técnica poderosa que hace que las operaciones sobre estas estructuras de datos sean más expresivas.</p></li>
+<li><p>Definir una función de pérdida adecuada para esta tarea de clasificación, e introducir el concepto de <em>mini-lotes</em> para optimizar el proceso de entrenamiento.</p></li>
+<li><p>Explicar las operaciones matemáticas realizadas por una red neuronal básica.</p></li>
+</ul>
+<p>Al final, combinaremos todas estas piezas para crear un modelo capaz de clasificar imágenes de dígitos.</p>
+<section id="clasificacion-de-imagenes">
+<h2>Clasificación de Imágenes<a class="headerlink" href="#clasificacion-de-imagenes" title="Link to this heading">#</a></h2>
+<p>Construiremos un clasificador de imágenes para explorar los pasos clave y las técnicas en el flujo de trabajo del aprendizaje profundo.</p>
+<p>En la clasificación de imágenes, nuestro objetivo es asignar una etiqueta <span class="math notranslate nohighlight">\( y \)</span> a cada imagen <span class="math notranslate nohighlight">\( X \)</span> a partir de un conjunto de clases posibles <span class="math notranslate nohighlight">\( C \)</span>, donde <span class="math notranslate nohighlight">\( C \)</span> puede ser categorías como razas de mascotas, estados de enfermedad o tipos de células. Matemáticamente, podemos representarlo como una función <span class="math notranslate nohighlight">\( f: X \rightarrow y \)</span>, que asigna cada imagen a una etiqueta de clase. Esto se logra entrenando un modelo para minimizar una función de pérdida que cuantifica la diferencia entre las etiquetas predichas y las verdaderas.</p>
+<p>En la clasificación binaria (por ejemplo, identificar la presencia o ausencia de una enfermedad), la salida es una única puntuación de probabilidad <span class="math notranslate nohighlight">\( p \)</span>, con <span class="math notranslate nohighlight">\( y = 1 \)</span> si <span class="math notranslate nohighlight">\( p \geq 0.5 \)</span> y <span class="math notranslate nohighlight">\( y = 0 \)</span> en caso contrario. Para la clasificación multiclase (por ejemplo, identificar diferentes tipos de tumores), el modelo produce un vector de probabilidades <span class="math notranslate nohighlight">\( \mathbf{p} = [p_1, p_2, \dots, p_k] \)</span> para cada clase <span class="math notranslate nohighlight">\( k \)</span>, donde <span class="math notranslate nohighlight">\( \sum_{i=1}^k p_i = 1 \)</span>.</p>
+</section>
+<section id="pixeles-las-bases-de-la-vision-por-computador">
+<h2>Píxeles: Las Bases de la Visión por Computador<a class="headerlink" href="#pixeles-las-bases-de-la-vision-por-computador" title="Link to this heading">#</a></h2>
+<p>Nuestro objetivo es construir un modelo que pueda clasificar una imagen como un “3” o un “7”. Para empezar, descargamos una muestra del conjunto de datos MNIST que incluye imágenes de solo estos dígitos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the MNIST sample dataset</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">untar_data</span><span class="p">(</span><span class="n">URLs</span><span class="o">.</span><span class="n">MNIST_SAMPLE</span><span class="p">)</span>
+
+<span class="c1"># Check the directory contents</span>
+<span class="n">path</span><span class="o">.</span><span class="n">ls</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html">
+    <div>
+      <progress value='3219456' class='' max='3214948' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.14% [3219456/3214948 00:40&lt;00:00]
+    </div>
+    </div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(#3) [Path(&#39;C:/Users/biagi/.fastai/data/mnist_sample/labels.csv&#39;),Path(&#39;C:/Users/biagi/.fastai/data/mnist_sample/train&#39;),Path(&#39;C:/Users/biagi/.fastai/data/mnist_sample/valid&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;train&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ls</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(#2) [Path(&#39;C:/Users/biagi/.fastai/data/mnist_sample/train/3&#39;),Path(&#39;C:/Users/biagi/.fastai/data/mnist_sample/train/7&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>En este conjunto de datos, “3” y “7” son las <em>etiquetas</em> o <em>objetivos</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the path for the images of &quot;3&quot;</span>
+<span class="n">threes</span> <span class="o">=</span> <span class="p">(</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;train&#39;</span><span class="o">/</span><span class="s1">&#39;3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ls</span><span class="p">()</span><span class="o">.</span><span class="n">sorted</span><span class="p">()</span>
+
+<span class="c1"># Open and display an example image</span>
+<span class="n">im3_path</span> <span class="o">=</span> <span class="n">threes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">im3</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">im3_path</span><span class="p">)</span>
+<span class="n">im3</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>En Python, las imágenes suelen estar representadas por la clase <code class="docutils literal notranslate"><span class="pre">Image</span></code> de la <em>Python Imaging Library</em> (PIL). Convertir una imagen a un formato numérico, como un <em>array</em> de NumPy o un tensor de PyTorch, nos permite realizar operaciones matemáticas directamente sobre los datos de la imagen.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">array</span><span class="p">(</span><span class="n">im3</span><span class="p">)[</span><span class="mi">4</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[  0,   0,   0,   0,   0,   0],
+       [  0,   0,   0,   0,   0,  29],
+       [  0,   0,   0,  48, 166, 224],
+       [  0,  93, 244, 249, 253, 187],
+       [  0, 107, 253, 253, 230,  48],
+       [  0,   3,  20,  20,  15,   0]], dtype=uint8)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Cada píxel de la imagen tiene un valor entre 0 y 255, donde 0 representa negro y 255 blanco, con tonos de gris en medio.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tensor</span><span class="p">(</span><span class="n">im3</span><span class="p">)[</span><span class="mi">4</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[  0,   0,   0,   0,   0,   0],
+        [  0,   0,   0,   0,   0,  29],
+        [  0,   0,   0,  48, 166, 224],
+        [  0,  93, 244, 249, 253, 187],
+        [  0, 107, 253, 253, 230,  48],
+        [  0,   3,  20,  20,  15,   0]], dtype=torch.uint8)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="similitud-de-pixeles">
+<h2>Similitud de Píxeles<a class="headerlink" href="#similitud-de-pixeles" title="Link to this heading">#</a></h2>
+<p>Como modelo básico, calculamos los valores promedio de píxeles de todas las imágenes de “3” y “7” por separado. Esto nos da una versión “ideal” de cada dígito, que podemos usar para comparar. Para clasificar una imagen, comprobamos con cuál de estas representaciones ideales se parece más.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load images of 3s and 7s as tensors</span>
+<span class="n">three_tensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">tensor</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">o</span><span class="p">))</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">threes</span><span class="p">]</span>
+<span class="n">seven_tensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">tensor</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">o</span><span class="p">))</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="p">(</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;train&#39;</span><span class="o">/</span><span class="s1">&#39;7&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ls</span><span class="p">()</span><span class="o">.</span><span class="n">sorted</span><span class="p">()]</span>
+
+<span class="c1"># Stack tensors and normalize</span>
+<span class="n">stacked_threes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">three_tensors</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">/</span><span class="mi">255</span>
+<span class="n">stacked_sevens</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">seven_tensors</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">/</span><span class="mi">255</span>
+
+<span class="c1"># Calculate the average image (mean) for each digit</span>
+<span class="n">mean3</span> <span class="o">=</span> <span class="n">stacked_threes</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">mean7</span> <span class="o">=</span> <span class="n">stacked_sevens</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Display the &quot;ideal&quot; 3 and 7</span>
+<span class="n">show_image</span><span class="p">(</span><span class="n">mean3</span><span class="p">)</span>
+<span class="n">show_image</span><span class="p">(</span><span class="n">mean7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
+</pre></div>
+</div>
+<img alt="../_images/4569b2202bd8b80d74aca0ab08ff89dd1018ac6acec4123b028d451d7f02e797.png" src="../_images/4569b2202bd8b80d74aca0ab08ff89dd1018ac6acec4123b028d451d7f02e797.png" />
+<img alt="../_images/7b8855895150e0b00ff82792e718e52cdfee98d4b2ca8c400a6516909e3d643c.png" src="../_images/7b8855895150e0b00ff82792e718e52cdfee98d4b2ca8c400a6516909e3d643c.png" />
+</div>
+</div>
+<p>La distancia puede calcularse con:</p>
+<ul class="simple">
+<li><p>Diferencia Absoluta Media (norma L1)</p></li>
+<li><p>Error Cuadrático Medio (norma L2)</p></li>
+</ul>
+<p>Si la distancia al “3 ideal” es menor, clasificamos la imagen como un 3; en caso contrario, como un 7.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_3</span> <span class="o">=</span> <span class="n">stacked_threes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">show_image</span><span class="p">(</span><span class="n">a_3</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/88e210254e9ff0365cd9e49e2357efcf7be2dc2a02547f1bb13cc395a1a318be.png" src="../_images/88e210254e9ff0365cd9e49e2357efcf7be2dc2a02547f1bb13cc395a1a318be.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dist_3_abs</span> <span class="o">=</span> <span class="p">(</span><span class="n">a_3</span> <span class="o">-</span> <span class="n">mean3</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">dist_3_sqr</span> <span class="o">=</span> <span class="p">((</span><span class="n">a_3</span> <span class="o">-</span> <span class="n">mean3</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+<span class="n">dist_3_abs</span><span class="p">,</span><span class="n">dist_3_sqr</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(tensor(0.1114), tensor(0.2021))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dist_7_abs</span> <span class="o">=</span> <span class="p">(</span><span class="n">a_3</span> <span class="o">-</span> <span class="n">mean7</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">dist_7_sqr</span> <span class="o">=</span> <span class="p">((</span><span class="n">a_3</span> <span class="o">-</span> <span class="n">mean7</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+<span class="n">dist_7_abs</span><span class="p">,</span><span class="n">dist_7_sqr</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(tensor(0.1586), tensor(0.3021))
+</pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<div><p>Intuitivamente, la diferencia entre la norma L1 y el error cuadrático medio (MSE) es que el segundo penaliza más fuertemente los errores grandes, mientras que es más indulgente con los errores pequeños.</p>
+</div></blockquote>
+</section>
+<section id="calculo-de-metricas">
+<h2>Cálculo de Métricas<a class="headerlink" href="#calculo-de-metricas" title="Link to this heading">#</a></h2>
+<p>Para evaluar el rendimiento de nuestro modelo necesitamos una forma de medir qué tan bien está funcionando. A esta medida se le llama <strong>métrica</strong>.
+Las métricas se calculan comparando las predicciones del modelo con las etiquetas reales en el conjunto de datos. Para tareas de clasificación como esta, una métrica común es la <strong>exactitud</strong> (accuracy).</p>
+<p>En nuestro caso, queremos determinar si cada imagen se clasifica correctamente como un “3” o un “7”. La exactitud para esta tarea se puede calcular de la siguiente manera:</p>
+<ol class="arabic simple">
+<li><p>Calcular la predicción del modelo para cada imagen.</p></li>
+<li><p>Verificar si la predicción coincide con la etiqueta real.</p></li>
+<li><p>Promediar estos resultados (correctos/incorrectos) en todo el conjunto de datos.</p></li>
+</ol>
+<p>Tenemos dos conjuntos de validación: uno para los 3 y otro para los 7.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load and normalize validation sets</span>
+<span class="n">valid_3_tens</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">tensor</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">o</span><span class="p">))</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="p">(</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;valid&#39;</span><span class="o">/</span><span class="s1">&#39;3&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ls</span><span class="p">()])</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">/</span><span class="mi">255</span>
+<span class="n">valid_7_tens</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">tensor</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">o</span><span class="p">))</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="p">(</span><span class="n">path</span><span class="o">/</span><span class="s1">&#39;valid&#39;</span><span class="o">/</span><span class="s1">&#39;7&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ls</span><span class="p">()])</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">/</span><span class="mi">255</span>
+
+<span class="c1"># Check shapes of validation tensors</span>
+<span class="n">valid_3_tens</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">valid_7_tens</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(torch.Size([1010, 28, 28]), torch.Size([1028, 28, 28]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Cada tensor tiene la forma <code class="docutils literal notranslate"><span class="pre">[número_de_imágenes,</span> <span class="pre">alto,</span> <span class="pre">ancho]</span></code>, donde:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">valid_3_tens</span></code> contiene 1.010 imágenes de 3.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">valid_7_tens</span></code> contiene 1.028 imágenes de 7.</p></li>
+</ul>
+<p>Esto nos permite probar nuestra función en ambas categorías y calcular la exactitud considerando todas las imágenes de validación.</p>
+<section id="tensores-en-pytorch-y-broadcasting">
+<h3>Tensores en PyTorch y Broadcasting<a class="headerlink" href="#tensores-en-pytorch-y-broadcasting" title="Link to this heading">#</a></h3>
+<p>Los tensores son arreglos multidimensionales que permiten cálculos rápidos en PyTorch. A diferencia de las listas en Python, que son más lentas, los tensores posibilitan operaciones matemáticas a gran escala de forma eficiente.</p>
+<p>El <strong>broadcasting</strong> es una técnica que permite realizar operaciones entre tensores de diferentes formas. Por ejemplo, restar un “dígito ideal” a cada imagen de un lote es posible porque PyTorch “expande” automáticamente el dígito ideal para que coincida con el tamaño del lote.</p>
+</section>
+<section id="definiendo-una-funcion-de-distancia-con-broadcasting">
+<h3>Definiendo una Función de Distancia con Broadcasting<a class="headerlink" href="#definiendo-una-funcion-de-distancia-con-broadcasting" title="Link to this heading">#</a></h3>
+<p>Para clasificar una imagen necesitamos calcular su “distancia” al “3 ideal” y al “7 ideal” (los promedios calculados anteriormente). Una función útil para esto es el <strong>error absoluto medio (MAE)</strong>.</p>
+<p>Con broadcasting podemos aplicar el cálculo de distancia a todo un conjunto de imágenes sin necesidad de bucles, lo que hace la computación más rápida y eficiente.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define distance function using broadcasting</span>
+<span class="k">def</span> <span class="nf">mnist_distance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># Calculate distance from an example image to the ideal 3</span>
+<span class="n">a_3</span> <span class="o">=</span> <span class="n">valid_3_tens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">mnist_distance</span><span class="p">(</span><span class="n">a_3</span><span class="p">,</span> <span class="n">mean3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(0.1280)
+</pre></div>
+</div>
+</div>
+</div>
+<p>When we pass <code class="docutils literal notranslate"><span class="pre">valid_3_tens</span></code> (all 3s in the validation set) and <code class="docutils literal notranslate"><span class="pre">mean3</span></code> (the ideal 3) to this function, broadcasting automatically expands <code class="docutils literal notranslate"><span class="pre">mean3</span></code> to match the shape of <code class="docutils literal notranslate"><span class="pre">valid_3_tens</span></code>, calculating the distance for each image in the set:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate distance for all 3s in the validation set</span>
+<span class="n">valid_3_dist</span> <span class="o">=</span> <span class="n">mnist_distance</span><span class="p">(</span><span class="n">valid_3_tens</span><span class="p">,</span> <span class="n">mean3</span><span class="p">)</span>
+<span class="n">valid_3_dist</span><span class="o">.</span><span class="n">shape</span>  <span class="c1"># Output should be a vector of distances</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([1010])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Broadcasting makes this possible by “stretching” <code class="docutils literal notranslate"><span class="pre">mean3</span></code> to align with each image in <code class="docutils literal notranslate"><span class="pre">valid_3_tens</span></code>, allowing the distance function to operate on all images simultaneously. This avoids the need for loops and makes the computation faster and more efficient.</p>
+</section>
+<section id="clasificacion-de-una-imagen-con-distancia">
+<h3>Clasificación de una Imagen con Distancia<a class="headerlink" href="#clasificacion-de-una-imagen-con-distancia" title="Link to this heading">#</a></h3>
+<p>Para clasificar una nueva imagen, comparamos su distancia con <code class="docutils literal notranslate"><span class="pre">mean3</span></code> y con <code class="docutils literal notranslate"><span class="pre">mean7</span></code>:</p>
+<ul class="simple">
+<li><p>Si está más cerca de <code class="docutils literal notranslate"><span class="pre">mean3</span></code>, la clasificamos como un 3.</p></li>
+<li><p>Si está más cerca de <code class="docutils literal notranslate"><span class="pre">mean7</span></code>, la clasificamos como un 7.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define classification function</span>
+<span class="k">def</span> <span class="nf">is_3</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> 
+    <span class="k">return</span> <span class="n">mnist_distance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mean3</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">mnist_distance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mean7</span><span class="p">)</span>
+
+<span class="c1"># Test classification on a sample 3</span>
+<span class="n">is_3</span><span class="p">(</span><span class="n">a_3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(True)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Podemos aplicar este proceso con broadcasting a todo el conjunto de validación al mismo tiempo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Classify all 3s in the validation set</span>
+<span class="n">is_3</span><span class="p">(</span><span class="n">valid_3_tens</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([ True,  True,  True,  ..., False,  True,  True])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculo-de-la-exactitud">
+<h3>Cálculo de la Exactitud<a class="headerlink" href="#calculo-de-la-exactitud" title="Link to this heading">#</a></h3>
+<p>Para calcular la exactitud:</p>
+<ul class="simple">
+<li><p>En las imágenes de 3 comprobamos si el modelo predijo correctamente 3 (<code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
+<li><p>En las imágenes de 7 comprobamos si el modelo predijo 7 (<code class="docutils literal notranslate"><span class="pre">False</span></code>).</p></li>
+</ul>
+<p>Al calcular la proporción de predicciones correctas en ambos casos y luego promediarlas, obtenemos una medida global del rendimiento del modelo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate accuracy for each digit</span>
+<span class="n">accuracy_3s</span> <span class="o">=</span> <span class="n">is_3</span><span class="p">(</span><span class="n">valid_3_tens</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="c1"># Accuracy on 3s</span>
+<span class="n">accuracy_7s</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">is_3</span><span class="p">(</span><span class="n">valid_7_tens</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">())</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  <span class="c1"># Accuracy on 7s</span>
+
+<span class="c1"># Calculate overall accuracy</span>
+<span class="n">overall_accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">accuracy_3s</span> <span class="o">+</span> <span class="n">accuracy_7s</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">accuracy_3s</span><span class="p">,</span> <span class="n">accuracy_7s</span><span class="p">,</span> <span class="n">overall_accuracy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(tensor(0.9168), tensor(0.9854), tensor(0.9511))
+</pre></div>
+</div>
+</div>
+</div>
+<p>En este ejemplo, <code class="docutils literal notranslate"><span class="pre">accuracy_3s</span></code> y <code class="docutils literal notranslate"><span class="pre">accuracy_7s</span></code> representan la exactitud para clasificar 3 y 7, respectivamente. El promedio de ambas nos da la exactitud total del clasificador.</p>
+</section>
+</section>
+<section id="definir-una-funcion-de-perdida">
+<h2>Definir una Función de Pérdida<a class="headerlink" href="#definir-una-funcion-de-perdida" title="Link to this heading">#</a></h2>
+<p>En deep learning, la <strong>función de pérdida</strong> es un componente crítico que guía el proceso de entrenamiento.
+Su papel es cuantificar qué tan bien coinciden las predicciones del modelo con los valores objetivo (etiquetas).
+El entrenamiento consiste en minimizar esta pérdida de manera progresiva a lo largo de las iteraciones, mejorando así el modelo.</p>
+<p>Nuestro objetivo al definir una función de pérdida es que:</p>
+<ol class="arabic simple">
+<li><p>Produzca un valor que refleje qué tan alejadas están las predicciones de las etiquetas reales.</p></li>
+<li><p>Tenga un gradiente que pueda guiar el proceso de optimización, permitiendo actualizar los parámetros del modelo de forma efectiva.</p></li>
+</ol>
+<section id="por-que-no-usar-la-exactitud-como-funcion-de-perdida">
+<h3>¿Por qué no usar la Exactitud como Función de Pérdida?<a class="headerlink" href="#por-que-no-usar-la-exactitud-como-funcion-de-perdida" title="Link to this heading">#</a></h3>
+<p>Una opción obvia para medir el rendimiento es la <strong>exactitud</strong> (accuracy), que calcula la proporción de predicciones correctas.
+Sin embargo, la exactitud no es adecuada como función de pérdida por dos razones principales:</p>
+<ol class="arabic simple">
+<li><p><strong>Gradientes planos</strong>: pequeños cambios en los pesos suelen no afectar la exactitud, ya que la predicción permanece igual (correcta o incorrecta). Esto genera regiones de gradientes planos, lo que dificulta la mejora del modelo.</p></li>
+<li><p><strong>Métrica discreta</strong>: la exactitud es una medida discreta que no captura <em>cuánto</em> se equivocó el modelo. Por ejemplo, si la predicción está muy cerca de la respuesta correcta, la exactitud no refleja esta diferencia, pero una buena función de pérdida sí debería hacerlo.</p></li>
+</ol>
+<p>Por ello, la exactitud se usa como <strong>métrica</strong> para evaluar el rendimiento, mientras que la <strong>pérdida</strong> es la que impulsa el aprendizaje del modelo.</p>
+</section>
+<section id="funcion-de-perdida-para-clasificacion-binaria">
+<h3>Función de Pérdida para Clasificación Binaria<a class="headerlink" href="#funcion-de-perdida-para-clasificacion-binaria" title="Link to this heading">#</a></h3>
+<p>En nuestra tarea con MNIST buscamos clasificar imágenes como un “3” o un “7”.
+Podemos tratarlo como un problema de <strong>clasificación binaria</strong>:</p>
+<ul class="simple">
+<li><p>Usamos <strong>1</strong> para las imágenes de “3”.</p></li>
+<li><p>Usamos <strong>0</strong> para las imágenes de “7”.</p></li>
+</ul>
+<p>El objetivo es que el modelo produzca valores cercanos a 1 para los “3” y cercanos a 0 para los “7”.
+Un enfoque común en clasificación binaria es usar el <strong>error absoluto medio (MAE)</strong> o la <strong>pérdida de entropía cruzada (cross-entropy loss)</strong>.</p>
+<p>En este ejemplo, usaremos una función personalizada que mide la distancia entre las predicciones del modelo y las etiquetas reales, asegurando que:</p>
+<ul class="simple">
+<li><p>Para las imágenes de “3” (etiqueta = 1), la predicción esté lo más cerca posible de 1.</p></li>
+<li><p>Para las imágenes de “7” (etiqueta = 0), la predicción esté lo más cerca posible de 0.</p></li>
+</ul>
+</section>
+<section id="implementar-una-funcion-de-perdida-simple">
+<h3>Implementar una Función de Pérdida Simple<a class="headerlink" href="#implementar-una-funcion-de-perdida-simple" title="Link to this heading">#</a></h3>
+<p>Supongamos que tenemos tres imágenes con etiquetas <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">0,</span> <span class="pre">1]</span></code> (representando “3,” “7,” y “3”).
+Las predicciones del modelo son <code class="docutils literal notranslate"><span class="pre">[0.9,</span> <span class="pre">0.4,</span> <span class="pre">0.2]</span></code>.
+Esto significa:</p>
+<ul class="simple">
+<li><p>El modelo está seguro de que la primera imagen es un 3.</p></li>
+<li><p>El modelo está algo seguro de que la segunda es un 7.</p></li>
+<li><p>El modelo se equivoca con la tercera, prediciendo 7 en lugar de 3.</p></li>
+</ul>
+<p>Una función de pérdida simple calcularía <strong>qué tan lejos</strong> están estas predicciones de las etiquetas correctas, devolviendo un valor promedio que el modelo debe minimizar durante el entrenamiento.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define sample targets and predictions</span>
+<span class="n">targets</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">([</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+
+<span class="c1"># Define the MNIST loss function</span>
+<span class="k">def</span> <span class="nf">mnist_loss</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">targets</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>En esta función:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">torch.where(targets</span> <span class="pre">==</span> <span class="pre">1,</span> <span class="pre">1</span> <span class="pre">-</span> <span class="pre">predictions,</span> <span class="pre">predictions)</span></code> calcula la distancia entre cada predicción y su etiqueta (1 o 0).</p></li>
+<li><p>Si <code class="docutils literal notranslate"><span class="pre">targets</span> <span class="pre">==</span> <span class="pre">1</span></code> (para un “3”), usamos <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">-</span> <span class="pre">prediction</span></code> para medir qué tan cerca está de 1.</p></li>
+<li><p>Si <code class="docutils literal notranslate"><span class="pre">targets</span> <span class="pre">==</span> <span class="pre">0</span></code> (para un “7”), usamos directamente <code class="docutils literal notranslate"><span class="pre">prediction</span></code> para medir qué tan cerca está de 0.</p></li>
+<li><p>Finalmente, tomamos la media de todas estas distancias para obtener la <strong>pérdida global</strong>.</p></li>
+</ul>
+<p>Probemos esta función con los valores de ejemplo:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate loss</span>
+<span class="n">mnist_loss</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(0.4333)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Una pérdida más baja indica que las predicciones están más cerca de los objetivos. Por ejemplo, si cambiamos la predicción de la tercera imagen de <code class="docutils literal notranslate"><span class="pre">0.2</span></code> a <code class="docutils literal notranslate"><span class="pre">0.8</span></code>, que está más cerca del objetivo de 1, la pérdida disminuye:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mnist_loss</span><span class="p">(</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">]),</span> <span class="n">targets</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(0.2333)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="asegurando-predicciones-entre-0-y-1-con-la-funcion-sigmoide">
+<h3>Asegurando predicciones entre 0 y 1 con la función Sigmoide<a class="headerlink" href="#asegurando-predicciones-entre-0-y-1-con-la-funcion-sigmoide" title="Link to this heading">#</a></h3>
+<p>Para usar la función de pérdida de manera efectiva, necesitamos asegurarnos de que las predicciones caigan entre 0 y 1. Esto se puede lograr usando la <strong>función sigmoide</strong>, definida como:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{sigmoid}(x) = \frac{1}{1 + e^{-x}}
+\]</div>
+<p>La función sigmoide comprime cualquier entrada a un rango entre 0 y 1, lo que la hace perfecta para tareas de clasificación binaria. En PyTorch, podemos usar <code class="docutils literal notranslate"><span class="pre">torch.sigmoid</span></code> para este propósito.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the sigmoid function (PyTorch version)</span>
+<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+
+<span class="c1"># Plot the sigmoid function</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Sigmoid Function&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Input&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Output (0 to 1)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6594b01f356185bbe55c7393d08048b00f517296481d0cdf4be7c74d1a037f44.png" src="../_images/6594b01f356185bbe55c7393d08048b00f517296481d0cdf4be7c74d1a037f44.png" />
+</div>
+</div>
+<p>La función sigmoide asigna cualquier entrada real a un valor entre 0 y 1, lo que significa que las predicciones ahora pueden representar probabilidades.</p>
+</section>
+<section id="actualizando-la-funcion-de-perdida-con-sigmoide">
+<h3>Actualizando la función de pérdida con Sigmoide<a class="headerlink" href="#actualizando-la-funcion-de-perdida-con-sigmoide" title="Link to this heading">#</a></h3>
+<p>Podemos actualizar nuestra función <code class="docutils literal notranslate"><span class="pre">mnist_loss</span></code> para aplicar primero la sigmoide a las predicciones. Esto asegura que la función de pérdida funcione incluso si las salidas del modelo no están restringidas entre 0 y 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Updated MNIST loss function with sigmoid</span>
+<span class="k">def</span> <span class="nf">mnist_loss</span><span class="p">(</span><span class="n">predictions</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+    <span class="n">predictions</span> <span class="o">=</span> <span class="n">predictions</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">targets</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">predictions</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="por-que-necesitamos-una-funcion-de-perdida-separada">
+<h3>¿Por qué necesitamos una función de pérdida separada?<a class="headerlink" href="#por-que-necesitamos-una-funcion-de-perdida-separada" title="Link to this heading">#</a></h3>
+<p>La diferencia clave entre <strong>métricas</strong> (como la exactitud) y <strong>funciones de pérdida</strong> es su propósito:</p>
+<ul class="simple">
+<li><p><strong>Métricas</strong>: se usan para evaluar el rendimiento del modelo, proporcionando un número que indica qué tan bien realiza una tarea específica. No necesitan ser diferenciables, ya que no se utilizan en el proceso de optimización.</p></li>
+<li><p><strong>Funciones de pérdida</strong>: guían el aprendizaje calculando gradientes, que indican cómo ajustar los parámetros del modelo para mejorar su rendimiento. Deben ser suaves y diferenciables, ya que sus derivadas se usan en la optimización.</p></li>
+</ul>
+<p>Al usar esta función de pérdida personalizada, proporcionamos una señal que indica al modelo acercarse a las respuestas correctas, incluso cuando las predicciones están algo desviadas.</p>
+</section>
+</section>
+<section id="optimizacion-con-descenso-estocastico-de-gradiente-sgd-y-mini-batches">
+<h2>Optimización con Descenso Estocástico de Gradiente (SGD) y Mini-Batches<a class="headerlink" href="#optimizacion-con-descenso-estocastico-de-gradiente-sgd-y-mini-batches" title="Link to this heading">#</a></h2>
+<p>En <em>machine learning</em>, el <strong>Descenso Estocástico de Gradiente (SGD)</strong> es una técnica de optimización usada para minimizar la función de pérdida, que guía el proceso de aprendizaje de un modelo. A diferencia del <strong>Descenso de Gradiente</strong> tradicional, que calcula el gradiente de la pérdida respecto a cada parámetro usando todo el conjunto de datos, SGD aproxima este cálculo utilizando pequeños subconjuntos aleatorios llamados <strong>mini-batches</strong>.</p>
+<p>SGD permite entrenar más rápido y puede mejorar la generalización gracias a la aleatoriedad en el muestreo de los mini-batches, lo que ayuda al modelo a evitar quedarse atrapado en mínimos locales.</p>
+<section id="por-que-usar-mini-batches">
+<h3>¿Por qué usar Mini-Batches?<a class="headerlink" href="#por-que-usar-mini-batches" title="Link to this heading">#</a></h3>
+<p>Usar mini-batches en lugar de todo el conjunto de datos o de una sola muestra por actualización de gradiente tiene varias ventajas:</p>
+<ol class="arabic simple">
+<li><p><strong>Cálculo más rápido</strong>: calcular gradientes con todo el dataset puede ser muy lento, especialmente en conjuntos grandes. Los mini-batches permiten actualizar los parámetros con más frecuencia sin esperar a procesar todo el dataset.</p></li>
+<li><p><strong>Gradientes más estables</strong>: una sola muestra puede producir un gradiente ruidoso e inestable, mientras que el dataset completo da un gradiente preciso pero costoso de calcular. Los mini-batches equilibran ambos extremos y generan actualizaciones más estables.</p></li>
+<li><p><strong>Mejor aprovechamiento de la GPU</strong>: con aceleradores como GPUs, los mini-batches permiten cálculos en paralelo, optimizando el uso del hardware.</p></li>
+<li><p><strong>Mayor capacidad de generalización</strong>: la aleatoriedad en el muestreo introduce <em>stochasticity</em> en las actualizaciones, lo que ayuda a evitar sobreajuste (<em>overfitting</em>) y mejora la generalización del modelo.</p></li>
+</ol>
+</section>
+<section id="eleccion-del-tamano-del-lote">
+<h3>Elección del Tamaño del Lote<a class="headerlink" href="#eleccion-del-tamano-del-lote" title="Link to this heading">#</a></h3>
+<p>En el centro de la decisión de usar <em>minibatches</em> está la eficiencia computacional. Procesar observaciones individuales requiere realizar muchas multiplicaciones matriz–vector (o incluso vector–vector), lo cual resulta costoso y genera una sobrecarga considerable para el framework de <em>deep learning</em>. Esto aplica tanto al evaluar una red en inferencia como al calcular gradientes para actualizar parámetros.</p>
+<p>Para mejorar la eficiencia <em>computacional</em>, se aplican estas operaciones sobre un <em>minibatch</em> de observaciones a la vez. Es decir, reemplazamos el gradiente $\mathbf{g}_t$ de una sola observación por el de un pequeño lote:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{g}_t = \partial_{\mathbf{w}} \frac{1}{|\mathcal{B}_t|} \sum_{i \in \mathcal{B}_t} f(\mathbf{x}_{i}, \mathbf{w}) 
+\]</div>
+<p>En cuanto a las propiedades estadísticas: dado que tanto $\mathbf{x}_t$ como los elementos de $\mathcal{B}_t$ se toman aleatoriamente del conjunto de entrenamiento, la esperanza del gradiente se mantiene inalterada. La varianza, en cambio, se reduce de manera significativa. Como el gradiente del minibatch se compone de $b = |\mathcal{B}_t|$ gradientes independientes que se promedian, su desviación estándar se reduce en un factor de $b^{-1/2}$. Esto es positivo, pues significa que las actualizaciones se alinean de forma más confiable con el gradiente completo.</p>
+<p>De manera ingenua, esto sugeriría que elegir un lote muy grande sería siempre preferible. Sin embargo, a partir de cierto punto, la reducción adicional en la varianza es mínima frente al aumento lineal en el coste computacional. Por ello, en la práctica se considera que:</p>
+<ul class="simple">
+<li><p><strong>Lotes grandes</strong> producen estimaciones de gradiente más estables, pero el entrenamiento avanza más lento en cada actualización.</p></li>
+<li><p><strong>Lotes pequeños</strong> permiten actualizaciones más rápidas, aunque generan gradientes ruidosos y un entrenamiento menos estable.</p></li>
+</ul>
+<p>En resumen, se selecciona un tamaño de minibatch lo bastante grande para ofrecer buena eficiencia computacional, pero que aún pueda ajustarse a la memoria disponible en la GPU.</p>
+</section>
+<section id="barajar-los-datos">
+<h3>Barajar los datos<a class="headerlink" href="#barajar-los-datos" title="Link to this heading">#</a></h3>
+<p>Para evitar que el modelo vea los datos en un orden fijo, lo que podría introducir patrones no deseados en las actualizaciones, es práctica común <strong>barajar el conjunto de datos</strong> antes de dividirlo en mini-lotes. Barajar los datos en cada época asegura que el modelo no dependa de un orden específico en los datos.</p>
+<p>PyTorch ofrece la clase <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code>, que maneja automáticamente el barajado y la creación de mini-lotes. Aquí tienes un ejemplo sencillo de cómo usar <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> para crear mini-lotes a partir de un conjunto de datos:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+
+<span class="c1"># Sample data for demonstration</span>
+<span class="n">data</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1"># Create a DataLoader with batch size 5 and shuffling enabled</span>
+<span class="n">dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">dl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[tensor([ 3,  7,  0,  8, 10]),
+ tensor([ 4, 17,  1, 16, 12]),
+ tensor([ 5, 15, 13, 11, 19]),
+ tensor([14,  6,  9,  2, 18])]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this example, <code class="docutils literal notranslate"><span class="pre">dl</span></code> creates batches of size 5, and the <code class="docutils literal notranslate"><span class="pre">shuffle=True</span></code> argument ensures that the data order is randomized with each epoch.</p>
+</section>
+<section id="applying-mini-batches-to-images-and-labels">
+<h3>Applying Mini-Batches to Images and Labels<a class="headerlink" href="#applying-mini-batches-to-images-and-labels" title="Link to this heading">#</a></h3>
+<p>For our MNIST classification task, we need to process both the images (features) and the labels (targets). Here’s how we can create a <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> for the MNIST dataset:</p>
+<ol class="arabic simple">
+<li><p><strong>Combine images and labels</strong> into a PyTorch Dataset.</p></li>
+<li><p><strong>Use a DataLoader</strong> to create mini-batches of this dataset.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the dataset for training</span>
+<span class="n">train_x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">stacked_threes</span><span class="p">,</span> <span class="n">stacked_sevens</span><span class="p">])</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">)</span>
+<span class="n">train_y</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">stacked_threes</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">stacked_sevens</span><span class="p">))</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span><span class="p">))</span>
+<span class="n">valid_x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">valid_3_tens</span><span class="p">,</span> <span class="n">valid_7_tens</span><span class="p">])</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">)</span>
+<span class="n">valid_y</span> <span class="o">=</span> <span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">valid_3_tens</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">valid_7_tens</span><span class="p">))</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">valid_dset</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">valid_x</span><span class="p">,</span><span class="n">valid_y</span><span class="p">))</span>
+
+<span class="c1"># Create the DataLoader for mini-batch processing</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">valid_dset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>El <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> generará mini-batches de 256 imágenes con sus etiquetas correspondientes, barajando el conjunto de datos en cada época.</p>
+</section>
+<section id="implementacion-de-un-paso-de-sgd-con-mini-batches">
+<h3>Implementación de un paso de SGD con Mini-Batches<a class="headerlink" href="#implementacion-de-un-paso-de-sgd-con-mini-batches" title="Link to this heading">#</a></h3>
+<p>Para cada mini-batch necesitamos:</p>
+<ol class="arabic simple">
+<li><p><strong>Calcular las predicciones</strong> en función de los parámetros actuales del modelo.</p></li>
+<li><p><strong>Calcular la pérdida</strong> para ver qué tan lejos están las predicciones de las etiquetas reales.</p></li>
+<li><p><strong>Calcular los gradientes</strong> con respecto a cada parámetro.</p></li>
+<li><p><strong>Actualizar los parámetros</strong> restando una fracción (tasa de aprendizaje) del gradiente en cada parámetro.</p></li>
+</ol>
+<p>Esto constituye una implementación de una época de SGD utilizando mini-batches.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the learning rate</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="c1"># Training loop for one epoch</span>
+<span class="k">def</span> <span class="nf">train_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span> <span class="ow">in</span> <span class="n">train_dl</span><span class="p">:</span>
+        <span class="c1"># Forward pass: calculate predictions</span>
+        <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>
+        
+        <span class="c1"># Calculate loss</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">mnist_loss</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span>
+        
+        <span class="c1"># Backward pass: compute gradients</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        
+        <span class="c1"># Update parameters and zero gradients</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="actualizacion-de-parametros-con-optimizer-step">
+<h3>Actualización de parámetros con <code class="docutils literal notranslate"><span class="pre">optimizer.step()</span></code><a class="headerlink" href="#actualizacion-de-parametros-con-optimizer-step" title="Link to this heading">#</a></h3>
+<p>La línea <code class="docutils literal notranslate"><span class="pre">optimizer.step()</span></code> actualiza los parámetros utilizando los gradientes calculados. Después usamos <code class="docutils literal notranslate"><span class="pre">optimizer.zero_grad()</span></code> para reiniciar los gradientes antes del siguiente mini-batch; de lo contrario, PyTorch los acumula y eso provocaría actualizaciones incorrectas.</p>
+</section>
+<section id="calculo-de-la-exactitud-en-mini-batches">
+<h3>Cálculo de la exactitud en mini-batches<a class="headerlink" href="#calculo-de-la-exactitud-en-mini-batches" title="Link to this heading">#</a></h3>
+<p>Para evaluar el rendimiento del modelo, podemos calcular la exactitud en el conjunto de validación. En cada mini-batch, comprobamos si cada predicción coincide con la etiqueta real y promediamos las predicciones correctas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define accuracy calculation function</span>
+<span class="k">def</span> <span class="nf">batch_accuracy</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">yb</span><span class="p">):</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">xb</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">()</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="p">(</span><span class="n">preds</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">==</span> <span class="n">yb</span>
+    <span class="k">return</span> <span class="n">correct</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># Validation accuracy calculation</span>
+<span class="k">def</span> <span class="nf">validate_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">):</span>
+    <span class="n">accs</span> <span class="o">=</span> <span class="p">[</span><span class="n">batch_accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">),</span> <span class="n">yb</span><span class="p">)</span> <span class="k">for</span> <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span> <span class="ow">in</span> <span class="n">valid_dl</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">accs</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="juntando-todo">
+<h3>Juntando todo<a class="headerlink" href="#juntando-todo" title="Link to this heading">#</a></h3>
+<p>Ahora podemos usar estas funciones para entrenar nuestro modelo durante varias épocas, actualizando los parámetros en función de cada mini-batch y calculando la exactitud en el conjunto de validación al final de cada época.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the number of epochs</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># Initialize model and optimizer</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Simple linear model for demonstration</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+
+<span class="c1"># Training loop</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+    <span class="n">train_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> accuracy:&quot;</span><span class="p">,</span> <span class="n">validate_epoch</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1 accuracy: 0.9657
+Epoch 2 accuracy: 0.9687
+Epoch 3 accuracy: 0.9691
+Epoch 4 accuracy: 0.9691
+Epoch 5 accuracy: 0.9701
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="creando-un-optimizador">
+<h2>Creando un Optimizador<a class="headerlink" href="#creando-un-optimizador" title="Link to this heading">#</a></h2>
+<p>Un <strong>optimizador</strong> es un componente esencial en el entrenamiento de una red neuronal, responsable de actualizar los parámetros del modelo (pesos y sesgos) en función de los gradientes calculados. Este proceso se realiza normalmente después de cada mini-batch, donde el optimizador ajusta los parámetros en la dirección que minimiza la función de pérdida.</p>
+<section id="por-que-necesitamos-un-optimizador">
+<h3>¿Por qué necesitamos un optimizador?<a class="headerlink" href="#por-que-necesitamos-un-optimizador" title="Link to this heading">#</a></h3>
+<p>En la sección anterior implementamos el Descenso de Gradiente Estocástico (SGD) de forma manual:</p>
+<ol class="arabic simple">
+<li><p>Calculando los gradientes de cada parámetro mediante retropropagación.</p></li>
+<li><p>Restando una fracción del gradiente (escalada por la tasa de aprendizaje) de cada parámetro.</p></li>
+</ol>
+<p>Aunque este proceso funciona, puede simplificarse y optimizarse usando optimizadores dedicados. PyTorch ofrece varios optimizadores integrados, cada uno con diferentes estrategias de actualización de parámetros. Usar estos optimizadores hace el código más claro y nos permite probar fácilmente distintas técnicas de optimización.</p>
+</section>
+<section id="optimizadores-comunes-en-deep-learning">
+<h3>Optimizadores comunes en Deep Learning<a class="headerlink" href="#optimizadores-comunes-en-deep-learning" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>SGD (Stochastic Gradient Descent)</strong>: actualiza parámetros restando una fracción del gradiente. Es simple, pero puede ser lento y oscilar alrededor de mínimos locales.</p></li>
+<li><p><strong>SGD con momento</strong>: mejora el SGD acumulando gradientes en la dirección de descenso más pronunciado, lo que acelera la convergencia.</p></li>
+<li><p><strong>Adam (Adaptive Moment Estimation)</strong>: usa tasas de aprendizaje adaptativas para cada parámetro, combinando ideas de momento y de ajuste adaptativo. Es uno de los optimizadores más usados en aplicaciones de deep learning.</p></li>
+</ol>
+<p>En esta sección, comenzaremos creando un optimizador básico similar a SGD y luego veremos cómo usar los optimizadores integrados de PyTorch.</p>
+</section>
+<section id="optimizador-basico-personalizado">
+<h3>Optimizador básico personalizado<a class="headerlink" href="#optimizador-basico-personalizado" title="Link to this heading">#</a></h3>
+<p>Definamos un optimizador sencillo llamado <code class="docutils literal notranslate"><span class="pre">BasicOptim</span></code> que implemente el SGD estándar. Este optimizador debe:</p>
+<ol class="arabic simple">
+<li><p>Almacenar los parámetros a actualizar.</p></li>
+<li><p>Usar una tasa de aprendizaje (learning rate) para escalar las actualizaciones.</p></li>
+<li><p>Incluir un método <code class="docutils literal notranslate"><span class="pre">step</span></code> para actualizar cada parámetro restando el producto del gradiente y la tasa de aprendizaje.</p></li>
+<li><p>Reiniciar los gradientes después de cada actualización para evitar que se acumulen.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a custom basic optimizer</span>
+<span class="k">class</span> <span class="nc">BasicOptim</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>  <span class="c1"># Parameters to optimize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">=</span> <span class="n">lr</span>                <span class="c1"># Learning rate</span>
+    
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Update each parameter by its gradient</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">data</span> <span class="o">-=</span> <span class="n">p</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">data</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr</span>
+    
+    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Set gradients to None for each parameter</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="usando-basicoptim-con-un-modelo">
+<h3>Usando <code class="docutils literal notranslate"><span class="pre">BasicOptim</span></code> con un Modelo<a class="headerlink" href="#usando-basicoptim-con-un-modelo" title="Link to this heading">#</a></h3>
+<p>Para usar este optimizador, pasamos los parámetros del modelo a <code class="docutils literal notranslate"><span class="pre">BasicOptim</span></code> y especificamos una tasa de aprendizaje. A continuación, mostramos un bucle de entrenamiento sencillo que demuestra cómo utilizar este optimizador personalizado:</p>
+<ol class="arabic simple">
+<li><p>Calculamos las predicciones del modelo.</p></li>
+<li><p>Evaluamos la pérdida con respecto a las etiquetas reales.</p></li>
+<li><p>Realizamos la retropropagación para obtener los gradientes.</p></li>
+<li><p>Actualizamos los parámetros con <code class="docutils literal notranslate"><span class="pre">opt.step()</span></code>.</p></li>
+<li><p>Reiniciamos los gradientes con <code class="docutils literal notranslate"><span class="pre">opt.zero_grad()</span></code> para evitar acumulaciones.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize model and optimizer</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Simple linear model for demonstration</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">BasicOptim</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># Training loop for one epoch</span>
+<span class="k">for</span> <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span> <span class="ow">in</span> <span class="n">train_dl</span><span class="p">:</span>
+    <span class="c1"># Forward pass: calculate predictions</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate loss</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">mnist_loss</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span>
+    
+    <span class="c1"># Backward pass: compute gradients</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    
+    <span class="c1"># Update parameters and zero gradients</span>
+    <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="usando-los-optimizadores-incorporados-de-pytorch">
+<h3>Usando los Optimizadores Incorporados de PyTorch<a class="headerlink" href="#usando-los-optimizadores-incorporados-de-pytorch" title="Link to this heading">#</a></h3>
+<p>Aunque <code class="docutils literal notranslate"><span class="pre">BasicOptim</span></code> demuestra el concepto básico de SGD, PyTorch ya ofrece un optimizador <strong>SGD</strong> incorporado, que además incluye características adicionales como el <em>momentum</em>.</p>
+<p>El uso de la librería <code class="docutils literal notranslate"><span class="pre">torch.optim</span></code> simplifica el proceso de optimización y nos brinda más opciones sin tener que implementar manualmente los pasos de actualización.</p>
+<p>Aquí tienes un ejemplo de cómo usar el optimizador <strong>SGD</strong> con <em>momentum</em>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">SGD</span>
+
+<span class="c1"># Initialize model and optimizer</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="c1"># Training loop</span>
+<span class="k">for</span> <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span> <span class="ow">in</span> <span class="n">train_dl</span><span class="p">:</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">mnist_loss</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Con el optimizador <code class="docutils literal notranslate"><span class="pre">SGD</span></code> de PyTorch, solo necesitamos especificar la tasa de aprendizaje y, opcionalmente, un valor de <em>momentum</em>. El optimizador se encarga de actualizar los parámetros y de reiniciar los gradientes de forma interna.</p>
+</section>
+<section id="cambiando-al-optimizador-adam">
+<h3>Cambiando al Optimizador Adam<a class="headerlink" href="#cambiando-al-optimizador-adam" title="Link to this heading">#</a></h3>
+<p><strong>Adam (Adaptive Moment Estimation)</strong> es otro optimizador muy popular que ajusta automáticamente la tasa de aprendizaje de cada parámetro en función de los gradientes históricos y sus actualizaciones. Este enfoque suele mejorar la convergencia, en especial en redes profundas.</p>
+<p>Cambiar a Adam es tan sencillo como modificar la inicialización del optimizador; el resto del ciclo de entrenamiento permanece exactamente igual.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Adam</span>
+
+<span class="c1"># Initialize model and optimizer</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">opt</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>  <span class="c1"># Lower learning rate for Adam</span>
+
+<span class="c1"># Training loop</span>
+<span class="k">for</span> <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span> <span class="ow">in</span> <span class="n">train_dl</span><span class="p">:</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">mnist_loss</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+    <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Con Adam, normalmente se utiliza una tasa de aprendizaje más baja (por ejemplo, <code class="docutils literal notranslate"><span class="pre">0.001</span></code>) que con SGD, ya que Adam adapta dinámicamente la tasa de aprendizaje durante el entrenamiento.</p>
+<p>La librería <strong>fastai</strong> simplifica el proceso de entrenamiento al integrar el optimizador, la función de pérdida y las métricas dentro de una sola clase: <strong><code class="docutils literal notranslate"><span class="pre">Learner</span></code></strong>.</p>
+<p>Para usar <code class="docutils literal notranslate"><span class="pre">Learner</span></code>, necesitamos:</p>
+<ol class="arabic simple">
+<li><p>Crear un objeto <strong><code class="docutils literal notranslate"><span class="pre">DataLoaders</span></code></strong> a partir de nuestros datos de entrenamiento y validación.</p></li>
+<li><p>Pasar el <strong>modelo</strong>, el <strong>optimizador</strong>, la <strong>función de pérdida</strong> y las <strong>métricas</strong> al <code class="docutils literal notranslate"><span class="pre">Learner</span></code>.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastai.vision.all</span> <span class="kn">import</span> <span class="n">Learner</span><span class="p">,</span> <span class="n">DataLoaders</span><span class="p">,</span> <span class="n">Adam</span> 
+
+<span class="c1"># Create DataLoaders</span>
+<span class="n">dls</span> <span class="o">=</span> <span class="n">DataLoaders</span><span class="p">(</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
+
+<span class="c1"># Initialize Learner with model, optimizer, and metrics</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">opt_func</span><span class="o">=</span><span class="n">Adam</span><span class="p">,</span> <span class="n">loss_func</span><span class="o">=</span><span class="n">mnist_loss</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">batch_accuracy</span><span class="p">)</span>
+
+<span class="c1"># Train model using fit</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>batch_accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.112948</td>
+      <td>0.086621</td>
+      <td>0.967615</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.080888</td>
+      <td>0.063943</td>
+      <td>0.970069</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.062337</td>
+      <td>0.053072</td>
+      <td>0.970069</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.051248</td>
+      <td>0.046404</td>
+      <td>0.972522</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.043826</td>
+      <td>0.041867</td>
+      <td>0.973994</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.038403</td>
+      <td>0.038589</td>
+      <td>0.973994</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.034838</td>
+      <td>0.035652</td>
+      <td>0.975957</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.031702</td>
+      <td>0.033551</td>
+      <td>0.977920</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>0.029177</td>
+      <td>0.031640</td>
+      <td>0.978410</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>0.027235</td>
+      <td>0.030236</td>
+      <td>0.978410</td>
+      <td>00:00</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>Con <code class="docutils literal notranslate"><span class="pre">Learner</span></code>, podemos usar el método <strong><code class="docutils literal notranslate"><span class="pre">fit</span></code></strong> para entrenar nuestro modelo durante múltiples épocas, lo que facilita la gestión del entrenamiento mientras maneja automáticamente las optimizaciones.</p>
+</section>
+</section>
+<section id="anadir-una-no-linealidad">
+<h2>Añadir una no linealidad<a class="headerlink" href="#anadir-una-no-linealidad" title="Link to this heading">#</a></h2>
+<p>Hasta ahora solo hemos usado transformaciones lineales, que son limitadas en su capacidad para capturar patrones complejos. Al añadir una <strong>función de activación no lineal</strong>, como la <em>ReLU</em> (Rectified Linear Unit), entre las capas, nuestro modelo obtiene la capacidad de aproximar funciones mucho más complejas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+
+<span class="c1"># Define a simple neural network</span>
+<span class="n">simple_net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">simple_net</span><span class="p">,</span> <span class="n">opt_func</span><span class="o">=</span><span class="n">Adam</span><span class="p">,</span>
+                <span class="n">loss_func</span><span class="o">=</span><span class="n">mnist_loss</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">batch_accuracy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#hide_output</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>batch_accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.350354</td>
+      <td>0.307095</td>
+      <td>0.866536</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.309842</td>
+      <td>0.287336</td>
+      <td>0.912659</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.292670</td>
+      <td>0.279801</td>
+      <td>0.929343</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.282408</td>
+      <td>0.275418</td>
+      <td>0.937193</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.276669</td>
+      <td>0.272627</td>
+      <td>0.940628</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.272500</td>
+      <td>0.270300</td>
+      <td>0.952895</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.270921</td>
+      <td>0.268845</td>
+      <td>0.952404</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.268304</td>
+      <td>0.267622</td>
+      <td>0.957311</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>0.266692</td>
+      <td>0.266830</td>
+      <td>0.955839</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>0.265534</td>
+      <td>0.265906</td>
+      <td>0.963199</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>0.264709</td>
+      <td>0.265318</td>
+      <td>0.965653</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>0.264081</td>
+      <td>0.264861</td>
+      <td>0.965653</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>0.262702</td>
+      <td>0.264238</td>
+      <td>0.968597</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>0.261738</td>
+      <td>0.263872</td>
+      <td>0.969087</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>0.262061</td>
+      <td>0.263767</td>
+      <td>0.968597</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>0.261289</td>
+      <td>0.263374</td>
+      <td>0.968597</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>0.260988</td>
+      <td>0.263057</td>
+      <td>0.970069</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>0.259774</td>
+      <td>0.262870</td>
+      <td>0.970069</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>0.260101</td>
+      <td>0.262619</td>
+      <td>0.971541</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>0.260612</td>
+      <td>0.262189</td>
+      <td>0.973994</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>0.259833</td>
+      <td>0.262367</td>
+      <td>0.972031</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>0.259831</td>
+      <td>0.262024</td>
+      <td>0.974485</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>0.259971</td>
+      <td>0.261906</td>
+      <td>0.973994</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>0.259046</td>
+      <td>0.261707</td>
+      <td>0.975466</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>0.259220</td>
+      <td>0.261573</td>
+      <td>0.975957</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>25</td>
+      <td>0.258700</td>
+      <td>0.261645</td>
+      <td>0.974485</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>26</td>
+      <td>0.258644</td>
+      <td>0.261260</td>
+      <td>0.977429</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>0.258487</td>
+      <td>0.261341</td>
+      <td>0.975957</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>0.259515</td>
+      <td>0.261156</td>
+      <td>0.975957</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>29</td>
+      <td>0.258409</td>
+      <td>0.261124</td>
+      <td>0.975957</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>0.259996</td>
+      <td>0.261100</td>
+      <td>0.975466</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>31</td>
+      <td>0.259218</td>
+      <td>0.260876</td>
+      <td>0.977920</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>32</td>
+      <td>0.258971</td>
+      <td>0.260800</td>
+      <td>0.977429</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>33</td>
+      <td>0.259217</td>
+      <td>0.260877</td>
+      <td>0.976448</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>34</td>
+      <td>0.259145</td>
+      <td>0.260698</td>
+      <td>0.979392</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>35</td>
+      <td>0.258376</td>
+      <td>0.260633</td>
+      <td>0.980373</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>36</td>
+      <td>0.258933</td>
+      <td>0.260632</td>
+      <td>0.979392</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>37</td>
+      <td>0.258818</td>
+      <td>0.260599</td>
+      <td>0.980864</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>38</td>
+      <td>0.258597</td>
+      <td>0.260769</td>
+      <td>0.975957</td>
+      <td>00:00</td>
+    </tr>
+    <tr>
+      <td>39</td>
+      <td>0.259025</td>
+      <td>0.260742</td>
+      <td>0.977920</td>
+      <td>00:00</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>El proceso de entrenamiento se guarda en <strong><code class="docutils literal notranslate"><span class="pre">learn.recorder</span></code></strong>, con la tabla de resultados almacenada en el atributo <strong><code class="docutils literal notranslate"><span class="pre">values</span></code></strong>, por lo que podemos graficar la exactitud durante el entrenamiento así:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">L</span><span class="p">(</span><span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">itemgot</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">scaley</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/57bdfe098999ff732a7a5755fb0e343ed576e5709d76cf97fa36572b5aaa9e00.png" src="../_images/57bdfe098999ff732a7a5755fb0e343ed576e5709d76cf97fa36572b5aaa9e00.png" />
+</div>
+</div>
+<p>La exactitud final es:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9779195189476013
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="22_NN_as_UA_ES.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Redes neuronales como aproximadores universales</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="24_MLP_ES.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Clasificación con Multilayer Perceptrons</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificacion-de-imagenes">Clasificación de Imágenes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pixeles-las-bases-de-la-vision-por-computador">Píxeles: Las Bases de la Visión por Computador</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similitud-de-pixeles">Similitud de Píxeles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculo-de-metricas">Cálculo de Métricas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tensores-en-pytorch-y-broadcasting">Tensores en PyTorch y Broadcasting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definiendo-una-funcion-de-distancia-con-broadcasting">Definiendo una Función de Distancia con Broadcasting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificacion-de-una-imagen-con-distancia">Clasificación de una Imagen con Distancia</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculo-de-la-exactitud">Cálculo de la Exactitud</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definir-una-funcion-de-perdida">Definir una Función de Pérdida</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-no-usar-la-exactitud-como-funcion-de-perdida">¿Por qué no usar la Exactitud como Función de Pérdida?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-de-perdida-para-clasificacion-binaria">Función de Pérdida para Clasificación Binaria</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementar-una-funcion-de-perdida-simple">Implementar una Función de Pérdida Simple</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asegurando-predicciones-entre-0-y-1-con-la-funcion-sigmoide">Asegurando predicciones entre 0 y 1 con la función Sigmoide</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actualizando-la-funcion-de-perdida-con-sigmoide">Actualizando la función de pérdida con Sigmoide</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-necesitamos-una-funcion-de-perdida-separada">¿Por qué necesitamos una función de pérdida separada?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizacion-con-descenso-estocastico-de-gradiente-sgd-y-mini-batches">Optimización con Descenso Estocástico de Gradiente (SGD) y Mini-Batches</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-usar-mini-batches">¿Por qué usar Mini-Batches?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eleccion-del-tamano-del-lote">Elección del Tamaño del Lote</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#barajar-los-datos">Barajar los datos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-mini-batches-to-images-and-labels">Applying Mini-Batches to Images and Labels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-un-paso-de-sgd-con-mini-batches">Implementación de un paso de SGD con Mini-Batches</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actualizacion-de-parametros-con-optimizer-step">Actualización de parámetros con <code class="docutils literal notranslate"><span class="pre">optimizer.step()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculo-de-la-exactitud-en-mini-batches">Cálculo de la exactitud en mini-batches</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#juntando-todo">Juntando todo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creando-un-optimizador">Creando un Optimizador</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-necesitamos-un-optimizador">¿Por qué necesitamos un optimizador?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizadores-comunes-en-deep-learning">Optimizadores comunes en Deep Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizador-basico-personalizado">Optimizador básico personalizado</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usando-basicoptim-con-un-modelo">Usando <code class="docutils literal notranslate"><span class="pre">BasicOptim</span></code> con un Modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usando-los-optimizadores-incorporados-de-pytorch">Usando los Optimizadores Incorporados de PyTorch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cambiando-al-optimizador-adam">Cambiando al Optimizador Adam</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anadir-una-no-linealidad">Añadir una no linealidad</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

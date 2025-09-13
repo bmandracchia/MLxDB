@@ -1,0 +1,1125 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ResNets for Biomedical Image Analysis &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/26_resnet2';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Attention Mechanisms and Transformers" href="27_transformers.html" />
+    <link rel="prev" title="Redes Neuronales Convolucionales" href="25_convolutions_ES.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11_machine_learning_fundamentals_ES.html">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering_ES.html">Ingeniería de características (Feature Engineering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables_ES.html">Variables categóricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers_ES.html">Clasificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees_ES.html">Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction_ES.html">Reducción de la dimensionalidad: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans_ES.html">Extracción de Características en Manifold No Lineales</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks_ES.html">Deep Learning en Ingeniería Biomédica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_NN_as_UA_ES.html">Redes neuronales como aproximadores universales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers_ES.html">Entrenamiento de un Clasificador de Dígitos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP_ES.html">Clasificación con Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_convolutions_ES.html">Redes Neuronales Convolucionales</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">ResNets for Biomedical Image Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers.html">Attention Mechanisms and Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders_ES.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic_ES.html">Aprendizaje Probabilístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL_ES.html">Aprendizaje Profundo Basado en Física</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/26_resnet2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/26_resnet2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>ResNets for Biomedical Image Analysis</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#function-classes">Function Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#larger-function-classes">Larger Function Classes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-networks-and-the-identity-function">Deep Networks and the Identity Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#impact-and-broader-use">Impact and Broader Use</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brain-tumor-detection">Brain Tumor Detection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fully-convolutional-networks-for-flexible-input-sizes">Fully Convolutional Networks for Flexible Input Sizes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-a-fully-convolutional-network-for-medical-imaging">Example of a Fully Convolutional Network for Medical Imaging</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-modern-cnn-resnet">Building a Modern CNN: ResNet</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#skip-connections">Skip Connections</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-variable-sizes-and-channels-with-resnet-blocks">Handling Variable Sizes and Channels with ResNet Blocks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-the-resnet-model">Training the ResNet Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bottleneck-layers-for-efficient-training-in-medical-imaging">Bottleneck Layers for Efficient Training in Medical Imaging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-a-state-of-the-art-resnet">Training a State-of-the-Art ResNet</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improved-loss-landscape-with-resnet">Improved Loss Landscape with ResNet</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resnext-and-grouped-convolutions">ResNeXt and Grouped Convolutions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastai.vision.all</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastai.medical.imaging</span> <span class="kn">import</span> <span class="n">get_dicom_files</span><span class="p">,</span> <span class="n">PILDicom</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="resnets-for-biomedical-image-analysis">
+<h1>ResNets for Biomedical Image Analysis<a class="headerlink" href="#resnets-for-biomedical-image-analysis" title="Link to this heading">#</a></h1>
+<p>In this lesson, we will expand upon Convolutional Neural Networks (CNNs) to understand the ResNet (Residual Network) architecture, a powerful tool in medical image analysis. ResNets were introduced in 2015 by Kaiming He et al. in <a class="reference external" href="https://arxiv.org/abs/1512.03385">“Deep Residual Learning for Image Recognition”</a>. Since then, ResNets have been widely adopted, particularly for medical imaging applications such as MRI, CT, and X-ray image classification. The architecture’s main advantage is its ability to train very deep networks, which is essential when detecting subtle patterns in high-resolution medical images.</p>
+<p>We’ll first explore the ResNet basics, then discuss recent modifications that enhance its performance.</p>
+<section id="function-classes">
+<h2>Function Classes<a class="headerlink" href="#function-classes" title="Link to this heading">#</a></h2>
+<p>When designing neural networks, it is useful to think about the <strong>function class</strong> that a given architecture can represent. Formally, let <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> denote the set of all functions that can be realized by a specific network architecture together with a choice of hyperparameters (such as learning rate, initialization, or regularization). In other words, for any <span class="math notranslate nohighlight">\(f \in \mathcal{F}\)</span> there exists a set of weights and biases such that training can produce <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>Now suppose there exists a “true” underlying function <span class="math notranslate nohighlight">\(f^*\)</span> that perfectly describes the relationship between inputs and outputs in our data. If <span class="math notranslate nohighlight">\(f^* \in \mathcal{F}\)</span>, then in principle we are in good shape: with enough training data and proper optimization, our model class is expressive enough to capture the truth. However, this is rarely the case in practice. Typically, <span class="math notranslate nohighlight">\(f^*\)</span> lies outside the scope of <span class="math notranslate nohighlight">\(\mathcal{F}\)</span>, so instead we aim for the <strong>best possible approximation</strong> within our class:</p>
+<div class="math notranslate nohighlight">
+\[
+f^*_{\mathcal{F}} \;=\; \arg\min_{f \in \mathcal{F}} L(\mathbf{X}, \mathbf{y}, f),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(L(\mathbf{X}, \mathbf{y}, f)\)</span> is the loss on training data. Thus <span class="math notranslate nohighlight">\(f^*_{\mathcal{F}}\)</span> represents the best function achievable with the chosen model family.</p>
+<section id="larger-function-classes">
+<h3>Larger Function Classes<a class="headerlink" href="#larger-function-classes" title="Link to this heading">#</a></h3>
+<p>One might assume that enlarging the function class should always yield a better approximation. For instance, if we replace <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> with a richer class <span class="math notranslate nohighlight">\(\mathcal{F}'\)</span>, it seems natural to expect <span class="math notranslate nohighlight">\(f^*_{\mathcal{F}'}\)</span> to be “closer” to <span class="math notranslate nohighlight">\(f^*\)</span>. However, this is <strong>not guaranteed</strong> unless <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> is contained within <span class="math notranslate nohighlight">\(\mathcal{F}'\)</span>.</p>
+<ul class="simple">
+<li><p>For <strong>non-nested classes</strong>, increasing capacity can sometimes move us <em>further away</em> from the truth. As illustrated in the figure below, <span class="math notranslate nohighlight">\(\mathcal{F}_3\)</span> is closer to <span class="math notranslate nohighlight">\(f^*\)</span> than <span class="math notranslate nohighlight">\(\mathcal{F}_1\)</span>, but <span class="math notranslate nohighlight">\(\mathcal{F}_6\)</span> moves further away. Simply enlarging the space of possible solutions is not enough.</p></li>
+<li><p>For <strong>nested classes</strong> (<span class="math notranslate nohighlight">\(\mathcal{F}*1 \subseteq \mathcal{F}*2 \subseteq \dots\)</span>), each expansion strictly increases expressive power, guaranteeing that <span class="math notranslate nohighlight">\(f^**{\mathcal{F}*{k+1}}\)</span> is at least as good as <span class="math notranslate nohighlight">\(f^*_{\mathcal{F}_k}\)</span> (in terms of approximation error).</p></li>
+</ul>
+<p><img alt="functionclasses" src="../_images/nested_func.png" /></p>
+<p>This distinction highlights why architectural design matters: not every added layer or parameter leads to meaningful improvements.</p>
+</section>
+<section id="deep-networks-and-the-identity-function">
+<h3>Deep Networks and the Identity Function<a class="headerlink" href="#deep-networks-and-the-identity-function" title="Link to this heading">#</a></h3>
+<p>For deep neural networks, these considerations are especially important. Suppose we add an extra layer to a model. If that layer cannot be trained to act like the identity function (<span class="math notranslate nohighlight">\(f(\mathbf{x}) = \mathbf{x}\)</span>), the enlarged network might actually perform worse—it could distort representations in unhelpful ways.</p>
+<p>But if the identity function is included in the function class of the deeper model, then at worst the network can reproduce the performance of the shallower model. At best, it may use the added layer to discover a representation that reduces training error.</p>
+<p>This insight directly motivated the development of <strong>residual networks (ResNets)</strong> by He et al. (2016). The key idea is that each new block of layers should easily implement the identity mapping, and then learn <em>residual functions</em> on top of it. Mathematically, instead of learning an arbitrary transformation <span class="math notranslate nohighlight">\(F(\mathbf{x})\)</span>, a residual block learns</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{y} = F(\mathbf{x}) + \mathbf{x},
+\]</div>
+<p>so that if <span class="math notranslate nohighlight">\(F(\mathbf{x}) = 0\)</span>, the block simply passes its input through unchanged. This ensures that deeper networks contain their shallower counterparts as special cases.</p>
+</section>
+<section id="impact-and-broader-use">
+<h3>Impact and Broader Use<a class="headerlink" href="#impact-and-broader-use" title="Link to this heading">#</a></h3>
+<p>Residual connections had a transformative impact on deep learning. With them, very deep networks (hundreds of layers) became trainable and achieved state-of-the-art results. ResNets won the 2015 ImageNet Large Scale Visual Recognition Challenge and reshaped the design of deep models.</p>
+<p>Since then, the principle of <strong>skip connections</strong> or <strong>residual links</strong> has been adopted widely:</p>
+<ul class="simple">
+<li><p><strong>Recurrent networks:</strong> to stabilize training of long sequences (Prakash et al., 2016; Kim et al., 2017).</p></li>
+<li><p><strong>Transformers:</strong> the architecture that dominates NLP and vision relies heavily on residual connections to stack many layers effectively (Vaswani et al., 2017).</p></li>
+<li><p><strong>Graph neural networks:</strong> residual links improve stability and depth (Kipf &amp; Welling, 2016).</p></li>
+<li><p><strong>Computer vision models:</strong> from object detection (Ren et al., 2015) to real-time models (Redmon &amp; Farhadi, 2018).</p></li>
+</ul>
+</section>
+</section>
+<section id="brain-tumor-detection">
+<h2>Brain Tumor Detection<a class="headerlink" href="#brain-tumor-detection" title="Link to this heading">#</a></h2>
+<p>Let’s consider a dataset containing brain MRI images. Each image is labeled based on the presence or absence of pneumothorax, allowing us to classify between classes such as gliomas, meningiomas, and healthy tissue. Given the high-resolution 3D MRI data, we’ll downscale it to 128×128 images and use random cropping to 96×96 to expedite our training.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+
+<span class="n">ds</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;TrainingDataPro/brain-mri-dataset&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:datasets:PyTorch version 2.4.1 available.
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "02b63d66e3e044fbadc0c1748729027e", "version_major": 2, "version_minor": 0}</script></div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">class_names</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">names</span>
+
+<span class="k">def</span> <span class="nf">ensure_grayscale</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">PILBase</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span>
+
+<span class="n">dblock</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">(</span>
+    <span class="n">blocks</span><span class="o">=</span><span class="p">(</span><span class="n">ImageBlock</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="n">PILImageBW</span><span class="p">),</span> <span class="n">CategoryBlock</span><span class="p">),</span>  <span class="c1"># Load images in default format</span>
+    <span class="n">get_x</span><span class="o">=</span><span class="k">lambda</span> <span class="n">record</span><span class="p">:</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">],</span>
+    <span class="n">get_y</span><span class="o">=</span><span class="k">lambda</span> <span class="n">record</span><span class="p">:</span> <span class="n">class_names</span><span class="p">[</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]],</span>
+    <span class="n">item_tfms</span><span class="o">=</span><span class="p">[</span><span class="n">Resize</span><span class="p">(</span><span class="mi">128</span><span class="p">),</span> <span class="n">ensure_grayscale</span><span class="p">,</span> <span class="n">RandomCrop</span><span class="p">(</span><span class="mi">94</span><span class="p">)],</span>  
+<span class="p">)</span>
+
+<span class="c1"># dblock.summary(ds[&#39;train&#39;])</span>
+<span class="n">dls</span> <span class="o">=</span> <span class="n">dblock</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">],</span> <span class="n">bs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dls</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">max_n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bone&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/a1d17588c5cc53759c93b45d4b0cd82ddc023354d282c43f90c139ef4a5ea6e2.png" src="../_images/a1d17588c5cc53759c93b45d4b0cd82ddc023354d282c43f90c139ef4a5ea6e2.png" />
+</div>
+</div>
+</section>
+<section id="fully-convolutional-networks-for-flexible-input-sizes">
+<h2>Fully Convolutional Networks for Flexible Input Sizes<a class="headerlink" href="#fully-convolutional-networks-for-flexible-input-sizes" title="Link to this heading">#</a></h2>
+<p>One key requirement for working with 3D medical images, such as MRIs or CT scans, is the ability to handle variable image sizes. When scanning different organs or regions of interest, the resolution may vary. In the past, CNNs would flatten the last convolutional layer and connect it to dense layers, which fixed the input size. Fully convolutional networks (FCNs), however, allow us to apply the network to images of any size by using an average pooling layer to collapse spatial dimensions.</p>
+<p>In PyTorch, we can define a simple average pooling function like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">avg_pool</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For greater flexibility, we can use <code class="docutils literal notranslate"><span class="pre">nn.AdaptiveAvgPool2d(1)</span></code> to average over variable spatial dimensions, transforming the output grid of activations to a single activation vector per image. We then feed this into a final dense layer, which predicts the class.</p>
+<section id="example-of-a-fully-convolutional-network-for-medical-imaging">
+<h3>Example of a Fully Convolutional Network for Medical Imaging<a class="headerlink" href="#example-of-a-fully-convolutional-network-for-medical-imaging" title="Link to this heading">#</a></h3>
+<p>Here’s a basic fully convolutional network setup suitable for MRI classification, where we use a series of convolutions followed by adaptive pooling and a final dense layer:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">block</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">):</span> <span class="k">return</span> <span class="n">ConvLayer</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_model</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+        <span class="n">block</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>
+        <span class="n">block</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
+        <span class="n">block</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span>
+        <span class="n">block</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span>
+        <span class="n">block</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">Flatten</span><span class="p">(),</span>
+        <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">dls</span><span class="o">.</span><span class="n">c</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_learner</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">loss_func</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(),</span> <span class="n">metrics</span><span class="o">=</span><span class="n">accuracy</span>
+                  <span class="p">)</span><span class="o">.</span><span class="n">to_fp16</span><span class="p">()</span>
+
+<span class="n">learn</span> <span class="o">=</span> <span class="n">get_learner</span><span class="p">(</span><span class="n">get_model</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>2.101657</td>
+      <td>1.932110</td>
+      <td>0.345455</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1.970474</td>
+      <td>1.597681</td>
+      <td>0.472727</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1.818230</td>
+      <td>1.446884</td>
+      <td>0.563636</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1.759295</td>
+      <td>1.320569</td>
+      <td>0.581818</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.624759</td>
+      <td>1.314690</td>
+      <td>0.600000</td>
+      <td>00:01</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+</section>
+<section id="building-a-modern-cnn-resnet">
+<h2>Building a Modern CNN: ResNet<a class="headerlink" href="#building-a-modern-cnn-resnet" title="Link to this heading">#</a></h2>
+<p>With standard CNNs, adding more layers can sometimes lead to worse performance on both training and validation sets, even with batch normalization. This issue was addressed in the original ResNet paper. ResNet introduces the concept of <strong>skip connections</strong>, which helps networks to train effectively even when they are very deep. In medical imaging, this is crucial because detecting features like subtle tumor boundaries often requires more layers to capture intricate details.</p>
+<section id="skip-connections">
+<h3>Skip Connections<a class="headerlink" href="#skip-connections" title="Link to this heading">#</a></h3>
+<p>The concept of a skip connection is simple yet powerful. Instead of training each layer independently, we allow each layer to access both the features learned by the preceding layers and the original input. Mathematically, we add the input <span class="math notranslate nohighlight">\( x \)</span> to the output of a series of convolutional layers, such that the network learns a residual function <span class="math notranslate nohighlight">\( F(x) \)</span> instead of a direct mapping <span class="math notranslate nohighlight">\( H(x) \)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+H(x) = F(x) + x
+\]</div>
+<p>This approach helps the model focus on the differences (residuals) that distinguish various tumor types, making the network easier to train with gradient-based optimizers.</p>
+<p><img alt="res_block" src="../_images/resblock.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ResBlock</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">convs</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">ConvLayer</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span><span class="n">nf</span><span class="p">),</span>
+            <span class="n">ConvLayer</span><span class="p">(</span><span class="n">nf</span><span class="p">,</span><span class="n">nf</span><span class="p">,</span> <span class="n">norm_type</span><span class="o">=</span><span class="n">NormType</span><span class="o">.</span><span class="n">BatchZero</span><span class="p">)</span>
+        <span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This basic ResNet block works well when the input and output dimensions match. But medical imaging tasks often require resizing or downsampling layers.</p>
+</section>
+<section id="handling-variable-sizes-and-channels-with-resnet-blocks">
+<h3>Handling Variable Sizes and Channels with ResNet Blocks<a class="headerlink" href="#handling-variable-sizes-and-channels-with-resnet-blocks" title="Link to this heading">#</a></h3>
+<p>To allow downsampling and channel adjustment, we can modify the ResNet block to handle cases where the input and output sizes differ. For instance, using average pooling with a stride of 2 can reduce spatial dimensions, while a 1×1 convolution adjusts the number of channels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_conv_block</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+        <span class="n">ConvLayer</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">),</span>
+        <span class="n">ConvLayer</span><span class="p">(</span><span class="n">nf</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">act_cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">norm_type</span><span class="o">=</span><span class="n">NormType</span><span class="o">.</span><span class="n">BatchZero</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">ResBlock</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">convs</span> <span class="o">=</span> <span class="n">_conv_block</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idconv</span> <span class="o">=</span> <span class="n">noop</span> <span class="k">if</span> <span class="n">ni</span><span class="o">==</span><span class="n">nf</span> <span class="k">else</span> <span class="n">ConvLayer</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">act_cls</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">noop</span> <span class="k">if</span> <span class="n">stride</span><span class="o">==</span><span class="mi">1</span> <span class="k">else</span> <span class="n">nn</span><span class="o">.</span><span class="n">AvgPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">ceil_mode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">convs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">idconv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training-the-resnet-model">
+<h3>Training the ResNet Model<a class="headerlink" href="#training-the-resnet-model" title="Link to this heading">#</a></h3>
+<p>We can now define our model and start training on the MRI data. The skip connections and ResNet blocks make it possible to use deeper networks, enhancing our model’s ability to detect small-scale patterns in MRI scans that may signify different types of tumors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">block</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">):</span> <span class="k">return</span> <span class="n">ResBlock</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">get_learner</span><span class="p">(</span><span class="n">get_model</span><span class="p">())</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>2.178780</td>
+      <td>2.313758</td>
+      <td>0.145455</td>
+      <td>00:02</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2.031109</td>
+      <td>1.796856</td>
+      <td>0.545455</td>
+      <td>00:02</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1.861223</td>
+      <td>1.566142</td>
+      <td>0.454545</td>
+      <td>00:02</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1.698381</td>
+      <td>1.437361</td>
+      <td>0.563636</td>
+      <td>00:02</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.659433</td>
+      <td>1.449389</td>
+      <td>0.600000</td>
+      <td>00:02</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+</section>
+<section id="bottleneck-layers-for-efficient-training-in-medical-imaging">
+<h2>Bottleneck Layers for Efficient Training in Medical Imaging<a class="headerlink" href="#bottleneck-layers-for-efficient-training-in-medical-imaging" title="Link to this heading">#</a></h2>
+<p>Deeper models generally perform better for medical image tasks, as they allow for multi-level feature learning. For very deep ResNets, like ResNet-50 or ResNet-101, we can use bottleneck layers. These layers use three convolutions: a 1×1 layer to reduce channels, a 3×3 layer for feature extraction, and another 1×1 layer to restore channels. This reduces computational cost while maintaining high performance—a crucial feature for computationally intensive 3D scans.</p>
+<p><img alt="Comparison of regular and bottleneck ResNet blocks (courtesy of Kaiming He et al.)" src="../_images/Lesson_06_bottleneck.png" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_conv_block</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+        <span class="n">ConvLayer</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="o">//</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">ConvLayer</span><span class="p">(</span><span class="n">nf</span><span class="o">//</span><span class="mi">4</span><span class="p">,</span> <span class="n">nf</span><span class="o">//</span><span class="mi">4</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">),</span>
+        <span class="n">ConvLayer</span><span class="p">(</span><span class="n">nf</span><span class="o">//</span><span class="mi">4</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">act_cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">norm_type</span><span class="o">=</span><span class="n">NormType</span><span class="o">.</span><span class="n">BatchZero</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="training-a-state-of-the-art-resnet">
+<h2>Training a State-of-the-Art ResNet<a class="headerlink" href="#training-a-state-of-the-art-resnet" title="Link to this heading">#</a></h2>
+<p>In the paper <a class="reference external" href="https://arxiv.org/abs/1812.01187">“Bag of Tricks for Image Classification with Convolutional Neural Networks”</a>, Tong He et al. explore a range of modifications to the ResNet architecture that add minimal computational overhead or extra parameters. By fine-tuning the ResNet-50 architecture and incorporating Mixup—a data augmentation technique—they achieved a top-5 accuracy of 94.6% on the ImageNet dataset, compared to the standard ResNet-50’s 92.2% without Mixup. Remarkably, this improved accuracy surpasses that of much deeper ResNet models, which are not only slower but also more prone to overfitting. We’ll implement this optimized ResNet design as we expand to a full ResNet model, given its enhanced performance.</p>
+<p>This optimized version starts with a slightly different structure: instead of beginning with ResNet blocks directly, it uses a series of initial convolutional layers followed by a max-pooling layer. These initial layers, known as the <em>stem</em> of the network, are designed as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_resnet_stem</span><span class="p">(</span><span class="o">*</span><span class="n">sizes</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">ConvLayer</span><span class="p">(</span><span class="n">sizes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sizes</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#hide_output</span>
+<span class="n">_resnet_stem</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">64</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ConvLayer(
+   (0): Conv2d(1, 32, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+   (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+   (2): ReLU()
+ ),
+ ConvLayer(
+   (0): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+   (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+   (2): ReLU()
+ ),
+ ConvLayer(
+   (0): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+   (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+   (2): ReLU()
+ ),
+ MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Starting with simple convolutional layers in a ResNet, rather than ResNet blocks, optimizes computational efficiency. In the initial layers, the network processes high-resolution input (e.g., a 128×128 image), requiring a kernel operation on each pixel. This results in significant computation compared to later layers, where the spatial dimensions are smaller (e.g., 4×4 or 2×2).</p>
+<p>Early layers also have fewer parameters; for instance, a 3×3 kernel with 3 input and 32 output channels has only 864 weights, while deeper layers might exceed a million. Since ResNet blocks are more computationally intense with multiple convolutions, beginning with basic convolutions keeps the initial operations fast and effective.</p>
+<p>The following implementation of ResNet uses four groups of ResNet blocks, with 64, 128, 256, then 512 filters. Each group starts with a stride-2 block, except for the first one, since it’s just after a <code class="docutils literal notranslate"><span class="pre">MaxPooling</span></code> layer:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ResNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">n_in</span><span class="p">,</span> <span class="n">n_out</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">expansion</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">stem</span> <span class="o">=</span> <span class="n">_resnet_stem</span><span class="p">(</span><span class="n">n_in</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_szs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_szs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*=</span> <span class="n">expansion</span>
+        <span class="n">blocks</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_layer</span><span class="p">(</span><span class="o">*</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">layers</span><span class="p">)]</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">stem</span><span class="p">,</span> <span class="o">*</span><span class="n">blocks</span><span class="p">,</span>
+                         <span class="n">nn</span><span class="o">.</span><span class="n">AdaptiveAvgPool2d</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Flatten</span><span class="p">(),</span>
+                         <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block_szs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_out</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">_make_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">n_layers</span><span class="p">):</span>
+        <span class="n">stride</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">idx</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="mi">2</span>
+        <span class="n">ch_in</span><span class="p">,</span><span class="n">ch_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_szs</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
+            <span class="n">ResBlock</span><span class="p">(</span><span class="n">ch_in</span> <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="n">ch_out</span><span class="p">,</span> <span class="n">ch_out</span><span class="p">,</span> <span class="n">stride</span> <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_layers</span><span class="p">)</span>
+        <span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">_make_layer</span></code> function assembles a specified number of <code class="docutils literal notranslate"><span class="pre">n_layers</span></code> blocks. The first block transitions from <code class="docutils literal notranslate"><span class="pre">ch_in</span></code> to <code class="docutils literal notranslate"><span class="pre">ch_out</span></code> with the specified <code class="docutils literal notranslate"><span class="pre">stride</span></code>, while the subsequent blocks use a stride of 1 and maintain <code class="docutils literal notranslate"><span class="pre">ch_out</span></code> dimensions. Defining these blocks in sequence allows our model to be purely sequential, which is why we use <code class="docutils literal notranslate"><span class="pre">nn.Sequential</span></code>.</p>
+<p>Different ResNet versions (e.g., ResNet-18, -34, -50) adjust the number of blocks within each group. Here is the definition of a ResNet-50:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rn</span> <span class="o">=</span> <span class="n">ResNet</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dls</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>  <span class="c1"># Using a deeper model</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">get_learner</span><span class="p">(</span><span class="n">rn</span><span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>2.073302</td>
+      <td>1.942665</td>
+      <td>0.345455</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1.777766</td>
+      <td>1.389966</td>
+      <td>0.581818</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1.510835</td>
+      <td>1.041325</td>
+      <td>0.709091</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1.265770</td>
+      <td>0.780747</td>
+      <td>0.818182</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.202722</td>
+      <td>0.738354</td>
+      <td>0.781818</td>
+      <td>00:04</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="improved-loss-landscape-with-resnet">
+<h2>Improved Loss Landscape with ResNet<a class="headerlink" href="#improved-loss-landscape-with-resnet" title="Link to this heading">#</a></h2>
+<p>One of the reasons ResNets work so well in medical imaging is that skip connections smooth the loss landscape, reducing the risk of sharp local minima that hinder optimization. Studies, such as the one by Hao Li et al. in <a class="reference external" href="https://arxiv.org/abs/1712.09913">“Visualizing the Loss Landscape of Neural Nets”</a>, show that ResNets exhibit smoother loss surfaces, making them particularly robust for applications like tumor classification where high accuracy and stability are crucial.</p>
+<p><img alt="Impact of ResNet on loss landscape (courtesy of Hao Li et al.)" src="../_images/Lesson_06_loss_landscape.png" /></p>
+<p>By building ResNet architectures with these advanced techniques, we can create robust models tailored to the complex, high-dimensional data encountered in biomedical engineering.</p>
+</section>
+<section id="resnext-and-grouped-convolutions">
+<h2>ResNeXt and Grouped Convolutions<a class="headerlink" href="#resnext-and-grouped-convolutions" title="Link to this heading">#</a></h2>
+<p>ResNeXt was introduced as a refinement of ResNet to better balance the trade-off between depth, width, and computational efficiency in convolutional blocks. In ResNets, we can increase expressiveness either by stacking more nonlinear layers or by widening convolutions to handle more channels, but widening quickly becomes expensive since the cost of transforming <span class="math notranslate nohighlight">\(c_i\)</span> input channels into <span class="math notranslate nohighlight">\(c_o\)</span> output channels grows as <span class="math notranslate nohighlight">\(\mathcal{O}(c_i \cdot c_o)\)</span>.</p>
+<p>ResNeXt lets information flow through multiple parallel paths which perform the <em>same</em> transformation. This leads to a simpler and more scalable design where convolutions are split into <em>groups</em>, hence we talk of <strong>grouped convolutions</strong>. A grouped convolution divides the <span class="math notranslate nohighlight">\(c_i\)</span> input channels into <span class="math notranslate nohighlight">\(g\)</span> groups, each mapped to <span class="math notranslate nohighlight">\(c_o/g\)</span> outputs, reducing both parameters and computation by roughly a factor of <span class="math notranslate nohighlight">\(g\)</span> since the cost drops from <span class="math notranslate nohighlight">\(\mathcal{O}(c_i \cdot c_o)\)</span> to <span class="math notranslate nohighlight">\(\mathcal{O}(c_i \cdot c_o / g)\)</span>. Even better, the number of parameters needed to generate the output is also reduced from a <span class="math notranslate nohighlight">\(c_\textrm{i} \times c_\textrm{o}\)</span> matrix to <span class="math notranslate nohighlight">\(g\)</span> smaller matrices of size <span class="math notranslate nohighlight">\((c_\textrm{i}/g) \times (c_\textrm{o}/g)\)</span>, again a <span class="math notranslate nohighlight">\(g\)</span> times reduction. In what follows we assume that both <span class="math notranslate nohighlight">\(c_\textrm{i}\)</span> and <span class="math notranslate nohighlight">\(c_\textrm{o}\)</span> are divisible by <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>To avoid groups becoming completely isolated, ResNeXt uses a bottleneck design: the grouped <span class="math notranslate nohighlight">\(3\times 3\)</span> convolution is placed between two <span class="math notranslate nohighlight">\(1\times 1\)</span> convolutions, the first shrinking the number of channels and the second restoring them, while residual connections ensure stable training. This block, which generalizes the residual block, achieves efficiency by concentrating most computation in the lightweight grouped convolution, while still allowing global channel mixing through the <span class="math notranslate nohighlight">\(1\times 1\)</span> layers.</p>
+<p>The grouped convolution idea dates back to AlexNet (2012), where it was originally used to split computation across two GPUs, but ResNeXt elevated it to a principled architectural feature. In practice, ResNeXt blocks are used much like ResNet blocks: with stride 1 and no projection the input and output shapes match, while adding a <span class="math notranslate nohighlight">\(1\times 1\)</span> projection with stride 2 halves spatial resolution. The result is a highly modular, simple-to-scale architecture that consistently outperforms plain ResNets at comparable cost, and its concept of grouped transformations has influenced many later CNN designs.</p>
+<p>ResNeXt is an example for how the design of convolutional neural networks has evolved over time: by being more frugal with computation and trading it off against the size of the activations (number of channels), it allows for faster and more accurate networks at lower cost. An alternative way of viewing grouped convolutions is to think of a block-diagonal matrix for the convolutional weights. Note that there are quite a few such “tricks” that lead to more efficient networks. For instance, ShiftNet (Wu et al., 2018) mimicks the effects of a <span class="math notranslate nohighlight">\( 3 \times 3 \)</span> convolution, simply by adding shifted activations to the channels, offering increased function complexity, this time without any computational cost.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="25_convolutions_ES.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Redes Neuronales Convolucionales</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="27_transformers.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Attention Mechanisms and Transformers</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#function-classes">Function Classes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#larger-function-classes">Larger Function Classes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-networks-and-the-identity-function">Deep Networks and the Identity Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#impact-and-broader-use">Impact and Broader Use</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brain-tumor-detection">Brain Tumor Detection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fully-convolutional-networks-for-flexible-input-sizes">Fully Convolutional Networks for Flexible Input Sizes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-a-fully-convolutional-network-for-medical-imaging">Example of a Fully Convolutional Network for Medical Imaging</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-modern-cnn-resnet">Building a Modern CNN: ResNet</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#skip-connections">Skip Connections</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-variable-sizes-and-channels-with-resnet-blocks">Handling Variable Sizes and Channels with ResNet Blocks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-the-resnet-model">Training the ResNet Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bottleneck-layers-for-efficient-training-in-medical-imaging">Bottleneck Layers for Efficient Training in Medical Imaging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-a-state-of-the-art-resnet">Training a State-of-the-Art ResNet</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improved-loss-landscape-with-resnet">Improved Loss Landscape with ResNet</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resnext-and-grouped-convolutions">ResNeXt and Grouped Convolutions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,800 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Redes neuronales como aproximadores universales &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/22_NN_as_UA_ES';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Entrenamiento de un Clasificador de Dígitos" href="23_Loss_Metrics_and_Optimizers_ES.html" />
+    <link rel="prev" title="Deep Learning en Ingeniería Biomédica" href="21_neural%20networks_ES.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11_machine_learning_fundamentals_ES.html">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering_ES.html">Ingeniería de características (Feature Engineering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables_ES.html">Variables categóricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers_ES.html">Clasificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees_ES.html">Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction_ES.html">Reducción de la dimensionalidad: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans_ES.html">Extracción de Características en Manifold No Lineales</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks_ES.html">Deep Learning en Ingeniería Biomédica</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Redes neuronales como aproximadores universales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers_ES.html">Entrenamiento de un Clasificador de Dígitos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP_ES.html">Clasificación con Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_convolutions_ES.html">Redes Neuronales Convolucionales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2_ES.html">ResNets para Análisis de Imágenes Biomédicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers_ES.html">Mecanismos de Atención y Transformadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders_ES.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic_ES.html">Aprendizaje Probabilístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL_ES.html">Aprendizaje Profundo Basado en Física</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/22_NN_as_UA_ES.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/22_NN_as_UA_ES.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Redes neuronales como aproximadores universales</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-basica-de-una-red-neuronal">Estructura básica de una red neuronal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#redes-neuronales-como-aproximadores-flexibles-de-funciones">Redes neuronales como aproximadores flexibles de funciones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#los-bloques-de-construccion-de-las-redes-neuronales">Los bloques de construcción de las redes neuronales</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-multiples-capas-lineales-no-son-suficientes">Por qué múltiples capas lineales no son suficientes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anadiendo-no-linealidad-la-clave-de-las-representaciones-complejas">Añadiendo no linealidad: la clave de las representaciones complejas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-de-modelos-complejos-con-capas-y-activaciones">Construcción de modelos complejos con capas y activaciones</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#teorema-de-aproximacion-universal">Teorema de Aproximación Universal</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#funciones-de-activacion">Funciones de activación</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-relu">Función ReLU</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-sigmoide">Función sigmoide</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-tanh">Función tanh</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="redes-neuronales-como-aproximadores-universales">
+<h1>Redes neuronales como aproximadores universales<a class="headerlink" href="#redes-neuronales-como-aproximadores-universales" title="Link to this heading">#</a></h1>
+<section id="estructura-basica-de-una-red-neuronal">
+<h2>Estructura básica de una red neuronal<a class="headerlink" href="#estructura-basica-de-una-red-neuronal" title="Link to this heading">#</a></h2>
+<p>Una red neuronal es una función matemática que recibe entradas, las transforma a través de capas de cómputo y produce salidas. En una red neuronal estándar:</p>
+<ol class="arabic simple">
+<li><p>Cada entrada se multiplica por un conjunto de pesos, que son valores ajustables o <em>parámetros</em>.</p></li>
+<li><p>Estas entradas ponderadas se suman y se pasan por una <em>función de activación</em> que añade no linealidad a la red.</p></li>
+<li><p>Las salidas de una capa se convierten en las entradas de la siguiente, repitiendo el proceso hasta llegar a la última capa, que produce la predicción de la red.</p></li>
+</ol>
+<p>Los pesos iniciales se suelen establecer de manera aleatoria, por lo que una red neuronal recién inicializada no realiza ninguna tarea útil: se comporta como una función aleatoria. La verdadera magia ocurre cuando ajustamos estos pesos para mejorar el rendimiento de la red en una tarea específica, en un proceso llamado <em>entrenamiento</em>.</p>
+</section>
+<section id="redes-neuronales-como-aproximadores-flexibles-de-funciones">
+<h2>Redes neuronales como aproximadores flexibles de funciones<a class="headerlink" href="#redes-neuronales-como-aproximadores-flexibles-de-funciones" title="Link to this heading">#</a></h2>
+<p>Con redes neuronales profundas, usamos datos observacionales para aprender conjuntamente tanto una representación a través de las capas ocultas como un predictor lineal que actúa sobre esa representación.</p>
+<p>Al combinar múltiples capas, cada una con sus propios parámetros y funciones de activación, las redes neuronales pueden aproximar funciones altamente complejas. Esta capacidad es el núcleo del <strong>teorema de aproximación universal</strong>, que establece que una red neuronal con suficientes parámetros puede aproximar cualquier función continua.</p>
+<section id="los-bloques-de-construccion-de-las-redes-neuronales">
+<h3>Los bloques de construcción de las redes neuronales<a class="headerlink" href="#los-bloques-de-construccion-de-las-redes-neuronales" title="Link to this heading">#</a></h3>
+<p>Las dos operaciones fundamentales en redes neuronales son:</p>
+<ol class="arabic simple">
+<li><p><strong>Multiplicación de matrices</strong>: consiste en multiplicar las entradas por los pesos y sumar sesgos (<em>biases</em>). En las redes neuronales, esta operación es el núcleo del cómputo de cada capa.</p></li>
+<li><p><strong>Funciones de activación</strong>: funciones no lineales, como la <em>unidad lineal rectificada</em> (ReLU), permiten que la red capture patrones complejos. ReLU reemplaza los valores negativos con cero, lo que habilita a la red a aprender transformaciones no lineales.</p></li>
+</ol>
+<p>Aquí hay una implementación simple de una función ReLU:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rectified_linear</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">b</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span>
+<span class="kn">from</span> <span class="nn">fastai.basics</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">plot_function</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mf">2.1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">ylim</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">color</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_function</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">rectified_linear</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/745688bc17c16dbd622d264a96c04ce2efa2832460b82399f9e96f11ccb1bef5.png" src="../_images/745688bc17c16dbd622d264a96c04ce2efa2832460b82399f9e96f11ccb1bef5.png" />
+</div>
+</div>
+<p>Para entender cómo funciona esta función, prueba esta versión interactiva y experimenta con los parámetros <code class="docutils literal notranslate"><span class="pre">m</span></code> y <code class="docutils literal notranslate"><span class="pre">b</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@interact</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">plot_relu</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">plot_function</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">rectified_linear</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span><span class="n">b</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "1fbe66f72135414bad02bf27a6143928", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>Como ves, <code class="docutils literal notranslate"><span class="pre">m</span></code> cambia la pendiente y <code class="docutils literal notranslate"><span class="pre">b</span></code> cambia el punto donde aparece el “gancho”. Esta función no hace mucho por sí sola, pero veamos qué ocurre cuando sumamos dos de ellas:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">double_relu</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="n">b2</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">rectified_linear</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">rectified_linear</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span><span class="n">b2</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+
+<span class="nd">@interact</span><span class="p">(</span><span class="n">m1</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">b1</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">m2</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">plot_double_relu</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">b2</span><span class="p">):</span>
+    <span class="n">plot_function</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">double_relu</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="n">b2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "71da28cc229e46e6a9faa6ef7cfe0831", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>Apilando y combinando funciones ReLU, las redes neuronales pueden crear mapeos intrincados entre entradas y salidas. Esto les permite aproximar funciones no lineales, lo cual es esencial en tareas como el reconocimiento de imágenes y el procesamiento de lenguaje natural.</p>
+<p>Este mismo enfoque puede ampliarse a funciones de 2, 3 o más parámetros. La idea básica es que al usar múltiples <strong>capas lineales</strong> en un modelo, le permitimos realizar más cálculos y, por tanto, modelar funciones cada vez más complejas. Sin embargo, si simplemente apilamos capas lineales una tras otra sin introducir no linealidad, no aumentamos el poder expresivo del modelo.</p>
+</section>
+<section id="por-que-multiples-capas-lineales-no-son-suficientes">
+<h3>Por qué múltiples capas lineales no son suficientes<a class="headerlink" href="#por-que-multiples-capas-lineales-no-son-suficientes" title="Link to this heading">#</a></h3>
+<p>Veamos esto matemáticamente:</p>
+<ol class="arabic">
+<li><p><strong>Transformación lineal</strong>: una capa lineal aplica la transformación</p>
+<div class="math notranslate nohighlight">
+\[
+   f(x) = W \cdot x + b
+   \]</div>
+<p>donde:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(W\)</span> es la matriz de pesos,</p></li>
+<li><p><span class="math notranslate nohighlight">\(x\)</span> es el vector de entrada,</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span> es el vector de sesgo.</p></li>
+</ul>
+</li>
+<li><p><strong>Composición de funciones lineales</strong>: supongamos dos capas consecutivas, <span class="math notranslate nohighlight">\(f(x) = W_1 \cdot x + b_1\)</span> y <span class="math notranslate nohighlight">\(g(x) = W_2 \cdot f(x) + b_2\)</span>. Expandiendo:</p>
+<div class="math notranslate nohighlight">
+\[
+   g(x) = W_2 \cdot (W_1 \cdot x + b_1) + b_2 = (W_2 W_1) x + (W_2 b_1 + b_2)
+   \]</div>
+<p>Esto sigue siendo una transformación lineal de <span class="math notranslate nohighlight">\(x\)</span>.</p>
+</li>
+</ol>
+<blockquote>
+<div><p><strong>Idea clave</strong>: La composición de transformaciones lineales sigue siendo lineal. Por eso, apilar capas lineales sin funciones de activación no mejora la expresividad.</p>
+</div></blockquote>
+</section>
+<section id="anadiendo-no-linealidad-la-clave-de-las-representaciones-complejas">
+<h3>Añadiendo no linealidad: la clave de las representaciones complejas<a class="headerlink" href="#anadiendo-no-linealidad-la-clave-de-las-representaciones-complejas" title="Link to this heading">#</a></h3>
+<p>Para superar esta limitación introducimos una <strong>función no lineal</strong> (o función de activación) entre las capas. Esto rompe la linealidad de la cadena de transformaciones y permite que cada capa aprenda aspectos distintos de los datos.</p>
+<p>Un ejemplo es la <strong>ReLU (Rectified Linear Unit)</strong>:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{ReLU}(z) = \max(0, z)
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(z = W \cdot x + b\)</span>.</p>
+<p>Propiedades:</p>
+<ol class="arabic simple">
+<li><p><strong>No linealidad</strong>: al convertir en cero los valores negativos, introduce un elemento no lineal.</p></li>
+<li><p><strong>Comportamiento condicional</strong>: funciona como un <code class="docutils literal notranslate"><span class="pre">if</span></code>: devuelve 0 si la entrada es negativa y la entrada misma si es positiva.</p></li>
+</ol>
+</section>
+<section id="construccion-de-modelos-complejos-con-capas-y-activaciones">
+<h3>Construcción de modelos complejos con capas y activaciones<a class="headerlink" href="#construccion-de-modelos-complejos-con-capas-y-activaciones" title="Link to this heading">#</a></h3>
+<p>Con funciones no lineales, una red neuronal puede constar de:</p>
+<ul class="simple">
+<li><p>Una <strong>secuencia de transformaciones lineales</strong> (capas).</p></li>
+<li><p><strong>Funciones de activación</strong> entre capas (como ReLU) que aportan complejidad.</p></li>
+</ul>
+<p>Ejemplo de red con dos capas:</p>
+<ol class="arabic">
+<li><p><strong>Primera capa</strong>:</p>
+<div class="math notranslate nohighlight">
+\[
+   h(x) = \text{ReLU}(W_1 x + b_1)
+   \]</div>
+</li>
+<li><p><strong>Segunda capa</strong>:</p>
+<div class="math notranslate nohighlight">
+\[
+   f(x) = W_2 h(x) + b_2
+   \]</div>
+</li>
+</ol>
+<p>Ahora <span class="math notranslate nohighlight">\(f(x)\)</span> ya no es puramente lineal, sino una composición lineal + no lineal, capaz de capturar patrones más complejos.</p>
+</section>
+<section id="teorema-de-aproximacion-universal">
+<h3>Teorema de Aproximación Universal<a class="headerlink" href="#teorema-de-aproximacion-universal" title="Link to this heading">#</a></h3>
+<p>La no linealidad permite que una red neuronal aproxime cualquier función continua con la precisión deseada, siempre que tenga suficientes capas y neuronas.</p>
+<blockquote>
+<div><p>Una red neuronal con al menos una capa oculta, un número suficiente de neuronas y una función de activación no lineal puede aproximar cualquier función continua en un subconjunto compacto de <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span>.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="funciones-de-activacion">
+<h2>Funciones de activación<a class="headerlink" href="#funciones-de-activacion" title="Link to this heading">#</a></h2>
+<p>Las funciones de activación deciden si una neurona se activa o no calculando la suma ponderada de entradas más el sesgo. Son operadores diferenciables que transforman señales de entrada en salidas, y la mayoría introduce no linealidad.</p>
+<section id="funcion-relu">
+<h3>Función ReLU<a class="headerlink" href="#funcion-relu" title="Link to this heading">#</a></h3>
+<p>La más popular, por su simplicidad y buen rendimiento en diversas tareas, es la <em>unidad lineal rectificada</em> (ReLU) (Nair y Hinton, 2010):</p>
+<div class="math notranslate nohighlight">
+\[
+\text{ReLU}(z) = \max(0, z)
+\]</div>
+<p>En palabras simples, mantiene los valores positivos y convierte en cero los negativos. La función es lineal por tramos y puede visualizarse fácilmente.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_function</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;ReLU Function&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">8</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ad3106c927b296bc5e7fa84140af3a8ce638143a9eb034e39dd883c58c5c3f27.png" src="../_images/ad3106c927b296bc5e7fa84140af3a8ce638143a9eb034e39dd883c58c5c3f27.png" />
+</div>
+</div>
+<p>Cuando la entrada es negativa, la derivada de la función ReLU es 0, y cuando la entrada es positiva, la derivada es 1. Observa que la función ReLU no es diferenciable cuando la entrada es exactamente 0. En estos casos, se toma por convención la derivada lateral izquierda y se dice que la derivada es 0 cuando la entrada es 0. Esto es aceptable porque la probabilidad de que la entrada sea exactamente cero es muy baja (matemáticamente se dice que no es diferenciable en un conjunto de medida cero).</p>
+<p>La razón por la que se usa ReLU es que sus derivadas se comportan especialmente bien: o bien se anulan, o bien dejan pasar el argumento sin cambios. Esto hace que la optimización sea más estable y mitiga el conocido problema del <em>gradiente que desaparece</em>, que afectaba a versiones anteriores de redes neuronales.</p>
+</section>
+<section id="funcion-sigmoide">
+<h3>Función sigmoide<a class="headerlink" href="#funcion-sigmoide" title="Link to this heading">#</a></h3>
+<p>La <em>función sigmoide</em> transforma entradas en el dominio <span class="math notranslate nohighlight">\(\mathbb{R}\)</span> en salidas en el intervalo (0, 1). Por eso a menudo se la llama <em>función de compresión</em>, ya que lleva cualquier entrada en el rango <span class="math notranslate nohighlight">\((-\infty, \infty)\)</span> a un valor en (0, 1):</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{sigmoid}(x) = \frac{1}{1 + \exp(-x)}.
+\]</div>
+<p>En las primeras redes neuronales, los investigadores querían modelar neuronas biológicas que <em>disparan</em> o <em>no disparan</em>. Por ello, los pioneros del campo, desde McCulloch y Pitts (inventores de la neurona artificial), se centraron en unidades de umbral. Una activación por umbral toma el valor 0 si la entrada está por debajo de cierto umbral y 1 si lo supera.</p>
+<p>Cuando la atención se trasladó al aprendizaje basado en gradientes, la función sigmoide fue una elección natural porque es una aproximación suave y diferenciable de una unidad de umbral. Las sigmoides aún se usan ampliamente como funciones de activación en las salidas cuando se quieren interpretar como probabilidades en problemas de clasificación binaria: puede pensarse en la sigmoide como un caso particular del softmax. Sin embargo, en la mayoría de las capas ocultas la sigmoide ha sido sustituida por ReLU, más simple y fácil de entrenar. Esto se debe a que la sigmoide plantea dificultades de optimización, ya que su gradiente se desvanece para entradas muy positivas o muy negativas, creando mesetas difíciles de superar.</p>
+<p>Aun así, las sigmoides siguen siendo importantes. Por ejemplo, las redes neuronales recurrentes utilizan unidades sigmoides para controlar el flujo de información a lo largo del tiempo.</p>
+<p>Abajo se representa la función sigmoide. Nótese que cuando la entrada está cerca de 0, la función sigmoide se aproxima a una transformación lineal.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_function</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Sigmoid Function&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">8</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/947aecc50e650ff0bfa9628eb01be77abedabeec198dd1dc0d5050ba73f318e8.png" src="../_images/947aecc50e650ff0bfa9628eb01be77abedabeec198dd1dc0d5050ba73f318e8.png" />
+</div>
+</div>
+<p>La derivada de la función sigmoide viene dada por la siguiente ecuación:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{d}{dx} \operatorname{sigmoid}(x) = \frac{\exp(-x)}{(1 + \exp(-x))^2} = \operatorname{sigmoid}(x)\left(1-\operatorname{sigmoid}(x)\right).
+\]</div>
+<p>Obsérvese que cuando la entrada es 0, la derivada de la sigmoide alcanza un máximo de 0.25. A medida que la entrada se aleja de 0 en cualquier dirección, la derivada tiende a 0.</p>
+</section>
+<section id="funcion-tanh">
+<h3>Función tanh<a class="headerlink" href="#funcion-tanh" title="Link to this heading">#</a></h3>
+<p>Al igual que la sigmoide, la función <em>tanh</em> (tangente hiperbólica) también comprime sus entradas, transformándolas en valores dentro del intervalo <span class="math notranslate nohighlight">\([-1, 1]\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\operatorname{tanh}(x) = \frac{1 - \exp(-2x)}{1 + \exp(-2x)}.
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_function</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Tanh Function&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">8</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d58c3529aa802ae7c70e49ba425a6b10d39a03e58e4903bc3ac13294d1a07f54.png" src="../_images/d58c3529aa802ae7c70e49ba425a6b10d39a03e58e4903bc3ac13294d1a07f54.png" />
+</div>
+</div>
+<p>Nótese que cuando la entrada se acerca a 0, la función tanh se aproxima a una transformación lineal. Aunque su forma es similar a la de la función sigmoide, la función tanh presenta simetría puntual respecto al origen del sistema de coordenadas.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="21_neural%20networks_ES.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Deep Learning en Ingeniería Biomédica</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="23_Loss_Metrics_and_Optimizers_ES.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Entrenamiento de un Clasificador de Dígitos</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-basica-de-una-red-neuronal">Estructura básica de una red neuronal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#redes-neuronales-como-aproximadores-flexibles-de-funciones">Redes neuronales como aproximadores flexibles de funciones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#los-bloques-de-construccion-de-las-redes-neuronales">Los bloques de construcción de las redes neuronales</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-multiples-capas-lineales-no-son-suficientes">Por qué múltiples capas lineales no son suficientes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anadiendo-no-linealidad-la-clave-de-las-representaciones-complejas">Añadiendo no linealidad: la clave de las representaciones complejas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-de-modelos-complejos-con-capas-y-activaciones">Construcción de modelos complejos con capas y activaciones</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#teorema-de-aproximacion-universal">Teorema de Aproximación Universal</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#funciones-de-activacion">Funciones de activación</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-relu">Función ReLU</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-sigmoide">Función sigmoide</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#funcion-tanh">Función tanh</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

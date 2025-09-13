@@ -1,0 +1,1450 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>The Machine Learning Fundamentals &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/11_machine_learning_fundamentals';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Basic Feature Engineering" href="12_basic_feature_engineering.html" />
+    <link rel="prev" title="Jupyter &amp; Markdown" href="03_jupyter_markdown.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">The Machine Learning Fundamentals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering.html">Basic Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables.html">Categorical Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers.html">Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees.html">Decision Trees</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction.html">Dimensionality Reduction: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans.html">Nonlinear Manifold Feature Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks.html">Deep Learning in Biomedical Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_NN_as_UA.html">Neural Networks as Universal Approximators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers.html">Training a Digit Classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP.html">Classification with Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_convolutions.html">Convolutional Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2.html">ResNets for Biomedical Image Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers.html">Attention Mechanisms and Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic.html">Probabilistic Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL.html">Physics-Based Deep Learning</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/11_machine_learning_fundamentals.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/11_machine_learning_fundamentals.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>The Machine Learning Fundamentals</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-machine-learning-core-concepts">The Machine Learning Core Concepts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-main-steps-of-the-machine-learning-pipeline">The main steps of the machine learning pipeline</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-representation">Mathematical Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-machine-learning">Types of Machine Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-classification-and-clustering">Regression, Classification, and Clustering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression"><strong>Regression</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classification"><strong>Classification</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering"><strong>Clustering</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences">Key Differences:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-example-neonatal-brain-volumes">Regression example: neonatal brain volumes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-data">Load the data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#select-and-train-the-model">Select and Train the Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-selection-a-simple-linear-model">Model selection: a simple linear model</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-normal-distribution-and-squared-loss">The Normal Distribution and Squared Loss</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-normal-equation">The Normal Equation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-minimization">Least Squares Minimization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-challenges-in-machine-learning">Main Challenges in Machine Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantity-of-training-data-and-cross-validation">Quantity of Training Data and Cross-validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#poor-quality-data">Poor-quality data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#irrelevant-features">Irrelevant Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overfitting-the-training-data">Overfitting the Training Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model-regularization">Model Regularization</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#underfitting-the-training-data">Underfitting the Training Data</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="the-machine-learning-fundamentals">
+<h1>The Machine Learning Fundamentals<a class="headerlink" href="#the-machine-learning-fundamentals" title="Link to this heading">#</a></h1>
+<p><strong>Machine learning</strong> involves fitting mathematical models to data to derive insights or make predictions.</p>
+<blockquote>
+<div><p>“[Machine Learning is the] field of study that gives computers the ability to learn without being explicitly programmed.”<br />
+—Arthur Samuel, 1959</p>
+</div></blockquote>
+<p>These models work by taking <strong>features</strong> as inputs. A feature is a numerical representation of an aspect of raw data. Features act as the intermediary between raw data and machine learning models within the overall pipeline.</p>
+<p>Machine Learning is great for:</p>
+<ul class="simple">
+<li><p>Problems for which existing solutions require a lot of hand-tuning or long lists of rules: one Machine Learning algorithm can often simplify code and perform better.</p></li>
+<li><p>Complex problems for which there is no good solution at all using a traditional approach: the best Machine Learning techniques can find a solution.</p></li>
+<li><p>Fluctuating environments: a Machine Learning system can adapt to new data.</p></li>
+<li><p>Getting insights about complex problems and large amounts of data.</p></li>
+</ul>
+<section id="the-machine-learning-core-concepts">
+<h2>The Machine Learning Core Concepts<a class="headerlink" href="#the-machine-learning-core-concepts" title="Link to this heading">#</a></h2>
+<p><strong>Data</strong>: Data are observations of real-world phenomena. Each data point provides a snapshot of a specific aspect of reality. When collected, these observations form a larger, yet often incomplete and noisy, picture. Real-world data tends to be messy, with noise, errors, or missing values, making it essential to clean and process it before further analysis.</p>
+<p><strong>Models</strong>: A model is a mathematical abstraction that describes relationships between different aspects of the data. For instance, a music recommendation model might quantify user similarities based on their listening habits, recommending artists to users with similar music preferences. Models generalize from past observations to predict or infer outcomes on new data.</p>
+<p><strong>Features</strong>: A feature is a numerical representation derived from raw data. There are various ways to convert raw data into useful features, which can range from simple measures to more complex transformations. The selection of features depends not only on the nature of the data but also on the type of model being used. Certain models work better with specific kinds of features. Effective features are both relevant to the task at hand and suited to the model’s architecture.</p>
+<p><strong>Feature engineering</strong> is the process of extracting and transforming raw data into formats that are useful for the model. It involves crafting the most suitable features based on the data, model, and the specific problem being addressed. It’s a critical step because well-crafted features can significantly reduce the complexity of modeling, leading to more accurate predictions and better overall performance.</p>
+<section id="the-main-steps-of-the-machine-learning-pipeline">
+<h3>The main steps of the machine learning pipeline<a class="headerlink" href="#the-main-steps-of-the-machine-learning-pipeline" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Look at the big picture.</p></li>
+<li><p>Get the data.</p></li>
+<li><p>Discover and visualize the data to gain insights.</p></li>
+<li><p>Prepare the data for Machine Learning algorithms.</p></li>
+<li><p>Select a model and train it.</p></li>
+<li><p>Fine-tune your model.</p></li>
+<li><p>Present your solution.</p></li>
+<li><p>Launch, monitor, and maintain your system.</p></li>
+</ol>
+</section>
+</section>
+<section id="mathematical-representation">
+<h2>Mathematical Representation<a class="headerlink" href="#mathematical-representation" title="Link to this heading">#</a></h2>
+<p>In all machine learning tasks a sample is characterized by a D-dimensional <strong>feature vector</strong>:</p>
+<div class="math notranslate nohighlight">
+\[
+\textbf{x} = (x_1, ..., x_D)^T .
+\]</div>
+<p>We seek to find a mathematical <strong>model</strong> to predict some outputs that can be expressed as a function <span class="math notranslate nohighlight">\(f\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{y} = f (\mathbf{x})
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\^y\)</span> is an output estimated by our model. In the case of regression it is an estimated
+target value, for classification and clustering it is an estimated label, and for dimensionality
+reduction it is a transformed feature vector.
+Let’s assume that we have N training samples with feature vectors <span class="math notranslate nohighlight">\(\mathbf{x}_1, ...,\mathbf{x}_N\)</span> defined
+as follows:</p>
+<div class="math notranslate nohighlight">
+\[\textbf{x}_i = (x_{i1}, ..., x_{iD})^T .\]</div>
+<p>The features of the training samples determine a <strong>feature matrix</strong> <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> that characterizes the whole training set. The dimensiones of the feature matrix are N × D, with training samples
+corresponding to the rows of the feature matrix and individual features to the columns
+of the feature matrix.
+In supervised learning we expect an output <span class="math notranslate nohighlight">\(\mathbf{y}_i\)</span> for each training sample <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>. These outputs
+determine the target vector for regression and the label vector for classification
+as follows:</p>
+<div class="math notranslate nohighlight">
+\[\textbf{y} = (y_1, ..., y_N)^T .\]</div>
+<p>To find the mathematical model <span class="math notranslate nohighlight">\(f\)</span>, we need to select its mathematical form, which
+will vary according to the machine learning algorithm. In general, we select our model
+in advance by choosing a mathematical form of the function <span class="math notranslate nohighlight">\(f\)</span> that depends on the
+feature vector <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> and parameter vector <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ 
+\hat{y} = f(\mathbf{x},\theta) 
+\]</div>
+<p>Training the model <span class="math notranslate nohighlight">\(f\)</span> can then be mathematically expressed as finding the parameter vector <span class="math notranslate nohighlight">\( \hat{\theta} \)</span> that minimizes some loss function F for the given training set</p>
+<div class="math notranslate nohighlight">
+\[ 
+\hat{θ} = \mathrm{argmin}_\theta \mathbf{F}(\mathbf{X},\mathbf{y}, \theta) 
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> is dropped from the equation for unsupervised tasks.</p>
+</section>
+<section id="types-of-machine-learning">
+<h2>Types of Machine Learning<a class="headerlink" href="#types-of-machine-learning" title="Link to this heading">#</a></h2>
+<p>There are three key types of ML: <strong>supervised learning</strong>, <strong>unsupervised learning</strong>, and <strong>reinforcement learning</strong>.</p>
+<p><strong>Supervised learning</strong> is the most common type. In this approach, the model is trained on a labeled dataset, where both the input data and the desired output are provided. The goal is for the model to learn the mapping from inputs to outputs, so that when new data is introduced, it can make accurate predictions. Imagine teaching a model to predict whether a tissue sample is cancerous based on its features (like cell shape or genetic markers), where the labels (“cancerous” or “non-cancerous”) are already known. In biomedicine, this can be used for tasks like disease diagnosis, where large amounts of labeled data (from patient records or clinical trials) are available.</p>
+<p>In <strong>unsupervised learning</strong>, there are no labels provided. Instead, the model tries to find hidden patterns or groupings in the data on its own. This is particularly useful when you’re dealing with large datasets without clear outcomes, such as discovering subtypes of a disease based on patient data. For example, clustering algorithms might reveal previously unknown patterns in gene expression data, leading to new biological insights. Unsupervised learning is often exploratory, helping researchers uncover new relationships in the data without prior assumptions.</p>
+<p><strong>Reinforcement learning</strong> is quite different from the first two. It involves an agent that learns to make decisions by interacting with its environment, receiving feedback in the form of rewards or penalties. Over time, it learns to take actions that maximize cumulative reward. Think of it like training a model to optimize a treatment strategy by constantly adjusting the dosage or timing of a drug based on patient response. While it’s not as commonly used in biomedicine as supervised and unsupervised learning, reinforcement learning holds promise for personalized medicine, where treatment strategies need continuous adaptation based on feedback.</p>
+<p><img alt="image.png" src="../_images/image-10.png" /></p>
+</section>
+<section id="regression-classification-and-clustering">
+<h2>Regression, Classification, and Clustering<a class="headerlink" href="#regression-classification-and-clustering" title="Link to this heading">#</a></h2>
+<p>In the biomedical field, <strong>regression</strong>, <strong>classification</strong>, and <strong>clustering</strong> are applied to various tasks, each addressing different types of problems related to data analysis, diagnosis, and research.</p>
+<p><img alt="image.png" src="../_images/image-11.png" /></p>
+<section id="regression">
+<h3><strong>Regression</strong><a class="headerlink" href="#regression" title="Link to this heading">#</a></h3>
+<p>In regression tasks, the objective is to predict a continuous numerical outcome based on various input features. For example, in a medical context, you might use regression to predict a patient’s blood pressure based on variables such as age, weight, smoking habits, and family history. The model learns how these factors influence the target value, which is the blood pressure level, and predicts a specific value for a new patient.</p>
+<p>Another common application is in pharmacokinetics, where regression models help estimate drug concentration levels in the bloodstream over time. By inputting patient-specific variables like dosage, metabolism rate, and kidney function, the model predicts the concentration of the drug at any given time.</p>
+<p>Regression outputs real numbers, making it suitable for problems where precise numerical predictions are needed in medical settings, such as predicting recovery times or estimating disease progression rates.</p>
+</section>
+<section id="classification">
+<h3><strong>Classification</strong><a class="headerlink" href="#classification" title="Link to this heading">#</a></h3>
+<p>Classification, on the other hand, focuses on predicting categorical outcomes. In the medical field, this often involves diagnosing diseases. For instance, a model might classify patients as either having or not having diabetes based on input data like blood glucose levels, BMI, and genetic factors. Each patient is assigned a label, either “diabetic” or “non-diabetic,” based on the features provided.</p>
+<p>Another application is cancer detection through imaging. A classification model could analyze biopsy images or CT scans to determine whether a tumor is benign or malignant. In this case, the model’s goal is to assign the image to one of two categories: “benign” or “malignant.”</p>
+<p>Unlike regression, where the output is a continuous value, classification predicts a discrete label. This is highly valuable in medical diagnostics, where clear-cut decisions, such as “positive” or “negative” for a particular disease, are necessary for treatment planning.</p>
+</section>
+<section id="clustering">
+<h3><strong>Clustering</strong><a class="headerlink" href="#clustering" title="Link to this heading">#</a></h3>
+<p>Clustering is typically used for exploratory analysis, where the aim is to discover hidden patterns or groups in the data without predefined labels. In biomedicine, clustering is often used for grouping patients based on genetic information or clinical symptoms. For instance, researchers might cluster patients with similar gene expression profiles to identify subtypes of cancer that respond differently to treatment.</p>
+<p>In another case, clustering could help segment patients based on the progression of a disease like Alzheimer’s. By grouping patients into clusters that show similar patterns of cognitive decline, doctors can tailor treatment strategies more effectively or even uncover new subtypes of the disease.</p>
+<p>Clustering doesn’t involve predefined categories. Instead, it finds inherent structures within the data, making it especially useful in fields like genomics or personalized medicine, where understanding the hidden relationships between data points can lead to significant discoveries.</p>
+</section>
+<section id="key-differences">
+<h3>Key Differences:<a class="headerlink" href="#key-differences" title="Link to this heading">#</a></h3>
+<p>In biomedical applications, the core distinction between these methods lies in their goals:</p>
+<ul class="simple">
+<li><p><strong>Regression</strong> predicts continuous values, such as blood pressure or drug concentrations.</p></li>
+<li><p><strong>Classification</strong> predicts categorical outcomes, such as diagnosing a disease or classifying a tumor as benign or malignant.</p></li>
+<li><p><strong>Clustering</strong> uncovers natural groupings in data, such as identifying patient subtypes based on genetic markers or disease progression.</p></li>
+</ul>
+<p>Each method serves a distinct purpose but is critical for advancing diagnostics, treatment, and medical research.</p>
+</section>
+</section>
+<section id="regression-example-neonatal-brain-volumes">
+<h2>Regression example: neonatal brain volumes<a class="headerlink" href="#regression-example-neonatal-brain-volumes" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This project requires Python 3.7 or above:</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">assert</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="c1"># Scikit-Learn ≥1.0.1 is required:</span>
+<span class="kn">from</span> <span class="nn">packaging</span> <span class="kn">import</span> <span class="n">version</span>
+<span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="k">assert</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sklearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;1.0.1&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="c1"># Plot setup</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;axes&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">titlesize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;legend&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;xtick&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;ytick&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1"># Make this notebook&#39;s output stable across runs:</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="load-the-data">
+<h3>Load the data<a class="headerlink" href="#load-the-data" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download and prepare the data</span>
+<span class="n">data_root</span> <span class="o">=</span> <span class="s2">&quot;datasets</span><span class="se">\\</span><span class="s2">ch1</span><span class="se">\\</span><span class="s2">neonatal_brain_volumes.csv&quot;</span>
+<span class="n">nbv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_root</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">nbv</span><span class="p">[[</span><span class="s2">&quot;GA&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">nbv</span><span class="p">[[</span><span class="s2">&quot;brain volume&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># Visualize the data</span>
+<span class="n">nbv</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bb33344a5c8079f836bfc16373cc3c38ef08e7a8d638e8a1d5a47c2c8c1a4802.png" src="../_images/bb33344a5c8079f836bfc16373cc3c38ef08e7a8d638e8a1d5a47c2c8c1a4802.png" />
+</div>
+</div>
+</section>
+<section id="select-and-train-the-model">
+<h3>Select and Train the Model<a class="headerlink" href="#select-and-train-the-model" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select a linear model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Make a prediction </span>
+<span class="n">X_new</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">37</span><span class="p">]]</span>  
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_new</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[281.66202738]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Replacing the Linear Regression model with k-Nearest Neighbors (in this example, k = 3) regression in the previous code is as simple as replacing these two
+lines:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>with these two:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsRegressor</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">KNeighborsRegressor</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select a 3-Nearest Neighbors regression model</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsRegressor</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">KNeighborsRegressor</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Make a prediction for Cyprus</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_new</span><span class="p">))</span> <span class="c1"># outputs [[6.33333333]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[272.57333333]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a function to save the figures:</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Where to save the figures</span>
+<span class="n">IMAGES_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;images&quot;</span> <span class="o">/</span> <span class="s2">&quot;fundamentals&quot;</span>
+<span class="n">IMAGES_PATH</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">save_fig</span><span class="p">(</span><span class="n">fig_id</span><span class="p">,</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fig_extension</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">300</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">IMAGES_PATH</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fig_id</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">fig_extension</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">tight_layout</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">fig_extension</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">resolution</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To illustrate the risk of overfitting, we use only part of the data in most figures. Later we reveal the missing data, and show that they don’t follow the same linear trend at all.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_ga</span> <span class="o">=</span> <span class="mi">37</span>
+<span class="n">max_ga</span> <span class="o">=</span> <span class="mi">40</span>
+
+<span class="n">stats</span> <span class="o">=</span> <span class="n">nbv</span><span class="p">[(</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_ga</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">max_ga</span><span class="p">)]</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GA</th>
+      <th>brain volume</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>37.429</td>
+      <td>277.73</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>37.000</td>
+      <td>268.49</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>37.000</td>
+      <td>296.00</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>37.000</td>
+      <td>253.23</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>37.286</td>
+      <td>287.60</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Let’s plot a few random data</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/693beb882d7aad187aa3e74391f508273dcc8cedb93185a32e6bd0741fb11452.png" src="../_images/693beb882d7aad187aa3e74391f508273dcc8cedb93185a32e6bd0741fb11452.png" />
+</div>
+</div>
+</section>
+<section id="model-selection-a-simple-linear-model">
+<h3>Model selection: a simple linear model<a class="headerlink" href="#model-selection-a-simple-linear-model" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Brain</span> <span class="pre">Volume</span></code> = <span class="math notranslate nohighlight">\(\theta_0 + \theta_1 \times\)</span> <code class="docutils literal notranslate"><span class="pre">GA</span></code></p>
+<p>This model is just a linear function of the input feature <code class="docutils literal notranslate"><span class="pre">GA</span></code>, <span class="math notranslate nohighlight">\(\theta_0\)</span> and <span class="math notranslate nohighlight">\(\theta_1\)</span> are
+the model’s parameters.</p>
+<p>More generally, a linear model makes a prediction by simply computing a weighted sum of the input features, plus a constant called the intercept term (or bias):</p>
+<div class="math notranslate nohighlight">
+\[
+\hat y = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \dots + \theta_n x_n
+\]</div>
+<p>In vectorized form:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat y = \mathbf{\theta} \cdot \mathbf{x}
+\]</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_ga</span><span class="p">,</span> <span class="n">max_ga</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_0 = </span><span class="si">{</span><span class="n">w1</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_1 = </span><span class="si">{</span><span class="n">w2</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="mi">1470</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">380</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_0 = </span><span class="si">{</span><span class="n">w1</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">370</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_1 = </span><span class="si">{</span><span class="n">w2</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">650</span><span class="p">,</span> <span class="mi">25</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">w2</span>  <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">39.2</span><span class="p">,</span> <span class="mi">390</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_0 = </span><span class="si">{</span><span class="n">w1</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">39.2</span><span class="p">,</span> <span class="mi">380</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_1 = </span><span class="si">{</span><span class="n">w2</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/4dc3574a81dbc56110b272151698366fe18a091698dc4c399ec39f8412fc276a.png" src="../_images/4dc3574a81dbc56110b272151698366fe18a091698dc4c399ec39f8412fc276a.png" />
+</div>
+</div>
+<p>Now, how do we train the model?</p>
+<blockquote>
+<div><p>Training a model means setting its parameters so that the model best fits the training set.</p>
+</div></blockquote>
+<p>For this purpose, we first need a measure of how well (or poorly) the model fits the training data.
+The most common performance measure of a regression model is the Mean Square Error (MSE).
+So, to train a Linear Regression model, you need to find the value of θ that minimizes the MSE.</p>
+<p>The MSE of a Linear Regression hypothesis <span class="math notranslate nohighlight">\(h_θ\)</span> on a training set <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is calculated using:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{MSE}(X, h_θ) = \frac{1}{m} \sum_{i = 1}^{m} \big( \mathbf{\theta}^T \mathbf{x}^{(i)} − y^{(i)} \big)^2
+\]</div>
+<section id="the-normal-distribution-and-squared-loss">
+<h4>The Normal Distribution and Squared Loss<a class="headerlink" href="#the-normal-distribution-and-squared-loss" title="Link to this heading">#</a></h4>
+<p>We can provide a more formal motivation for the squared loss objective by making
+probabilistic assumptions about the distribution of noise.</p>
+<p>To begin, recall that a normal distribution with mean <span class="math notranslate nohighlight">\(\mu\)</span> and
+variance <span class="math notranslate nohighlight">\(\sigma^2\)</span> is given as:</p>
+<div class="math notranslate nohighlight">
+\[ p(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{1}{2 \sigma^2} (x - \mu)^2\right). \]</div>
+<p>One way to motivate linear regression with squared loss is to assume that observations arise from noisy measurements, where the noise
+<span class="math notranslate nohighlight">\(\epsilon\)</span> follows the normal distribution
+<span class="math notranslate nohighlight">\(\mathcal{N}(0, \sigma^2)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ y = \theta^\top \mathbf{x} + \epsilon \textrm{ where } \epsilon \sim \mathcal{N}(0, \sigma^2). \]</div>
+<p>Thus, we can now write out the <em>likelihood</em> of seeing a particular <span class="math notranslate nohighlight">\(y\)</span> for a given <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> via</p>
+<div class="math notranslate nohighlight">
+\[ P(y \mid \mathbf{x}) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{1}{2 \sigma^2} (y - \theta^\top \mathbf{x})^2\right).\]</div>
+<p>As such, the likelihood factorizes. According to <em>the principle of
+maximum likelihood</em>, the best values of parameters <span class="math notranslate nohighlight">\(\mathbf{w}\)</span>
+and <span class="math notranslate nohighlight">\(b\)</span> are those that maximize the <em>likelihood</em> of the entire
+dataset:</p>
+<div class="math notranslate nohighlight">
+\[ P(\mathbf y \mid \mathbf X) = \prod_{i=1}^{n} p(y^{(i)} \mid \mathbf{x}^{(i)}). \]</div>
+<p>The equality follows since all pairs <span class="math notranslate nohighlight">\((\mathbf{x}^{(i)}, y^{(i)})\)</span>
+were drawn independently of each other. Estimators chosen according to
+the principle of maximum likelihood are called <em>maximum likelihood
+estimators</em>. While, maximizing the product of many exponential
+functions, might look difficult, we can simplify things significantly,
+without changing the objective, by maximizing the logarithm of the
+likelihood instead. For historical reasons, optimizations are more often
+expressed as minimization rather than maximization. So, without changing
+anything, we can <em>minimize</em> the <em>negative log-likelihood</em>, which we can
+express as follows:</p>
+<div class="math notranslate nohighlight">
+\[ -\log P(\mathbf y \mid \mathbf X) = \sum_{i=1}^n \frac{1}{2} \log(2 \pi \sigma^2) + \frac{1}{2 \sigma^2} \left(y^{(i)} - \theta^\top \mathbf{x}^{(i)} \right)^2. \]</div>
+<p>If we assume that <span class="math notranslate nohighlight">\(\sigma\)</span> is fixed, we can ignore the first term,
+because it does not depend on <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> or <span class="math notranslate nohighlight">\(b\)</span>. The
+second term is identical to the squared error loss introduced earlier,
+except for the multiplicative constant <span class="math notranslate nohighlight">\(\frac{1}{\sigma^2}\)</span>.
+Fortunately, the solution does not depend on <span class="math notranslate nohighlight">\(\sigma\)</span> either. It
+follows that minimizing the mean squared error is equivalent to the
+maximum likelihood estimation of a linear model under the assumption of
+additive Gaussian noise.</p>
+</section>
+</section>
+<section id="the-normal-equation">
+<h3>The Normal Equation<a class="headerlink" href="#the-normal-equation" title="Link to this heading">#</a></h3>
+<p>To find the value of <span class="math notranslate nohighlight">\(\theta\)</span> that minimizes the cost function, there is a closed-form solution —in other words, a mathematical equation that gives the result directly.</p>
+<p>This is called the <em>Normal Equation</em>:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{\hat \theta} = (\mathbf{X}^T\mathbf{X})^{−1} \mathbf{X}^T \mathbf{y}
+\]</div>
+<p>The normal equation can be computed using <code class="docutils literal notranslate"><span class="pre">NumPy</span></code>’s Linear Algebra module (<code class="docutils literal notranslate"><span class="pre">np.linalg</span></code>)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">theta_best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X_b</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X_b</span><span class="p">)</span> <span class="o">@</span> <span class="n">X_b</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>However, The computational complexity of inverting such a matrix is typically about <span class="math notranslate nohighlight">\(O(n^{2.4})\)</span> to <span class="math notranslate nohighlight">\(O(n^3)\)</span> (depending on the implementation).</p>
+</div></blockquote>
+<p>In other words, if you double the number of features, you multiply the computation time by roughly <span class="math notranslate nohighlight">\(2^{2.4} = 5.3\)</span> to <span class="math notranslate nohighlight">\(2^3 = 8\)</span>.</p>
+<p>Instead, the approach used by <code class="docutils literal notranslate"><span class="pre">Scikit-Learn</span></code>’s <code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code> class is about <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
+<p>If you double the number of features, you multiply the computation time by roughly 4.</p>
+</section>
+<section id="least-squares-minimization">
+<h3>Least Squares Minimization<a class="headerlink" href="#least-squares-minimization" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code> class is based on the <code class="docutils literal notranslate"><span class="pre">scipy.linalg.lstsq()</span></code> function.</p>
+<p>This function computes <span class="math notranslate nohighlight">\(\mathbf{\hat\theta} = \mathbf{X}^\dagger\mathbf{y}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{X}^\dagger\)</span> is the pseudoinverse of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p>
+<p>The pseudoinverse itself is computed using a standard matrix factorization technique called <strong>Singular Value Decomposition</strong> (SVD)</p>
+<p>This approach is more efficient than computing the <em>Normal Equation</em>, plus it handles edge cases nicely.</p>
+<p>Indeed, the Normal Equation may not work if the matrix <span class="math notranslate nohighlight">\(\mathbf{X}^T\mathbf{X}\)</span> is not invertible, but the pseudoinverse is always defined.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+
+<span class="n">y_sample</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[[</span><span class="s2">&quot;brain volume&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">X_sample</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[[</span><span class="s2">&quot;GA&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">lin1</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">lin1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_sample</span><span class="p">,</span> <span class="n">y_sample</span><span class="p">)</span>
+
+<span class="n">t0</span><span class="p">,</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">lin1</span><span class="o">.</span><span class="n">intercept_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lin1</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;θ0=</span><span class="si">{</span><span class="n">t0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, θ1=</span><span class="si">{</span><span class="n">t1</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>θ0=-700.35, θ1=2.64e+01
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_ga</span><span class="p">,</span> <span class="n">max_ga</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">t0</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>
+
+<span class="n">min_bv</span> <span class="o">=</span> <span class="mi">150</span>
+<span class="n">max_bv</span> <span class="o">=</span> <span class="mi">450</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">37.2</span><span class="p">,</span> <span class="n">max_bv</span> <span class="o">-</span> <span class="mi">25</span><span class="p">,</span>
+         <span class="sa">fr</span><span class="s2">&quot;$\theta_0 = </span><span class="si">{</span><span class="n">t0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">37.2</span><span class="p">,</span> <span class="n">max_bv</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span>
+         <span class="sa">fr</span><span class="s2">&quot;$\theta_1 = </span><span class="si">{</span><span class="n">t1</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="n">min_ga</span><span class="o">-</span><span class="mf">.2</span><span class="p">,</span> <span class="n">max_ga</span><span class="o">+</span><span class="mf">.2</span><span class="p">,</span> <span class="n">min_bv</span><span class="p">,</span> <span class="n">max_bv</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/ebbfd31c987bc4e7479528d0d2d13c75995117eb692f24306be7f973fec38af4.png" src="../_images/ebbfd31c987bc4e7479528d0d2d13c75995117eb692f24306be7f973fec38af4.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_ga</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">56</span><span class="p">]</span>
+<span class="n">example_ga</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>38.143
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_prediction</span> <span class="o">=</span> <span class="n">lin1</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="n">example_ga</span><span class="p">]])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">example_prediction</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>304.8594393021576
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_ga</span><span class="p">,</span> <span class="n">max_ga</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">t0</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>
+
+<span class="n">min_bv</span> <span class="o">=</span> <span class="mi">150</span>
+<span class="n">max_bv</span> <span class="o">=</span> <span class="mi">450</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="n">max_bv</span> <span class="o">-</span> <span class="mi">25</span><span class="p">,</span>
+         <span class="sa">fr</span><span class="s2">&quot;$\theta_0 = </span><span class="si">{</span><span class="n">t0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="n">max_bv</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span>
+         <span class="sa">fr</span><span class="s2">&quot;$\theta_1 = </span><span class="si">{</span><span class="n">t1</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">example_ga</span><span class="p">,</span> <span class="n">example_ga</span><span class="p">],</span>
+         <span class="p">[</span><span class="n">min_bv</span><span class="p">,</span> <span class="n">example_prediction</span><span class="p">],</span> <span class="s2">&quot;r--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">37.1</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span>
+         <span class="sa">fr</span><span class="s2">&quot;Prediction = </span><span class="si">{</span><span class="n">example_prediction</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">example_ga</span><span class="p">,</span> <span class="n">example_prediction</span><span class="p">,</span> <span class="s2">&quot;ro&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="n">min_ga</span><span class="o">-</span><span class="mf">.5</span><span class="p">,</span> <span class="n">max_ga</span><span class="o">+</span><span class="mf">.5</span><span class="p">,</span> <span class="n">min_bv</span><span class="p">,</span> <span class="n">max_bv</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/7f116c1943e133dfcb591c54a4a6d71b46ab89b90e85e21f2bd3a9fca3878184.png" src="../_images/7f116c1943e133dfcb591c54a4a6d71b46ab89b90e85e21f2bd3a9fca3878184.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;brain volume&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>253.23
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="main-challenges-in-machine-learning">
+<h2>Main Challenges in Machine Learning<a class="headerlink" href="#main-challenges-in-machine-learning" title="Link to this heading">#</a></h2>
+<section id="quantity-of-training-data-and-cross-validation">
+<h3>Quantity of Training Data and Cross-validation<a class="headerlink" href="#quantity-of-training-data-and-cross-validation" title="Link to this heading">#</a></h3>
+<p>It takes a lot of data for most Machine Learning algorithms to work properly.</p>
+<p>Even for very simple problems you typically need thousands of examples, and for complex problems such as image or speech recognition you may need millions…</p>
+<p>Also, in order to generalize well, it is crucial that your training data be representative of the
+new cases you want to generalize to.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">missing_data</span> <span class="o">=</span> <span class="n">nbv</span><span class="p">[(</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_ga</span><span class="p">)</span> <span class="o">|</span>
+                                  <span class="p">(</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_ga</span><span class="p">)]</span>
+<span class="n">missing_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GA</th>
+      <th>brain volume</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>35.714</td>
+      <td>252.41</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>36.143</td>
+      <td>266.36</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>36.714</td>
+      <td>266.13</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>42.286</td>
+      <td>308.35</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>40.143</td>
+      <td>303.76</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>40.857</td>
+      <td>344.04</td>
+    </tr>
+    <tr>
+      <th>158</th>
+      <td>34.857</td>
+      <td>196.40</td>
+    </tr>
+    <tr>
+      <th>159</th>
+      <td>34.429</td>
+      <td>232.43</td>
+    </tr>
+    <tr>
+      <th>160</th>
+      <td>40.429</td>
+      <td>428.26</td>
+    </tr>
+    <tr>
+      <th>161</th>
+      <td>35.429</td>
+      <td>307.99</td>
+    </tr>
+  </tbody>
+</table>
+<p>130 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>For example, the set we used earlier for training the linear model was not
+perfectly representative; a few values were missing.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+
+<span class="n">pos_data_x</span><span class="p">,</span> <span class="n">pos_data_y</span> <span class="o">=</span> <span class="n">missing_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">missing_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">30</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pos_data_x</span><span class="p">,</span> <span class="n">pos_data_y</span><span class="p">,</span> <span class="s2">&quot;rs&quot;</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">t0</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;b:&quot;</span><span class="p">)</span>
+
+<span class="n">lin_reg_full</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">Xfull</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]]</span>
+<span class="n">yfull</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;brain volume&quot;</span><span class="p">]]</span>
+<span class="n">lin_reg_full</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xfull</span><span class="p">,</span> <span class="n">yfull</span><span class="p">)</span>
+
+<span class="n">t0full</span><span class="p">,</span> <span class="n">t1full</span> <span class="o">=</span> <span class="n">lin_reg_full</span><span class="o">.</span><span class="n">intercept_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lin_reg_full</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">t0full</span> <span class="o">+</span> <span class="n">t1full</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
+
+<span class="c1"># plt.axis([0, 115_000, min_life_sat, max_life_sat])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/34d34e963382a7c80837c5049880b0078a05770cdeea99e5638e52714126f685.png" src="../_images/34d34e963382a7c80837c5049880b0078a05770cdeea99e5638e52714126f685.png" />
+</div>
+</div>
+<p>Not only does adding a few missing countries significantly alter the model, but it makes it clear that such a simple linear model is probably never going to work well. It seems that very rich countries are not happier than moderately rich countries (in fact they seem unhappier), and conversely some poor countries seem happier than many rich countries</p>
+<p>In biomedical applications we commonly deal with small datasets available for training.
+In this scenario, excluding two sets of data is wasteful and undesirable. Cross-validation
+provides a solution to this problem. We first exclude the test set as before, but, instead
+of excluding the validation set as well, we split the remaining data into k groups (folds).
+We then perform training k times. Each fold becomes a validation set exactly once,
+while the remaining k − 1 folds become a training set, to which we fit the model for
+all different hyperparameter values. We will select the hyperparameters that provide the
+best performance on the validation set averaged over all k folds. This process is called
+k-fold cross-validation.
+Once the hyperparameters have been chosen, we will fit the model to all k folds, thus
+maximising the amount of data available for the training of our final model. The final
+performance is evaluated on the test set, which is never used during hyperparameter
+tuning.</p>
+<p>It is very important to ensure that the test set is representative of the whole dataset.
+One way to deal with this is to stratify the test set according to some criterion, for
+example, that the distribution of target values in the test set is similar to the training set.</p>
+</section>
+<section id="poor-quality-data">
+<h3>Poor-quality data<a class="headerlink" href="#poor-quality-data" title="Link to this heading">#</a></h3>
+<p>Obviously, if your training data is full of errors, outliers, and noise (e.g., due to poorquality
+measurements), it will make it harder for the system to detect the underlying
+patterns, so your system is less likely to perform well. It is often well worth the effort
+to spend time cleaning up your training data. The truth is, most data scientists spend
+a significant part of their time doing just that. For example:</p>
+<ul class="simple">
+<li><p>If some instances are clearly outliers, it may help to simply discard them or try to
+fix the errors manually.</p></li>
+<li><p>If some instances are missing a few features (e.g., 5% of your customers did not
+specify their age), you must decide whether you want to ignore this attribute altogether,
+ignore these instances, fill in the missing values (e.g., with the median
+age), or train one model with the feature and one model without it, and so on.</p></li>
+</ul>
+</section>
+<section id="irrelevant-features">
+<h3>Irrelevant Features<a class="headerlink" href="#irrelevant-features" title="Link to this heading">#</a></h3>
+<p>Garbage In, Garbage Out.</p>
+<p>Your system will only be capable of learning if the training data contains enough relevant features and not too many irrelevant ones. A critical part of the success of a Machine Learning project is coming up with a good set of features to train on. This process, called <strong>feature engineering</strong>, involves:</p>
+<ul class="simple">
+<li><p><strong>Feature selection</strong>: selecting the most useful features to train on among existing
+features.</p></li>
+<li><p><strong>Feature extraction</strong>: combining existing features to produce a more useful one (as
+we saw earlier, dimensionality reduction algorithms can help).</p></li>
+<li><p>Creating new features by gathering new data.</p></li>
+</ul>
+</section>
+<section id="overfitting-the-training-data">
+<h3>Overfitting the Training Data<a class="headerlink" href="#overfitting-the-training-data" title="Link to this heading">#</a></h3>
+<p>Overfitting happens when the model is too complex relative to the amount and noisiness of the training data.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">pipeline</span>
+
+<span class="n">nbv</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+<span class="n">poly</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">include_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">lin_reg2</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">pipeline_reg</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">poly</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;scal&#39;</span><span class="p">,</span> <span class="n">scaler</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;lin&#39;</span><span class="p">,</span> <span class="n">lin_reg2</span><span class="p">)])</span>
+<span class="n">pipeline_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xfull</span><span class="p">,</span> <span class="n">yfull</span><span class="p">)</span>
+<span class="n">curve</span> <span class="o">=</span> <span class="n">pipeline_reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">curve</span><span class="p">)</span>
+
+<span class="c1"># plt.axis([0, 115_000, min_life_sat, max_life_sat])</span>
+
+<span class="n">save_fig</span><span class="p">(</span><span class="s1">&#39;overfitting_model_plot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/d8e13380f52835fac9343571bf69f97094c944716d487f5ff8a1d098a9372f7e.png" src="../_images/d8e13380f52835fac9343571bf69f97094c944716d487f5ff8a1d098a9372f7e.png" />
+</div>
+</div>
+<p>The possible solutions are:</p>
+<ul class="simple">
+<li><p>To simplify the model by selecting one with fewer parameters (e.g., a linear model rather than a high-degree polynomial
+model), by reducing the number of attributes in the training data or by constraining the model</p></li>
+<li><p>To gather more training data</p></li>
+<li><p>To reduce the noise in the training data (e.g., fix data errors and remove outliers)</p></li>
+</ul>
+<section id="model-regularization">
+<h4>Model Regularization<a class="headerlink" href="#model-regularization" title="Link to this heading">#</a></h4>
+<p>Regularization is the process of constraining a model to make it simpler, helping to reduce the risk of overfitting. Overfitting occurs when a model becomes too complex and fits the training data too closely, capturing noise rather than the underlying pattern.</p>
+<p>Consider the linear model discussed earlier, which has two parameters: the intercept (<span class="math notranslate nohighlight">\(\theta_0\)</span>) and the slope (<span class="math notranslate nohighlight">\(\theta_1\)</span>). These parameters give the learning algorithm two degrees of freedom to adjust the model to the training data. It can change both the height (via <span class="math notranslate nohighlight">\(\theta_0\)</span>) and the slope (via <span class="math notranslate nohighlight">\(\theta_1\)</span>) of the line to best fit the data.</p>
+<p>If we constrained <span class="math notranslate nohighlight">\(\theta_1 = 0\)</span>, the model would lose its ability to adjust the slope and only be able to shift the line vertically (adjusting <span class="math notranslate nohighlight">\(\theta_0\)</span>). This would result in a model that simply predicts the mean of the data, making it much harder to capture any meaningful relationship.</p>
+<p>Now, if we allow <span class="math notranslate nohighlight">\(\theta_1\)</span> to vary but apply regularization to keep it small, the algorithm would still be able to adjust the slope, but only slightly. This limits the model’s flexibility, resulting in a simpler model with fewer degrees of freedom than before. The key is to strike the right balance: you want a model that fits the training data reasonably well without becoming too complex, so it can generalize to new, unseen data.</p>
+</section>
+</section>
+<section id="underfitting-the-training-data">
+<h3>Underfitting the Training Data<a class="headerlink" href="#underfitting-the-training-data" title="Link to this heading">#</a></h3>
+<p>Underfitting occurs when a model is too simple to capture the underlying structure of the data. Unlike overfitting, where the model is overly complex, an underfitting model fails to learn enough from the training data, leading to poor performance. For example, using a linear model to predict life satisfaction might result in underfitting because the real-world relationship is often more complex than what a simple linear model can capture. As a result, predictions will likely be inaccurate, even on the training data.</p>
+<p>To address underfitting, there are several approaches:</p>
+<ul class="simple">
+<li><p><strong>Select a more powerful model</strong> with additional parameters, which allows it to capture more complexity.</p></li>
+<li><p><strong>Improve feature engineering</strong> by feeding the model more informative features that better represent the underlying patterns in the data.</p></li>
+<li><p><strong>Reduce the model’s constraints</strong>, such as by decreasing the regularization hyperparameter, which will give the model more flexibility to fit the data.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_jupyter_markdown.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Jupyter &amp; Markdown</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="12_basic_feature_engineering.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Basic Feature Engineering</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-machine-learning-core-concepts">The Machine Learning Core Concepts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-main-steps-of-the-machine-learning-pipeline">The main steps of the machine learning pipeline</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-representation">Mathematical Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-machine-learning">Types of Machine Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-classification-and-clustering">Regression, Classification, and Clustering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression"><strong>Regression</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classification"><strong>Classification</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering"><strong>Clustering</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences">Key Differences:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-example-neonatal-brain-volumes">Regression example: neonatal brain volumes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-data">Load the data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#select-and-train-the-model">Select and Train the Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-selection-a-simple-linear-model">Model selection: a simple linear model</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-normal-distribution-and-squared-loss">The Normal Distribution and Squared Loss</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-normal-equation">The Normal Equation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-minimization">Least Squares Minimization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-challenges-in-machine-learning">Main Challenges in Machine Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantity-of-training-data-and-cross-validation">Quantity of Training Data and Cross-validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#poor-quality-data">Poor-quality data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#irrelevant-features">Irrelevant Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overfitting-the-training-data">Overfitting the Training Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model-regularization">Model Regularization</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#underfitting-the-training-data">Underfitting the Training Data</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

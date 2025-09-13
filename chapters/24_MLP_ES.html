@@ -1,0 +1,1077 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Clasificación con Multilayer Perceptrons &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/24_MLP_ES';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Redes Neuronales Convolucionales" href="25_convolutions_ES.html" />
+    <link rel="prev" title="Entrenamiento de un Clasificador de Dígitos" href="23_Loss_Metrics_and_Optimizers_ES.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11_machine_learning_fundamentals_ES.html">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering_ES.html">Ingeniería de características (Feature Engineering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables_ES.html">Variables categóricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers_ES.html">Clasificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees_ES.html">Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction_ES.html">Reducción de la dimensionalidad: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans_ES.html">Extracción de Características en Manifold No Lineales</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks_ES.html">Deep Learning en Ingeniería Biomédica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_NN_as_UA_ES.html">Redes neuronales como aproximadores universales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers_ES.html">Entrenamiento de un Clasificador de Dígitos</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Clasificación con Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_convolutions_ES.html">Redes Neuronales Convolucionales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2_ES.html">ResNets para Análisis de Imágenes Biomédicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers_ES.html">Mecanismos de Atención y Transformadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders_ES.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic_ES.html">Aprendizaje Probabilístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL_ES.html">Aprendizaje Profundo Basado en Física</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/24_MLP_ES.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/24_MLP_ES.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Clasificación con Multilayer Perceptrons</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-perceptrones-multicapa">Implementación de Perceptrones Multicapa</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inicializacion-de-parametros-del-modelo">Inicialización de Parámetros del Modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-del-datablock">Construcción del DataBlock</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#explicacion-de-los-parametros-de-datablock">Explicación de los parámetros de <code class="docutils literal notranslate"><span class="pre">DataBlock</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-del-flujo-de-datos">Validación del Flujo de Datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-del-modelo">Entrenamiento del Modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-propagation">Forward Propagation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retropropagacion">Retropropagación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-funcion-de-perdida-de-entropia-cruzada">La Función de Pérdida de Entropía Cruzada</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-del-modelo">Interpretación del Modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejorando-el-modelo">Mejorando el Modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tasa-de-aprendizaje">Tasa de Aprendizaje</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#early-stopping"><em>Early Stopping</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropout"><em>Dropout</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizacion-adicional-seleccion-de-epocas-y-evitar-el-sobreajuste">Optimización Adicional: Selección de Épocas y Evitar el Sobreajuste</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="clasificacion-con-multilayer-perceptrons">
+<h1>Clasificación con Multilayer Perceptrons<a class="headerlink" href="#clasificacion-con-multilayer-perceptrons" title="Link to this heading">#</a></h1>
+<p>Aquí introduciremos las redes profundas más sencillas, llamadas <strong>Multilayer Perceptrons (MLP)</strong>. Estas consisten en múltiples capas de neuronas, cada una totalmente conectada con la capa inferior (de la que recibe entradas) y con la capa superior (a la que influye).</p>
+<p>Los MLP superan las limitaciones de los modelos lineales al incorporar una o más capas ocultas. La forma más sencilla de hacerlo es apilar varias capas totalmente conectadas una encima de otra. Cada capa alimenta a la siguiente hasta generar las salidas. Podemos pensar en las primeras capas como la <strong>representación</strong> y en la capa final como el <strong>predictor lineal</strong>.</p>
+<p><img alt="MLP" src="../_images/MLP.png" /></p>
+<section id="implementacion-de-perceptrones-multicapa">
+<h2>Implementación de Perceptrones Multicapa<a class="headerlink" href="#implementacion-de-perceptrones-multicapa" title="Link to this heading">#</a></h2>
+<p>Los MLP no son mucho más complejos de implementar que los modelos lineales simples. La diferencia conceptual clave es que ahora concatenamos varias capas.</p>
+<section id="inicializacion-de-parametros-del-modelo">
+<h3>Inicialización de Parámetros del Modelo<a class="headerlink" href="#inicializacion-de-parametros-del-modelo" title="Link to this heading">#</a></h3>
+<p>El conjunto de datos MNIST contiene 10 clases, y cada imagen consiste en una cuadrícula de <span class="math notranslate nohighlight">\(28 \times 28 = 784\)</span> píxeles en escala de grises. Ignoraremos la estructura espacial entre píxeles, de modo que lo tratamos como un problema de clasificación con 784 características de entrada y 10 clases.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastai.vision.all</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">untar_data</span><span class="p">(</span><span class="n">URLs</span><span class="o">.</span><span class="n">MNIST</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html">
+    <div>
+      <progress value='15687680' class='' max='15683414' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      100.03% [15687680/15683414 00:31&lt;00:00]
+    </div>
+    </div></div>
+</div>
+<p>Comenzaremos implementando un MLP con una capa oculta de 256 unidades. Tanto el número de capas como su ancho son ajustables. Normalmente se eligen anchos divisibles por potencias de 2 por eficiencia computacional.</p>
+<p>Para cada capa debemos guardar una matriz de pesos y un vector de sesgo, además de reservar memoria para los gradientes de la pérdida respecto a esos parámetros.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_hiddens</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">num_outputs</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(),</span> <span class="n">nn</span><span class="o">.</span><span class="n">LazyLinear</span><span class="p">(</span><span class="n">num_hiddens</span><span class="p">),</span>
+                                 <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span> <span class="n">nn</span><span class="o">.</span><span class="n">LazyLinear</span><span class="p">(</span><span class="n">num_outputs</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="construccion-del-datablock">
+<h3>Construcción del DataBlock<a class="headerlink" href="#construccion-del-datablock" title="Link to this heading">#</a></h3>
+<p>Con el patrón de extracción definido, usaremos la API <code class="docutils literal notranslate"><span class="pre">DataBlock</span></code> de fastai para configurar el flujo de datos. <code class="docutils literal notranslate"><span class="pre">DataBlock</span></code> organiza y transforma los datos de forma flexible, definiendo entradas, salidas y transformaciones.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dgt</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">(</span>
+    <span class="n">blocks</span><span class="o">=</span><span class="p">(</span><span class="n">ImageBlock</span><span class="p">,</span> <span class="n">CategoryBlock</span><span class="p">),</span>
+    <span class="n">get_items</span><span class="o">=</span><span class="n">get_image_files</span><span class="p">,</span>
+    <span class="n">get_y</span><span class="o">=</span><span class="n">parent_label</span><span class="p">,</span>
+    <span class="n">splitter</span><span class="o">=</span><span class="n">RandomSplitter</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+    <span class="n">batch_tfms</span><span class="o">=</span><span class="n">aug_transforms</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">dls</span> <span class="o">=</span> <span class="n">dgt</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="explicacion-de-los-parametros-de-datablock">
+<h4>Explicación de los parámetros de <code class="docutils literal notranslate"><span class="pre">DataBlock</span></code><a class="headerlink" href="#explicacion-de-los-parametros-de-datablock" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">blocks=(ImageBlock,</span> <span class="pre">CategoryBlock)</span></code></strong>: especifica que la entrada es una imagen y la salida una categoría.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">get_items=get_image_files</span></code></strong>: obtiene todas las imágenes de la ruta indicada.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">get_y=parent_label</span></code></strong>: extrae la etiqueta de cada imagen a partir del nombre de la carpeta contenedora.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">splitter=RandomSplitter(seed=42)</span></code></strong>: divide aleatoriamente el conjunto en entrenamiento y validación. El <code class="docutils literal notranslate"><span class="pre">seed</span></code> asegura reproducibilidad.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">batch_tfms=aug_transforms(size=224,</span> <span class="pre">min_scale=0.75)</span></code></strong>: aplica transformaciones por lotes como aumentos de datos.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="validacion-del-flujo-de-datos">
+<h2>Validación del Flujo de Datos<a class="headerlink" href="#validacion-del-flujo-de-datos" title="Link to this heading">#</a></h2>
+<p>Antes de entrenar, siempre es recomendable verificar el flujo de datos. El método <code class="docutils literal notranslate"><span class="pre">show_batch</span></code> permite visualizar imágenes y sus etiquetas, y con <code class="docutils literal notranslate"><span class="pre">summary</span></code> se obtiene un desglose detallado de los pasos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dls</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6675f7157ca571375a4597f3c7e8301ef4b025a2db27134074d151cf42a9fd4e.png" src="../_images/6675f7157ca571375a4597f3c7e8301ef4b025a2db27134074d151cf42a9fd4e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dgt</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting-up type transforms pipelines
+Collecting items from C:\Users\biagi\.fastai\data\mnist_png
+Found 70000 items
+2 datasets of sizes 56000,14000
+Setting up Pipeline: PILBase.create
+Setting up Pipeline: parent_label -&gt; Categorize -- {&#39;vocab&#39;: None, &#39;sort&#39;: True, &#39;add_na&#39;: False}
+
+Building one sample
+  Pipeline: PILBase.create
+    starting from
+      C:\Users\biagi\.fastai\data\mnist_png\training\7\48923.png
+    applying PILBase.create gives
+      PILImage mode=RGB size=28x28
+  Pipeline: parent_label -&gt; Categorize -- {&#39;vocab&#39;: None, &#39;sort&#39;: True, &#39;add_na&#39;: False}
+    starting from
+      C:\Users\biagi\.fastai\data\mnist_png\training\7\48923.png
+    applying parent_label gives
+      7
+    applying Categorize -- {&#39;vocab&#39;: None, &#39;sort&#39;: True, &#39;add_na&#39;: False} gives
+      TensorCategory(7)
+
+Final sample: (PILImage mode=RGB size=28x28, TensorCategory(7))
+
+
+Collecting items from C:\Users\biagi\.fastai\data\mnist_png
+Found 70000 items
+2 datasets of sizes 56000,14000
+Setting up Pipeline: PILBase.create
+Setting up Pipeline: parent_label -&gt; Categorize -- {&#39;vocab&#39;: None, &#39;sort&#39;: True, &#39;add_na&#39;: False}
+Setting up after_item: Pipeline: ToTensor
+Setting up before_batch: Pipeline: 
+Setting up after_batch: Pipeline: IntToFloatTensor -- {&#39;div&#39;: 255.0, &#39;div_mask&#39;: 1} -&gt; Flip -- {&#39;size&#39;: None, &#39;mode&#39;: &#39;bilinear&#39;, &#39;pad_mode&#39;: &#39;reflection&#39;, &#39;mode_mask&#39;: &#39;nearest&#39;, &#39;align_corners&#39;: True, &#39;p&#39;: 0.5} -&gt; Brightness -- {&#39;max_lighting&#39;: 0.2, &#39;p&#39;: 1.0, &#39;draw&#39;: None, &#39;batch&#39;: False}
+
+Building one batch
+Applying item_tfms to the first sample:
+  Pipeline: ToTensor
+    starting from
+      (PILImage mode=RGB size=28x28, TensorCategory(7))
+    applying ToTensor gives
+      (TensorImage of size 3x28x28, TensorCategory(7))
+
+Adding the next 3 samples
+
+No before_batch transform to apply
+
+Collating items in a batch
+
+Applying batch_tfms to the batch built
+  Pipeline: IntToFloatTensor -- {&#39;div&#39;: 255.0, &#39;div_mask&#39;: 1} -&gt; Flip -- {&#39;size&#39;: None, &#39;mode&#39;: &#39;bilinear&#39;, &#39;pad_mode&#39;: &#39;reflection&#39;, &#39;mode_mask&#39;: &#39;nearest&#39;, &#39;align_corners&#39;: True, &#39;p&#39;: 0.5} -&gt; Brightness -- {&#39;max_lighting&#39;: 0.2, &#39;p&#39;: 1.0, &#39;draw&#39;: None, &#39;batch&#39;: False}
+    starting from
+      (TensorImage of size 4x3x28x28, TensorCategory([7, 7, 2, 2]))
+    applying IntToFloatTensor -- {&#39;div&#39;: 255.0, &#39;div_mask&#39;: 1} gives
+      (TensorImage of size 4x3x28x28, TensorCategory([7, 7, 2, 2]))
+    applying Flip -- {&#39;size&#39;: None, &#39;mode&#39;: &#39;bilinear&#39;, &#39;pad_mode&#39;: &#39;reflection&#39;, &#39;mode_mask&#39;: &#39;nearest&#39;, &#39;align_corners&#39;: True, &#39;p&#39;: 0.5} gives
+      (TensorImage of size 4x3x28x28, TensorCategory([7, 7, 2, 2]))
+    applying Brightness -- {&#39;max_lighting&#39;: 0.2, &#39;p&#39;: 1.0, &#39;draw&#39;: None, &#39;batch&#39;: False} gives
+      (TensorImage of size 4x3x28x28, TensorCategory([7, 7, 2, 2]))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="entrenamiento-del-modelo">
+<h2>Entrenamiento del Modelo<a class="headerlink" href="#entrenamiento-del-modelo" title="Link to this heading">#</a></h2>
+<p>Con los datos listos, entrenamos el modelo con un <code class="docutils literal notranslate"><span class="pre">Learner</span></code>. Fastai calcula automáticamente gradientes, simplificando enormemente la implementación.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">error_rate</span><span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>error_rate</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.397549</td>
+      <td>0.262883</td>
+      <td>0.077929</td>
+      <td>01:29</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.309400</td>
+      <td>0.186758</td>
+      <td>0.056429</td>
+      <td>01:24</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<section id="forward-propagation">
+<h3>Forward Propagation<a class="headerlink" href="#forward-propagation" title="Link to this heading">#</a></h3>
+<p>Es el proceso de calcular las variables intermedias en una red neuronal, desde la capa de entrada hasta la de salida.</p>
+<p>Dada una entrada <span class="math notranslate nohighlight">\(\mathbf{x}\in\mathbb{R}^d\)</span>, la capa oculta calcula</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z} = \mathbf{W}^{(1)} \mathbf{x}, \quad \mathbf{W}^{(1)} \in \mathbb{R}^{h \times d}.
+\]</div>
+<p>Tras aplicar la función de activación <span class="math notranslate nohighlight">\(\phi\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{h} = \phi(\mathbf{z}), \quad \mathbf{h}\in\mathbb{R}^h.
+\]</div>
+<p>La capa de salida produce:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{o} = \mathbf{W}^{(2)} \mathbf{h}, \quad \mathbf{W}^{(2)} \in \mathbb{R}^{q \times h}.
+\]</div>
+<p>La pérdida para un ejemplo con etiqueta <span class="math notranslate nohighlight">\(y\)</span> es:</p>
+<div class="math notranslate nohighlight">
+\[
+L = l(\mathbf{o}, y).
+\]</div>
+<p>Incluyendo regularización <span class="math notranslate nohighlight">\(l_2\)</span> con hiperparámetro <span class="math notranslate nohighlight">\(\lambda\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+s = \tfrac{\lambda}{2}\left(\|\mathbf{W}^{(1)}\|_F^2 + \|\mathbf{W}^{(2)}\|_F^2\right),
+\]</div>
+<p>y el objetivo regularizado:</p>
+<div class="math notranslate nohighlight">
+\[
+J = L + s.
+\]</div>
+</section>
+<section id="retropropagacion">
+<h3>Retropropagación<a class="headerlink" href="#retropropagacion" title="Link to this heading">#</a></h3>
+<p><em>Retropropagación</em> es el método para calcular gradientes de los parámetros de una red neuronal recorriéndola en sentido inverso, desde la salida hasta la entrada, utilizando la regla de la cadena del cálculo diferencial. Durante el proceso se almacenan derivadas parciales intermedias.</p>
+<p>Para funciones <span class="math notranslate nohighlight">\(\mathsf{Y}=f(\mathsf{X})\)</span> y <span class="math notranslate nohighlight">\(\mathsf{Z}=g(\mathsf{Y})\)</span>, la regla de la cadena establece:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial \mathsf{Z}}{\partial \mathsf{X}} = \text{prod}\!\left(\frac{\partial \mathsf{Z}}{\partial \mathsf{Y}}, \frac{\partial \mathsf{Y}}{\partial \mathsf{X}}\right),
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(\text{prod}\)</span> denota la multiplicación adecuada (matricial o su equivalente tensorial).</p>
+<p>En nuestra red con parámetros <span class="math notranslate nohighlight">\(\mathbf{W}^{(1)}\)</span> y <span class="math notranslate nohighlight">\(\mathbf{W}^{(2)}\)</span>, el objetivo es <span class="math notranslate nohighlight">\(J=L+s\)</span>, donde <span class="math notranslate nohighlight">\(L\)</span> es la pérdida y <span class="math notranslate nohighlight">\(s\)</span> el término de regularización <span class="math notranslate nohighlight">\(\ell_2\)</span>. Los primeros gradientes son directos:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial J}{\partial L}=1, \qquad \frac{\partial J}{\partial s}=1.
+\]</div>
+<p>A partir de aquí trabajamos hacia atrás. El gradiente respecto a la variable de la capa de salida es:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial J}{\partial \mathbf{o}} = \frac{\partial L}{\partial \mathbf{o}} \in \mathbb{R}^q.
+\]</div>
+<p>Los gradientes de la regularización son:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial s}{\partial \mathbf{W}^{(1)}} = \lambda \mathbf{W}^{(1)}, \qquad 
+\frac{\partial s}{\partial \mathbf{W}^{(2)}} = \lambda \mathbf{W}^{(2)}.
+\]</div>
+<p>Así, para los parámetros de la capa de salida obtenemos:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial J}{\partial \mathbf{W}^{(2)}} = \frac{\partial J}{\partial \mathbf{o}} \mathbf{h}^\top + \lambda \mathbf{W}^{(2)}.
+\]</div>
+<p>Pasando a la capa oculta, los gradientes se propagan como:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial J}{\partial \mathbf{h}} = {\mathbf{W}^{(2)}}^\top \frac{\partial J}{\partial \mathbf{o}}, 
+\]</div>
+<p>y aplicando la derivada elemento a elemento de la función de activación:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial J}{\partial \mathbf{z}} = \frac{\partial J}{\partial \mathbf{h}} \odot \phi'(\mathbf{z}).
+\]</div>
+<p>Finalmente, para los parámetros de la capa oculta:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{\partial J}{\partial \mathbf{W}^{(1)}} = \frac{\partial J}{\partial \mathbf{z}} \mathbf{x}^\top + \lambda \mathbf{W}^{(1)}.
+\]</div>
+</section>
+<section id="la-funcion-de-perdida-de-entropia-cruzada">
+<h3>La Función de Pérdida de Entropía Cruzada<a class="headerlink" href="#la-funcion-de-perdida-de-entropia-cruzada" title="Link to this heading">#</a></h3>
+<p>En clasificación multiclase, la función de pérdida más utilizada es la <em>entropía cruzada</em>, también conocida como <em>log loss</em>.</p>
+<p>Esta elección se justifica fácilmente mediante la estimación de máxima verosimilitud.</p>
+<p>La función <em>softmax</em> nos da un vector <span class="math notranslate nohighlight">\(\mathbf{p}\)</span>, que podemos interpretar como las probabilidades condicionales (estimadas) de cada clase, dado un input <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>, como por ejemplo <span class="math notranslate nohighlight">\(p_1 = P(y=\textrm{gato} \mid \mathbf{x})\)</span>.</p>
+<p>Suponemos que para un dataset con características <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> las etiquetas <span class="math notranslate nohighlight">\(\mathbf{Y}\)</span> están representadas usando una codificación <em>one-hot</em>. Podemos comparar las estimaciones con la realidad verificando qué tan probables son las clases reales según nuestro modelo, dado <span class="math notranslate nohighlight">\(\mathbf{x}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+P(\mathbf{Y} \mid \mathbf{X}) = \prod_{i=1}^n P(\mathbf{y}^{(i)} \mid \mathbf{x}^{(i)}). 
+\]</div>
+<p>Podemos usar esta factorización porque asumimos que cada etiqueta se extrae independientemente de su respectiva distribución <span class="math notranslate nohighlight">\(P(\mathbf{y}\mid\mathbf{x}^{(i)})\)</span>. Luego tomamos el logaritmo negativo para obtener el problema equivalente de minimizar la log-verosimilitud negativa:</p>
+<div class="math notranslate nohighlight">
+\[
+-\log P(\mathbf{Y} \mid \mathbf{X}) = \sum_{i=1}^n -\log P(\mathbf{y}^{(i)} \mid \mathbf{x}^{(i)})
+= \sum_{i=1}^n l(\mathbf{y}^{(i)}, \mathbf{p}^{(i)}),
+\]</div>
+<p>donde, para cualquier par de etiqueta <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> y predicción del modelo <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> sobre <span class="math notranslate nohighlight">\(C\)</span> clases, la función de pérdida <span class="math notranslate nohighlight">\(L\)</span> es:</p>
+<div class="math notranslate nohighlight">
+\[
+L(\mathbf{y}, \mathbf{p}) = - \sum_{j=1}^C y_j \log \hat{y}_j. 
+\]</div>
+<p>Esta ecuación se conoce comúnmente como la <em>pérdida de entropía cruzada</em>. Dado que <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> es un vector <em>one-hot</em> de longitud <span class="math notranslate nohighlight">\(C\)</span>, la suma sobre todas sus coordenadas <span class="math notranslate nohighlight">\(j\)</span> se anula salvo en un término.</p>
+<p>El valor de <span class="math notranslate nohighlight">\(L(\mathbf{y}, \mathbf{p})\)</span> está acotado inferiormente por <span class="math notranslate nohighlight">\(0\)</span> siempre que <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> sea un vector de probabilidades: ningún valor es mayor que <span class="math notranslate nohighlight">\(1\)</span>, por lo que su logaritmo negativo no puede ser menor que <span class="math notranslate nohighlight">\(0\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(L(\mathbf{y}, \mathbf{p}) = 0\)</span> solo ocurre si predecimos la etiqueta real con <em>certeza absoluta</em>. Esto nunca sucede para ningún valor finito de los pesos, ya que llevar la salida de <em>softmax</em> hacia <span class="math notranslate nohighlight">\(1\)</span> requiere enviar la entrada correspondiente <span class="math notranslate nohighlight">\(o_i\)</span> a infinito (o todas las demás salidas <span class="math notranslate nohighlight">\(o_j\)</span> con <span class="math notranslate nohighlight">\(j \neq i\)</span> a menos infinito).</p>
+<p>Incluso si nuestro modelo pudiera asignar una probabilidad de salida igual a <span class="math notranslate nohighlight">\(0\)</span>, cualquier error cometido con esa confianza tan alta generaría una pérdida infinita (<span class="math notranslate nohighlight">\(-\log 0 = \infty\)</span>).</p>
+</section>
+</section>
+<section id="interpretacion-del-modelo">
+<h2>Interpretación del Modelo<a class="headerlink" href="#interpretacion-del-modelo" title="Link to this heading">#</a></h2>
+<p>Tras entrenar, es útil analizar el rendimiento. La matriz de confusión muestra aciertos y errores, mientras que <code class="docutils literal notranslate"><span class="pre">most_confused</span></code> indica las clases más confundidas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interp</span> <span class="o">=</span> <span class="n">ClassificationInterpretation</span><span class="o">.</span><span class="n">from_learner</span><span class="p">(</span><span class="n">learn</span><span class="p">)</span>
+<span class="n">interp</span><span class="o">.</span><span class="n">plot_confusion_matrix</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"></div><div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"></div><img alt="../_images/3db47d89b3ebd52691d700566177aec4d3c03ec336ae2b48f8877c451c7f2086.png" src="../_images/3db47d89b3ebd52691d700566177aec4d3c03ec336ae2b48f8877c451c7f2086.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interp</span><span class="o">.</span><span class="n">most_confused</span><span class="p">(</span><span class="n">min_val</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;5&#39;, &#39;3&#39;, 52),
+ (&#39;6&#39;, &#39;2&#39;, 49),
+ (&#39;3&#39;, &#39;5&#39;, 45),
+ (&#39;9&#39;, &#39;7&#39;, 41),
+ (&#39;4&#39;, &#39;9&#39;, 32),
+ (&#39;8&#39;, &#39;3&#39;, 27)]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mejorando-el-modelo">
+<h2>Mejorando el Modelo<a class="headerlink" href="#mejorando-el-modelo" title="Link to this heading">#</a></h2>
+<section id="tasa-de-aprendizaje">
+<h3>Tasa de Aprendizaje<a class="headerlink" href="#tasa-de-aprendizaje" title="Link to this heading">#</a></h3>
+<p>La tasa <span class="math notranslate nohighlight">\(\eta\)</span> controla el tamaño del paso en el descenso por gradiente:</p>
+<div class="math notranslate nohighlight">
+\[
+w_{i+1} = w_i - \eta \nabla L(w_i).
+\]</div>
+<p>Si es muy grande, el entrenamiento es inestable; si es muy pequeña, es lento. El <strong>learning rate finder</strong> de fastai ayuda a elegir un buen valor observando el efecto de <span class="math notranslate nohighlight">\(\eta\)</span> sobre la función de pérdida.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lr_min</span><span class="p">,</span> <span class="n">lr_steep</span> <span class="o">=</span> <span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">(</span><span class="n">suggest_funcs</span><span class="o">=</span><span class="p">(</span><span class="n">minimum</span><span class="p">,</span> <span class="n">steep</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Minimum/10: </span><span class="si">{</span><span class="n">lr_min</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">, steepest point: </span><span class="si">{</span><span class="n">lr_steep</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"></div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\biagi\anaconda3\envs\book\Lib\site-packages\fastai\learner.py:53: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don&#39;t have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(file, map_location=device, **torch_load_kwargs)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Minimum/10: 1.32e-07, steepest point: 1.10e-06
+</pre></div>
+</div>
+<img alt="../_images/d68435147c5ce551bc3f9b98fd98405117455c2c51b0dd81b8a969c2c06ab1eb.png" src="../_images/d68435147c5ce551bc3f9b98fd98405117455c2c51b0dd81b8a969c2c06ab1eb.png" />
+</div>
+</div>
+<blockquote>
+<div><p>Nota: Escala logarítmica: la gráfica del <em>learning rate finder</em> tiene una escala logarítmica, por lo que el punto medio entre <span class="math notranslate nohighlight">\(1 \times 10^{-3}\)</span> y <span class="math notranslate nohighlight">\(1 \times 10^{-2}\)</span> está entre <span class="math notranslate nohighlight">\(3 \times 10^{-3}\)</span> y <span class="math notranslate nohighlight">\(4 \times 10^{-3}\)</span>. Esto se debe a que lo que más nos interesa es el orden de magnitud de la tasa de aprendizaje.</p>
+</div></blockquote>
+<p>La gráfica de la tasa de aprendizaje ayuda a identificar un valor que minimice la pérdida sin que el entrenamiento diverja. En general, conviene elegir una tasa ligeramente menor al mínimo o al punto de mayor pendiente, en este caso alrededor de <span class="math notranslate nohighlight">\(3 \times 10^{-3}\)</span>.</p>
+</section>
+<section id="early-stopping">
+<h3><em>Early Stopping</em><a class="headerlink" href="#early-stopping" title="Link to this heading">#</a></h3>
+<p>Las redes neuronales profundas pueden llegar a memorizar incluso etiquetas aleatorias (Zhang et al., 2021). Sin embargo, investigaciones muestran que primero se ajustan a etiquetas limpias y solo después se adaptan a las mal etiquetadas (Rolnick et al., 2017). Esto lleva a una idea importante: si un modelo se ajusta a las etiquetas correctas pero no a las ruidosas, ha logrado generalizar (Garg et al., 2021).</p>
+<p>Esto motiva el uso de <strong>early stopping</strong>, un método clásico de regularización. En lugar de limitar directamente los pesos, se limita la duración del entrenamiento. La práctica habitual es monitorizar el error de validación en cada época y detener el entrenamiento cuando deja de mejorar más allá de un pequeño umbral durante un número determinado de épocas, conocido como <em>criterio de paciencia</em>.</p>
+<p>El <em>early stopping</em> ofrece dos ventajas principales:</p>
+<ol class="arabic simple">
+<li><p>Mejor generalización en presencia de etiquetas ruidosas.</p></li>
+<li><p>Reducción del coste y tiempo de entrenamiento, especialmente en modelos grandes que requieren configuraciones con múltiples GPU.</p></li>
+</ol>
+<p>Cuando los datos están libres de ruido y son perfectamente separables (por ejemplo, gatos frente a perros), el <em>early stopping</em> rara vez mejora la generalización. Pero en casos con ruido en las etiquetas o incertidumbre inherente (como predecir resultados clínicos de pacientes), detener el entrenamiento antes de que el modelo memorice el ruido resulta esencial.</p>
+</section>
+<section id="dropout">
+<h3><em>Dropout</em><a class="headerlink" href="#dropout" title="Link to this heading">#</a></h3>
+<p>Un buen modelo predictivo debe generalizar bien a datos no vistos. La teoría clásica relaciona la generalización con la <em>simplicidad</em>, que puede significar baja dimensionalidad, normas de parámetros pequeñas (como en la regularización por decaimiento de pesos) o suavidad, es decir, insensibilidad a pequeñas perturbaciones en la entrada. Por ejemplo, los clasificadores de imágenes deben ser robustos frente a ruido leve en los píxeles.</p>
+<p>Bishop (1995) demostró que entrenar con ruido en la entrada es equivalente a la regularización de Tikhonov, estableciendo un vínculo formal entre suavidad y robustez. Sobre esta idea, Srivastava et al. (2014) propusieron <strong>dropout</strong>, una técnica que introduce ruido en las <em>capas internas</em> de las redes neuronales. Durante el entrenamiento, <em>dropout</em> apaga aleatoriamente (pone a cero) una fracción de neuronas en cada iteración, evitando que las capas dependan en exceso de ciertos patrones de activación —un problema denominado <em>co-adaptación</em>.</p>
+<p>El mecanismo es sencillo: con una probabilidad de <em>dropout</em> <span class="math notranslate nohighlight">\(p\)</span>, cada activación <span class="math notranslate nohighlight">\(h\)</span> se reemplaza por</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\tilde{h} = \begin{cases} 
+0 &amp; \text{con probabilidad } p, \\ 
+\frac{h}{1-p} &amp; \text{con probabilidad } 1-p,
+\end{cases}
+\end{split}\]</div>
+<p>de forma que la esperanza matemática <span class="math notranslate nohighlight">\(\mathbb{E}[\tilde{h}] = h\)</span> se mantiene inalterada.</p>
+<p>Normalmente, <em>dropout</em> se desactiva en la fase de prueba. Con un modelo entrenado y un nuevo ejemplo, no se eliminan nodos y no es necesario normalizar. Sin embargo, existen excepciones: algunos investigadores usan <em>dropout</em> en pruebas como un método heurístico para estimar la incertidumbre de las predicciones de la red neuronal. Si las predicciones coinciden en muchas ejecuciones con <em>dropout</em>, podemos decir que la red tiene más confianza.</p>
+<p><em>Dropout</em> se ha convertido en un método estándar de regularización en deep learning, ayudando a los modelos a evitar el sobreajuste y mejorar la generalización, especialmente al entrenar redes grandes.</p>
+</section>
+<section id="optimizacion-adicional-seleccion-de-epocas-y-evitar-el-sobreajuste">
+<h3>Optimización Adicional: Selección de Épocas y Evitar el Sobreajuste<a class="headerlink" href="#optimizacion-adicional-seleccion-de-epocas-y-evitar-el-sobreajuste" title="Link to this heading">#</a></h3>
+<p>Escoger el número de épocas es un equilibrio delicado. Muy pocas épocas pueden provocar <em>underfitting</em>, mientras que demasiadas llevan al <em>overfitting</em>. Algunas pautas generales son:</p>
+<ul class="simple">
+<li><p>Empezar con pocas épocas para obtener un rendimiento de referencia.</p></li>
+<li><p>Monitorizar la pérdida y la exactitud de validación a lo largo de las épocas para identificar cuándo comienza el sobreajuste.</p></li>
+<li><p>Usar <em>early stopping</em> o validación cruzada si es necesario.</p></li>
+</ul>
+<p>Si los recursos de entrenamiento lo permiten, puede ser útil experimentar con modelos más grandes o arquitecturas más profundas. No obstante, siempre hay que validar si la complejidad adicional mejora realmente la tarea en cuestión.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="23_Loss_Metrics_and_Optimizers_ES.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Entrenamiento de un Clasificador de Dígitos</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="25_convolutions_ES.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Redes Neuronales Convolucionales</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementacion-de-perceptrones-multicapa">Implementación de Perceptrones Multicapa</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inicializacion-de-parametros-del-modelo">Inicialización de Parámetros del Modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-del-datablock">Construcción del DataBlock</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#explicacion-de-los-parametros-de-datablock">Explicación de los parámetros de <code class="docutils literal notranslate"><span class="pre">DataBlock</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validacion-del-flujo-de-datos">Validación del Flujo de Datos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenamiento-del-modelo">Entrenamiento del Modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-propagation">Forward Propagation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retropropagacion">Retropropagación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-funcion-de-perdida-de-entropia-cruzada">La Función de Pérdida de Entropía Cruzada</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-del-modelo">Interpretación del Modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mejorando-el-modelo">Mejorando el Modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tasa-de-aprendizaje">Tasa de Aprendizaje</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#early-stopping"><em>Early Stopping</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropout"><em>Dropout</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizacion-adicional-seleccion-de-epocas-y-evitar-el-sobreajuste">Optimización Adicional: Selección de Épocas y Evitar el Sobreajuste</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

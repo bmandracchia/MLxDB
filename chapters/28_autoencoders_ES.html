@@ -1,0 +1,712 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Autoencoders &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/28_autoencoders_ES';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Aprendizaje Probabilístico" href="28b_probabilistic_ES.html" />
+    <link rel="prev" title="Mecanismos de Atención y Transformadores" href="27_transformers_ES.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11_machine_learning_fundamentals_ES.html">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering_ES.html">Ingeniería de características (Feature Engineering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables_ES.html">Variables categóricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers_ES.html">Clasificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees_ES.html">Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction_ES.html">Reducción de la dimensionalidad: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans_ES.html">Extracción de Características en Manifold No Lineales</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks_ES.html">Deep Learning en Ingeniería Biomédica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_NN_as_UA_ES.html">Redes neuronales como aproximadores universales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers_ES.html">Entrenamiento de un Clasificador de Dígitos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP_ES.html">Clasificación con Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_convolutions_ES.html">Redes Neuronales Convolucionales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2_ES.html">ResNets para Análisis de Imágenes Biomédicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers_ES.html">Mecanismos de Atención y Transformadores</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic_ES.html">Aprendizaje Probabilístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL_ES.html">Aprendizaje Profundo Basado en Física</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/28_autoencoders_ES.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/28_autoencoders_ES.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Autoencoders</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construir-un-autoencoder">Construir un Autoencoder</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imagenes-fuera-de-distribucion">Imágenes Fuera de Distribución</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autoencoders-variacionales-vae">Autoencoders Variacionales (VAE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-elbo">La ELBO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reparametrizacion">Reparametrización</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-producen-las-redes">¿Qué producen las redes?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-entrenamiento-en-la-practica">El Entrenamiento en la práctica</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problemas-comunes-y-soluciones">Problemas comunes y soluciones</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vaes-y-pca-probabilistico-ppca">VAEs y PCA Probabilístico (PPCA)</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="autoencoders">
+<h1>Autoencoders<a class="headerlink" href="#autoencoders" title="Link to this heading">#</a></h1>
+<p>Los <strong>Autoencoders (AE)</strong> se entrenan para codificar datos de entrada en un vector de características más pequeño y luego reconstruirlo mediante una segunda red neuronal llamada <em>decoder</em> (decodificador).
+El vector de características se denomina <strong>cuello de botella (<em>bottleneck</em>)</strong> de la red, ya que buscamos comprimir los datos de entrada en una cantidad menor de características. Esta propiedad es útil en muchas aplicaciones, especialmente en la compresión de datos o en la comparación de imágenes usando métricas más allá de las comparaciones a nivel de píxel.</p>
+<section id="construir-un-autoencoder">
+<h2>Construir un Autoencoder<a class="headerlink" href="#construir-un-autoencoder" title="Link to this heading">#</a></h2>
+<p>Un autoencoder aprende a reproducir su entrada pasando por un <strong>cuello de botella</strong> que obliga a una representación compacta. Un <em>encoder</em> <span class="math notranslate nohighlight">\(f_\theta\)</span> mapea una entrada <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> a un código latente <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>, y un <em>decoder</em> <span class="math notranslate nohighlight">\(g_\phi\)</span> mapea <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> de nuevo a una reconstrucción <span class="math notranslate nohighlight">\(\hat{\mathbf{x}}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}=f_\theta(\mathbf{x}),\qquad \hat{\mathbf{x}}=g_\phi(\mathbf{z}).
+\]</div>
+<p>El entrenamiento minimiza un objetivo de reconstrucción</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\theta,\phi)=\mathbb{E}_{\mathbf{x}}\big[\ell(\hat{\mathbf{x}},\mathbf{x})\big].
+\]</div>
+<p>La elección de <span class="math notranslate nohighlight">\(\ell\)</span> debe corresponderse con el tipo de datos y el modelo de ruido asumido:</p>
+<ul class="simple">
+<li><p><strong>Error cuadrático medio (MSE):</strong> corresponde a verosimilitud Gaussiana para datos continuos.</p></li>
+<li><p><strong>Entropía cruzada binaria:</strong> adecuada para observaciones Bernoulli.</p></li>
+<li><p><strong>Entropía cruzada categórica:</strong> para datos discretos.</p></li>
+<li><p><strong>Pérdida de Poisson:</strong> común para datos de conteo.</p></li>
+</ul>
+<p>El objetivo es que <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> preserve la información necesaria para reconstruir <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> eliminando redundancias.</p>
+<p>Arquitectónicamente, los autoencoders se adaptan a la modalidad:</p>
+<ul class="simple">
+<li><p>Para vectores tabulares: <span class="math notranslate nohighlight">\(f_\theta\)</span> y <span class="math notranslate nohighlight">\(g_\phi\)</span> suelen ser perceptrones multicapa.</p></li>
+<li><p>Para imágenes: se emplean redes convolucionales profundas que reducen progresivamente la resolución espacial mientras aumentan la capacidad de canales.</p></li>
+</ul>
+<p>Un diseño práctico aplica una secuencia de convoluciones con <em>stride</em> para reducir la entrada tres veces, disminuyendo alto y ancho por un factor 2 en cada paso. El mapa resultante se aplana y proyecta a un vector <span class="math notranslate nohighlight">\(\mathbf{z}\in\mathbb{R}^d\)</span>. La dimensión <span class="math notranslate nohighlight">\(d\)</span> define la fuerza del cuello de botella:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(d\)</span> pequeño: compresión fuerte y aprendizaje de estructuras compactas.</p></li>
+<li><p><span class="math notranslate nohighlight">\(d\)</span> grande: reconstrucción más sencilla pero riesgo de transmitir detalles innecesarios.</p></li>
+</ul>
+<p>El <em>decoder</em> generalmente refleja este proceso en reversa, expandiendo <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> hasta la forma original usando convoluciones transpuestas (<em>deconvolutions</em>).</p>
+<p><img alt="autoencoder" src="../_images/autoencoders.png" /></p>
+<p>En AEs rara vez se aplica <strong>Batch Normalization</strong>, porque se desea que la codificación de cada imagen sea independiente de las demás. Si se normalizara por lotes, se introducirían correlaciones no deseadas en la codificación o decodificación. En algunos casos se usa como regularización, pero lo más recomendable es recurrir a técnicas como <em>Instance Normalization</em> o <em>Layer Normalization</em>.</p>
+<section id="imagenes-fuera-de-distribucion">
+<h3>Imágenes Fuera de Distribución<a class="headerlink" href="#imagenes-fuera-de-distribucion" title="Link to this heading">#</a></h3>
+<p>Podemos explorar limitaciones: ¿qué ocurre si intentamos reconstruir una imagen fuera de la distribución del dataset? El <em>decoder</em> habrá aprendido patrones comunes y puede fallar en reconstruir imágenes que no los sigan.</p>
+<p>En general, los autoencoders fallan en reconstruir <strong>ruido de alta frecuencia</strong> (cambios bruscos en pocos píxeles) debido al uso de MSE. Pequeños desajustes en el <em>decoder</em> producen grandes pérdidas, por lo que el modelo tiende a promediar en esas regiones. En cambio, para ruido de baja frecuencia, un pequeño desajuste no altera demasiado la imagen. Cuanto mayor sea la dimensionalidad latente, más de este ruido de alta frecuencia podrá reconstruirse.</p>
+</section>
+</section>
+<section id="autoencoders-variacionales-vae">
+<h2>Autoencoders Variacionales (VAE)<a class="headerlink" href="#autoencoders-variacionales-vae" title="Link to this heading">#</a></h2>
+<p>Los <strong>VAEs</strong> son una versión generativa y <strong>probabilística</strong> de los autoencoders. Un VAE combina:</p>
+<ul class="simple">
+<li><p>Un <em>decoder</em> <span class="math notranslate nohighlight">\(p_\theta(\mathbf{x}\mid \mathbf{z})\)</span> que genera datos desde un vector latente <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>.</p></li>
+<li><p>Un <em>encoder</em> <span class="math notranslate nohighlight">\(q_\phi(\mathbf{z}\mid \mathbf{x})\)</span> que aproxima la distribución posterior sobre los latentes.</p></li>
+</ul>
+<p>Se asume un prior simple <span class="math notranslate nohighlight">\(p(\mathbf{z})=\mathcal{N}(\mathbf{0},\mathbf{I})\)</span>, que regula el espacio latente hacia una distribución Gaussiana, a diferencia de los AEs clásicos donde no hay restricciones. Para generar, se toma <span class="math notranslate nohighlight">\(\mathbf{z}\sim p(\mathbf{z})\)</span> y se decodifica <span class="math notranslate nohighlight">\(\mathbf{x}\sim p_\theta(\mathbf{x}\mid \mathbf{z})\)</span>.</p>
+<section id="la-elbo">
+<h3>La ELBO<a class="headerlink" href="#la-elbo" title="Link to this heading">#</a></h3>
+<p>La identidad variacional detrás de los VAEs es</p>
+<div class="math notranslate nohighlight">
+\[
+\log p_\theta(\mathbf{x})
+=\underbrace{\mathbb{E}_{q_\phi(\mathbf{z}\mid\mathbf{x})}\!\big[\log p_\theta(\mathbf{x}\mid\mathbf{z})\big]
+-\mathrm{KL}\!\big(q_\phi(\mathbf{z}\mid\mathbf{x})\,\|\,p(\mathbf{z})\big)}_{\displaystyle \mathcal{L}(\theta,\phi;\mathbf{x})\;\text{(ELBO)}}
+\;+\;\underbrace{\mathrm{KL}\!\big(q_\phi(\mathbf{z}\mid\mathbf{x})\,\|\,p_\theta(\mathbf{z}\mid\mathbf{x})\big)}_{\ge 0}.
+\]</div>
+<p>Dado que el último término es no negativo, $\mathcal{L}$ es una <strong>cota inferior</strong> de la log-verosimilitud exacta. Maximizar la ELBO incrementa la verosimilitud de los datos y acerca el posterior aproximado $q_\phi(\mathbf{z}\mid\mathbf{x})$ al posterior verdadero $p_\theta(\mathbf{z}\mid\mathbf{x})$; la cota se vuelve ajustada cuando ambos coinciden.</p>
+<p>Maximizar la log-verosimilitud exacta $\log p_\theta(\mathbf{x})$ es intratable, por lo que los VAEs maximizan la <strong>evidence lower bound (ELBO)</strong>:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L}(\theta,\phi;\mathbf{x})
+\;=\;
+\underbrace{\mathbb{E}_{q_\phi(\mathbf{z}\mid \mathbf{x})}[\log p_\theta(\mathbf{x}\mid \mathbf{z})]}_{\text{reconstrucción}}
+\;-\;
+\underbrace{\mathrm{KL}\!\left(q_\phi(\mathbf{z}\mid \mathbf{x})\,\|\,p(\mathbf{z})\right)}_{\text{regularización}}.
+\]</div>
+<ul class="simple">
+<li><p>El primer término fuerza a que las reconstrucciones se parezcan a los datos.</p></li>
+<li><p>El segundo mantiene los latentes inferidos cerca del prior, dando lugar a un espacio latente bien estructurado.</p></li>
+</ul>
+<p>La conexión con las pérdidas de reconstrucción comunes proviene de la elección de la verosimilitud $p_\theta(\mathbf{x}\mid\mathbf{z})$:</p>
+<ul class="simple">
+<li><p>Si $p_\theta(\mathbf{x}\mid\mathbf{z})$ es Bernoulli factorada (típico para datos en $[0,1]$):</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\log p_\theta(\mathbf{x}\mid\mathbf{z})
+=\sum_i x_i\log \hat{x}_i+(1-x_i)\log(1-\hat{x}_i),
+\]</div>
+<p>con $\hat{x}=\sigma(f_\theta(\mathbf{z}))$.
+El negativo de esto es exactamente la entropía cruzada binaria (BCE). Así, maximizar el término de reconstrucción equivale a minimizar la BCE, salvo por la expectativa sobre $q_\phi(\mathbf{z}\mid\mathbf{x})$ (normalmente aproximada por una o pocas muestras).</p>
+<ul class="simple">
+<li><p>Si $p_\theta(\mathbf{x}\mid\mathbf{z})$ es Gaussiana con varianza fija $\sigma^2 I$ y media $\mu_\theta(\mathbf{z})$:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+\log p_\theta(\mathbf{x}\mid\mathbf{z})
+=-\frac{1}{2\sigma^2}\|\mathbf{x}-\mu_\theta(\mathbf{z})\|_2^2 - \tfrac{D}{2}\log(2\pi\sigma^2),
+\]</div>
+<p>entonces maximizar el término de reconstrucción equivale a minimizar el error cuadrático medio (MSE), de nuevo salvo por una constante y un factor $1/(2\sigma^2)$.
+Cuando $\sigma^2$ se aprende (Gaussiana heterocedástica), la reconstrucción se convierte en un <em>MSE ponderado</em> más una penalización sobre la log-varianza predicha.</p>
+<blockquote>
+<div><p>En resumen, el objetivo de un VAE es <em>la pérdida de reconstrucción negativa (BCE o MSE, según la verosimilitud asumida) más una penalización KL en los latentes</em>. La elección entre BCE o MSE no es arbitraria: codifica la suposición sobre el modelo de ruido de las observaciones — tipo Bernoulli para datos binarios/normalizados, Gaussiano para datos continuos con ruido aditivo.</p>
+</div></blockquote>
+</section>
+<section id="reparametrizacion">
+<h3>Reparametrización<a class="headerlink" href="#reparametrizacion" title="Link to this heading">#</a></h3>
+<p>Para retropropagar a través del muestreo:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{z}=\boldsymbol{\mu}_\phi(\mathbf{x})+\boldsymbol{\sigma}_\phi(\mathbf{x})\odot\boldsymbol{\epsilon},
+\quad \boldsymbol{\epsilon}\sim\mathcal{N}(\mathbf{0},\mathbf{I}).
+\]</div>
+<p>Así se convierte la muestra estocástica en una función determinista de <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> y ruido.</p>
+</section>
+<section id="que-producen-las-redes">
+<h3>¿Qué producen las redes?<a class="headerlink" href="#que-producen-las-redes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Encoder <span class="math notranslate nohighlight">\(q_\phi(\mathbf{z}\mid \mathbf{x})\)</span>:</strong> da <span class="math notranslate nohighlight">\(\boldsymbol{\mu}*\phi(\mathbf{x})\)</span> y <span class="math notranslate nohighlight">\(\boldsymbol{\sigma}*\phi(\mathbf{x})\)</span>.</p></li>
+<li><p><strong>Decoder <span class="math notranslate nohighlight">\(p_\theta(\mathbf{x}\mid \mathbf{z})\)</span>:</strong> produce parámetros de una distribución adecuada (Gaussiana, Bernoulli, etc.).</p></li>
+</ul>
+</section>
+<section id="el-entrenamiento-en-la-practica">
+<h3>El Entrenamiento en la práctica<a class="headerlink" href="#el-entrenamiento-en-la-practica" title="Link to this heading">#</a></h3>
+<p>Para cada <em>minibatch</em>:</p>
+<ol class="arabic simple">
+<li><p>Codificar <span class="math notranslate nohighlight">\(\mathbf{x}\rightarrow (\mu, \sigma)\)</span>.</p></li>
+<li><p>Muestrear <span class="math notranslate nohighlight">\(\mathbf{z}=\mu+\sigma\odot \epsilon\)</span>.</p></li>
+<li><p>Decodificar y calcular ELBO.</p></li>
+<li><p>Actualizar parámetros con gradiente de <span class="math notranslate nohighlight">\(-\mathcal{L}\)</span>.</p></li>
+</ol>
+<p>Se reporta ELBO o -ELBO. En imágenes, es común la métrica <strong>bits per dimension (bpd)</strong>:
+$<span class="math notranslate nohighlight">\(
+\text{bpd} = -\log_2 p_\theta(\mathbf{x}) / (H\!\times\!W\!\times\!C).
+\)</span>$</p>
+</section>
+<section id="problemas-comunes-y-soluciones">
+<h3>Problemas comunes y soluciones<a class="headerlink" href="#problemas-comunes-y-soluciones" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Colapso del posterior:</strong> usar <em>KL warm-up</em>, limitar la capacidad del <em>decoder</em>, o aplicar <em>free bits</em>.</p></li>
+<li><p><strong>Datos discretos:</strong> aplicar <em>dequantization</em> (ruido uniforme) o distribuciones discretizadas.</p></li>
+<li><p><strong>Calibración:</strong> evaluar con ELBO en <em>held-out set</em> y calidad de muestras.</p></li>
+</ul>
+</section>
+<section id="vaes-y-pca-probabilistico-ppca">
+<h3>VAEs y PCA Probabilístico (PPCA)<a class="headerlink" href="#vaes-y-pca-probabilistico-ppca" title="Link to this heading">#</a></h3>
+<p>El <strong>PPCA</strong> reformula el PCA clásico como un modelo generativo con incertidumbre:</p>
+<div class="math notranslate nohighlight">
+\[
+x \approx Wz+\mu+\varepsilon, \quad \varepsilon\sim \mathcal{N}(0,\sigma^2 I).
+\]</div>
+<p>Aquí <span class="math notranslate nohighlight">\(z\sim \mathcal{N}(0,I)\)</span> es un latente, y <span class="math notranslate nohighlight">\(x\)</span> se genera linealmente con ruido Gaussiano.</p>
+<ul class="simple">
+<li><p>El prior de <span class="math notranslate nohighlight">\(z\)</span> en VAE (<span class="math notranslate nohighlight">\(\mathcal{N}(0,I)\)</span>) coincide con PPCA.</p></li>
+<li><p>El <em>decoder</em> del VAE se reduce al lineal de PPCA con varianza isotrópica.</p></li>
+<li><p>El <em>encoder</em> del VAE corresponde al posterior Gaussiano exacto de PPCA.</p></li>
+</ul>
+<p>En este caso, la ELBO = log-verosimilitud exacta, y el VAE recupera la solución de PPCA.</p>
+<p>Reemplazando el <em>decoder</em> lineal por redes neuronales, el VAE se convierte en una versión no lineal de PPCA, sacrificando interpretabilidad y exactitud cerrada a cambio de mayor flexibilidad.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="27_transformers_ES.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Mecanismos de Atención y Transformadores</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="28b_probabilistic_ES.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Aprendizaje Probabilístico</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construir-un-autoencoder">Construir un Autoencoder</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imagenes-fuera-de-distribucion">Imágenes Fuera de Distribución</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autoencoders-variacionales-vae">Autoencoders Variacionales (VAE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-elbo">La ELBO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reparametrizacion">Reparametrización</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#que-producen-las-redes">¿Qué producen las redes?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-entrenamiento-en-la-practica">El Entrenamiento en la práctica</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problemas-comunes-y-soluciones">Problemas comunes y soluciones</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vaes-y-pca-probabilistico-ppca">VAEs y PCA Probabilístico (PPCA)</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

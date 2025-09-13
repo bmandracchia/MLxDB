@@ -1,0 +1,1661 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Convolutional Neural Networks &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/25_convolutions';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ResNets for Biomedical Image Analysis" href="26_resnet2.html" />
+    <link rel="prev" title="Clasificación con Multilayer Perceptrons" href="24_MLP_ES.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11_machine_learning_fundamentals_ES.html">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering_ES.html">Ingeniería de características (Feature Engineering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables_ES.html">Variables categóricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers_ES.html">Clasificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees_ES.html">Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction_ES.html">Reducción de la dimensionalidad: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans_ES.html">Extracción de Características en Manifold No Lineales</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks_ES.html">Deep Learning en Ingeniería Biomédica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_NN_as_UA_ES.html">Redes neuronales como aproximadores universales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers_ES.html">Entrenamiento de un Clasificador de Dígitos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP_ES.html">Clasificación con Multilayer Perceptrons</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Convolutional Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2.html">ResNets for Biomedical Image Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers.html">Attention Mechanisms and Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic_ES.html">Aprendizaje Probabilístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL.html">Physics-Based Deep Learning</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/25_convolutions.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/25_convolutions.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Convolutional Neural Networks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-convolutions">Introduction to Convolutions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-convolution">What is a Convolution?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-edge-detection">Example: Edge Detection</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolution-in-action">Convolution in Action</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-convolution-output">Computing the Convolution Output</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutions-in-pytorch">Convolutions in PyTorch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strides-and-padding">Strides and Padding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#padding-example">Padding Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stride-example">Stride Example</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-formula-for-output-size">General Formula for Output Size</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-convolutional-neural-network">Building a Convolutional Neural Network</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-cnn">Creating the CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-convolutional-layers">Defining the Convolutional Layers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-learner">Creating the Learner</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-convolution-arithmetic">Understanding Convolution Arithmetic</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improving-training-stability">Improving Training Stability</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-baseline-cnn">A Simple Baseline CNN</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#increasing-model-complexity">Increasing Model Complexity</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analyzing-model-training-with-activation-statistics">Analyzing Model Training with Activation Statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-size-and-gradient-stability">Batch Size and Gradient Stability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cycle-training-dynamic-learning-rates-and-momentum">1cycle Training: Dynamic Learning Rates and Momentum</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-normalization">Batch Normalization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-fully-connected-layers-to-convolutions">From Fully Connected Layers to Convolutions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#invariance-why-location-shouldnt-matter">Invariance: Why Location Shouldn’t Matter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraining-the-mlp">Constraining the MLP</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-translation-invariance">Step 1: Translation Invariance</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-locality">Step 2: Locality</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutions-and-cross-correlation">Convolutions and Cross-Correlation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#channels-from-grayscale-to-rgb-and-beyond">Channels: From Grayscale to RGB and Beyond</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-works">Why This Works</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#hide</span>
+<span class="kn">from</span> <span class="nn">fastai.vision.all</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greys&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="convolutional-neural-networks">
+<h1>Convolutional Neural Networks<a class="headerlink" href="#convolutional-neural-networks" title="Link to this heading">#</a></h1>
+<p>In this section, we’ll delve into the fundamentals of <strong>convolutions</strong> and build a Convolutional Neural Network (CNN) from scratch. CNNs are powerful tools for image recognition, especially effective in capturing spatial hierarchies within images. We will explore the mechanics of convolutions, discuss kernels and feature maps, and gradually move toward training strategies that stabilize learning and improve performance.</p>
+<section id="introduction-to-convolutions">
+<h2>Introduction to Convolutions<a class="headerlink" href="#introduction-to-convolutions" title="Link to this heading">#</a></h2>
+<p>One of the most impactful concepts in image-based machine learning is <strong>feature extraction</strong>—identifying the essential parts of data that help distinguish between classes.</p>
+<blockquote>
+<div><p>A <em>feature</em> is a transformed version of the data that makes patterns easier to model.</p>
+</div></blockquote>
+<p>In images, a feature can represent visually distinctive elements like edges, textures, and patterns. For example, distinguishing the number 7 from the number 3 involves identifying a horizontal line near the top (7) and distinguishing it from a more curved structure (3). The presence and orientation of lines or curves are vital characteristics.</p>
+<p>So, instead of working directly with raw pixel values, we can leverage <strong>convolutions</strong> to highlight these features, allowing the model to “see” parts of the image that are useful for classification.</p>
+<section id="what-is-a-convolution">
+<h3>What is a Convolution?<a class="headerlink" href="#what-is-a-convolution" title="Link to this heading">#</a></h3>
+<p>A convolution is a mathematical operation that takes an <strong>input image</strong> and applies a <strong>kernel</strong> to it, producing a feature map that highlights specific structures (edges, textures) in the image.</p>
+<p>Mathematically, for a 2D image <span class="math notranslate nohighlight">\( I \)</span> and a 2D kernel <span class="math notranslate nohighlight">\( K \)</span>, a convolution <span class="math notranslate nohighlight">\( S \)</span> at pixel <span class="math notranslate nohighlight">\((i, j)\)</span> is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+S(i, j) = \sum_{m=-k}^{k} \sum_{n=-k}^{k} I(i+m, j+n) \cdot K(m, n)
+\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( I(i+m, j+n) \)</span> is the pixel value at location <span class="math notranslate nohighlight">\((i+m, j+n)\)</span> in the input image,</p></li>
+<li><p><span class="math notranslate nohighlight">\( K(m, n) \)</span> is the kernel value at <span class="math notranslate nohighlight">\((m, n)\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\( k \)</span> is half the kernel width (for a 3×3 kernel, <span class="math notranslate nohighlight">\( k=1 \)</span>).</p></li>
+</ul>
+<p>The <strong>kernel</strong> is a small matrix, typically 3×3, which slides across the image. At each location, it multiplies its values with the corresponding values in the image’s 3×3 region and sums the result, creating one value in the <strong>output feature map</strong>.</p>
+<section id="example-edge-detection">
+<h4>Example: Edge Detection<a class="headerlink" href="#example-edge-detection" title="Link to this heading">#</a></h4>
+<p>Consider an edge-detection kernel like:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+K = \begin{bmatrix} -1 &amp; -1 &amp; -1 \\ -1 &amp; 8 &amp; -1 \\ -1 &amp; -1 &amp; -1 \end{bmatrix}
+\end{split}\]</div>
+<p>Applying this kernel to a region of an image will emphasize regions where pixel values change sharply, helping detect edges. This ability to enhance specific features is what makes convolutions so powerful.</p>
+</section>
+</section>
+<section id="convolution-in-action">
+<h3>Convolution in Action<a class="headerlink" href="#convolution-in-action" title="Link to this heading">#</a></h3>
+<p>Let’s perform a convolution on a small patch of an image. Start by creating a simple 3×3 kernel matrix:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="c1"># Define a 3x3 kernel for edge detection</span>
+<span class="n">edge_kernel</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">8.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, let’s apply this kernel across a small sample image to see the effect:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example image as a tensor (7x7 grayscale image)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="computing-the-convolution-output">
+<h4>Computing the Convolution Output<a class="headerlink" href="#computing-the-convolution-output" title="Link to this heading">#</a></h4>
+<p>The kernel will slide over the 7×7 image. At each step, the sum of the element-wise multiplication of the kernel and the 3×3 region of the image will be calculated.</p>
+<p>For example, if the kernel is centered over the top-left corner of the <code class="docutils literal notranslate"><span class="pre">255</span></code> region in the image, we calculate:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{output}(i, j) = \text{sum}\big(\text{element-wise } \times \text{ }\text{image region and kernel}\big)
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reshape for convolution (add batch and channel dimensions)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Shape: (1, 1, 7, 7)</span>
+<span class="n">edge_kernel</span> <span class="o">=</span> <span class="n">edge_kernel</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Shape: (1, 1, 3, 3)</span>
+
+<span class="c1"># Apply convolution</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">edge_kernel</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  
+
+<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>  <span class="c1"># Display the output</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[ 1530.,  1275.,  1530.,  1275.,  1530.],
+        [ 1275., -1275.,  -765., -1275.,  1275.],
+        [ 1530.,  -765.,     0.,  -765.,  1530.],
+        [ 1275., -1275.,  -765., -1275.,  1275.],
+        [ 1530.,  1275.,  1530.,  1275.,  1530.]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Look at the shape of the result. If the original image has a height of <code class="docutils literal notranslate"><span class="pre">h</span></code> and a width of <code class="docutils literal notranslate"><span class="pre">w</span></code>, how many 3×3 windows can we find? As you can see from the example, there are <code class="docutils literal notranslate"><span class="pre">h-2</span></code> by <code class="docutils literal notranslate"><span class="pre">w-2</span></code> windows, so the image we get has a result as a height of <code class="docutils literal notranslate"><span class="pre">h-2</span></code> and a width of <code class="docutils literal notranslate"><span class="pre">w-2</span></code>.</p>
+<p>Convolutions are at the heart of CNNs, helping to create layers of increasingly abstracted feature maps that capture the essential information needed for effective image recognition.</p>
+</section>
+</section>
+<section id="convolutions-in-pytorch">
+<h3>Convolutions in PyTorch<a class="headerlink" href="#convolutions-in-pytorch" title="Link to this heading">#</a></h3>
+<p>Convolutions are a fundamental operation in computer vision, and PyTorch provides optimized support for them with the <code class="docutils literal notranslate"><span class="pre">F.conv2d</span></code> function. This function is part of the <code class="docutils literal notranslate"><span class="pre">torch.nn.functional</span></code> module, which fastai imports as <code class="docutils literal notranslate"><span class="pre">F</span></code>. According to the PyTorch documentation, <code class="docutils literal notranslate"><span class="pre">F.conv2d</span></code> requires two main parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">input</span></code>: A tensor of shape <code class="docutils literal notranslate"><span class="pre">(minibatch,</span> <span class="pre">in_channels,</span> <span class="pre">iH,</span> <span class="pre">iW)</span></code>, where <code class="docutils literal notranslate"><span class="pre">iH</span></code> and <code class="docutils literal notranslate"><span class="pre">iW</span></code> represent the height and width of the input image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">weight</span></code>: A tensor of filters (kernels) of shape <code class="docutils literal notranslate"><span class="pre">(out_channels,</span> <span class="pre">in_channels,</span> <span class="pre">kH,</span> <span class="pre">kW)</span></code>, where <code class="docutils literal notranslate"><span class="pre">kH</span></code> and <code class="docutils literal notranslate"><span class="pre">kW</span></code> are the kernel’s height and width.</p></li>
+</ul>
+<p>Here’s a code example of a simple 2D convolution on a batch of grayscale images with PyTorch:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+
+<span class="c1"># Example input tensor (batch of 1 grayscale 4x4 image)</span>
+<span class="n">input_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                               <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># 3x3 kernel (filter) for convolution</span>
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                         <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                         <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># Apply convolution</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[[[-1.,  1.],
+          [-3.,  1.]]]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="strides-and-padding">
+<h3>Strides and Padding<a class="headerlink" href="#strides-and-padding" title="Link to this heading">#</a></h3>
+<p>To control the size of the output feature map, we use <strong>padding</strong> and <strong>strides</strong>.</p>
+<ol class="arabic simple">
+<li><p><strong>Padding</strong> allows us to maintain the same output size as the input by adding extra pixels (usually zeros) around the edges. This is particularly helpful for making sure that the convolutional output has the same spatial dimensions as the input.</p></li>
+<li><p><strong>Strides</strong> define how many pixels we slide the kernel across the input with each step. For example, a stride of 1 moves the kernel one pixel at a time, while a stride of 2 moves it two pixels at a time, effectively downsampling the image.</p></li>
+</ol>
+<p>Let’s see how these parameters affect the output size with some code and diagrams.</p>
+<section id="padding-example">
+<h4>Padding Example<a class="headerlink" href="#padding-example" title="Link to this heading">#</a></h4>
+<p>Here’s an example that adds padding to the image to ensure the output is the same size as the input:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply convolution with padding</span>
+<span class="n">output_with_padding</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output with padding:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output_with_padding</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Output with padding:
+tensor([[[[-3., -2.,  1.,  3.],
+          [-5., -1.,  1.,  3.],
+          [-4., -3.,  1.,  4.],
+          [-3.,  0.,  1.,  1.]]]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>This code will add a 1-pixel border around the input tensor, allowing the kernel to apply in all regions without reducing the size of the output.</p>
+<p><em>Diagram of Padding with 3x3 Kernel and 4x4 Input</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Input</span> <span class="p">(</span><span class="mi">4</span><span class="n">x4</span><span class="p">):</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">3</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="n">Kernel</span> <span class="p">(</span><span class="mi">3</span><span class="n">x3</span><span class="p">):</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">Output</span> <span class="k">with</span> <span class="n">Padding</span> <span class="p">(</span><span class="mi">4</span><span class="n">x4</span><span class="p">):</span>
+<span class="p">[</span><span class="o">-</span><span class="mi">3</span> <span class="o">-</span><span class="mi">4</span>  <span class="mi">1</span>  <span class="mi">3</span><span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">3</span> <span class="o">-</span><span class="mi">1</span>  <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span> <span class="mi">2</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span>  <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This padding allows the kernel to apply on all edges of the input without reducing the feature map size.</p>
+</section>
+<section id="stride-example">
+<h4>Stride Example<a class="headerlink" href="#stride-example" title="Link to this heading">#</a></h4>
+<p>If we want to reduce the spatial dimensions of the output, we can apply a stride greater than 1. Here’s an example with a stride of 2:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply convolution with stride of 2</span>
+<span class="n">output_with_stride</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">input_tensor</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output with stride 2:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">output_with_stride</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this case, the kernel moves two pixels at a time across the input, resulting in a smaller output feature map.</p>
+<p><em>Diagram of Stride-2 Convolution with 3x3 Kernel on 4x4 Input</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Input</span> <span class="p">(</span><span class="mi">4</span><span class="n">x4</span><span class="p">):</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">3</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="n">Kernel</span> <span class="p">(</span><span class="mi">3</span><span class="n">x3</span><span class="p">):</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">Output</span> <span class="k">with</span> <span class="n">Stride</span><span class="o">-</span><span class="mi">2</span> <span class="p">(</span><span class="mi">2</span><span class="n">x2</span><span class="p">):</span>
+<span class="p">[</span><span class="o">-</span><span class="mi">1</span>  <span class="mi">3</span><span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span>  <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="general-formula-for-output-size">
+<h3>General Formula for Output Size<a class="headerlink" href="#general-formula-for-output-size" title="Link to this heading">#</a></h3>
+<p>For each dimension (height or width), the output size <code class="docutils literal notranslate"><span class="pre">out_dim</span></code> is given by the formula:</p>
+<div class="math notranslate nohighlight">
+\[ \text{out-dim} = \left\lfloor \frac{\text{input-dim} + 2 \times \text{padding} - \text{kernel-size}}{\text{stride}} \right\rfloor + 1 \]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">input_dim</span></code> is the size of the input along a particular dimension,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">padding</span></code> is the amount of padding added to each side of the input,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kernel_size</span></code> is the size of the kernel (filter),</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stride</span></code> is the stride used for the convolution.</p></li>
+</ul>
+</section>
+</section>
+<section id="building-a-convolutional-neural-network">
+<h2>Building a Convolutional Neural Network<a class="headerlink" href="#building-a-convolutional-neural-network" title="Link to this heading">#</a></h2>
+<p>In constructing a CNN, we aim to learn effective image features automatically rather than handcrafting filters. Specifically, we will optimize the convolutional kernel values via Stochastic Gradient Descent (SGD), allowing the model to learn the most informative features directly from the data. This approach is crucial, as certain complex patterns (especially in later layers) are difficult to manually design. When we use convolutions instead of (or in addition to) fully connected layers, we build what is known as a <em>Convolutional Neural Network</em> (CNN).</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">untar_data</span><span class="p">(</span><span class="n">URLs</span><span class="o">.</span><span class="n">MNIST_SAMPLE</span><span class="p">)</span>
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">((</span><span class="n">ImageBlock</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="n">PILImageBW</span><span class="p">),</span> <span class="n">CategoryBlock</span><span class="p">),</span> 
+                  <span class="n">get_items</span><span class="o">=</span><span class="n">get_image_files</span><span class="p">,</span> 
+                  <span class="n">splitter</span><span class="o">=</span><span class="n">GrandparentSplitter</span><span class="p">(),</span>
+                  <span class="n">get_y</span><span class="o">=</span><span class="n">parent_label</span><span class="p">)</span>
+
+<span class="n">dls</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">xb</span><span class="p">,</span><span class="n">yb</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">dls</span><span class="o">.</span><span class="n">valid</span><span class="p">)</span>
+<span class="n">xb</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([64, 1, 28, 28])
+</pre></div>
+</div>
+</div>
+</div>
+<section id="creating-the-cnn">
+<h3>Creating the CNN<a class="headerlink" href="#creating-the-cnn" title="Link to this heading">#</a></h3>
+<p>Let’s start with a basic convolutional neural network:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">broken_cnn</span> <span class="o">=</span> <span class="n">sequential</span><span class="p">(</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<div><p>Here, <code class="docutils literal notranslate"><span class="pre">nn.Conv2d</span></code> is the PyTorch module that initializes convolutional layers with learned weights. This is more convenient than <code class="docutils literal notranslate"><span class="pre">F.conv2d</span></code> (which performs convolution operations directly) because it automatically creates and tracks the weight matrices needed for SGD optimization.</p>
+</div></blockquote>
+<p>In this model, we do not specify the input size as 28×28 because, unlike fully connected layers that require a separate weight for every pixel, convolutional layers automatically apply weights across all pixels. Thus, we only need to define the number of input/output channels and kernel size. Let’s examine the output shape after applying <code class="docutils literal notranslate"><span class="pre">broken_cnn</span></code> to a batch:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">broken_cnn</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([64, 1, 28, 28])
+</pre></div>
+</div>
+</div>
+</div>
+<p>This model, however, returns a 28×28 activation map rather than a single classification output per image. To fix this, we need to reduce the spatial dimensions to size 1×1. One solution is to use multiple stride-2 convolutions, reducing the activation map size by half each time:</p>
+<ul class="simple">
+<li><p>28×28 → 14×14 (after first stride-2)</p></li>
+<li><p>14×14 → 7×7 (after second stride-2)</p></li>
+<li><p>7×7 → 4×4 → 2×2 → 1×1 (repeating stride-2 convolutions)</p></li>
+</ul>
+</section>
+<section id="defining-the-convolutional-layers">
+<h3>Defining the Convolutional Layers<a class="headerlink" href="#defining-the-convolutional-layers" title="Link to this heading">#</a></h3>
+<p>Let’s build a function to simplify adding layers with a stride-2 convolution, kernel size, and optional activation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">ks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">ks</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">ks</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">act</span><span class="p">:</span> <span class="n">res</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<div><p>Refactoring like this makes code more readable and helps avoid inconsistencies when constructing neural networks.</p>
+</div></blockquote>
+<p>As we decrease the spatial dimensions with stride-2 convolutions, we’ll also increase the number of channels to preserve model capacity. Typically, as the input grid decreases, the number of feature maps (or channels) should increase to allow the model to capture richer and more abstract patterns. This way, we prevent a reduction in computational capacity as the model deepens.</p>
+<p>Here’s a simple CNN:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_cnn</span> <span class="o">=</span> <span class="n">sequential</span><span class="p">(</span>
+    <span class="n">conv</span><span class="p">(</span><span class="mi">1</span> <span class="p">,</span><span class="mi">4</span><span class="p">),</span>            <span class="c1">#14x14</span>
+    <span class="n">conv</span><span class="p">(</span><span class="mi">4</span> <span class="p">,</span><span class="mi">8</span><span class="p">),</span>            <span class="c1">#7x7</span>
+    <span class="n">conv</span><span class="p">(</span><span class="mi">8</span> <span class="p">,</span><span class="mi">16</span><span class="p">),</span>           <span class="c1">#4x4</span>
+    <span class="n">conv</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">32</span><span class="p">),</span>           <span class="c1">#2x2</span>
+    <span class="n">conv</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="c1">#1x1</span>
+    <span class="n">Flatten</span><span class="p">(),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, the model outputs two activations, which map to the two classes we aim to predict.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_cnn</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([64, 2])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-the-learner">
+<h3>Creating the Learner<a class="headerlink" href="#creating-the-learner" title="Link to this heading">#</a></h3>
+<p>Let’s create a <code class="docutils literal notranslate"><span class="pre">Learner</span></code> to train this model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">simple_cnn</span><span class="p">,</span> <span class="n">loss_func</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">accuracy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To see exactly what’s going on in the model, we can use <code class="docutils literal notranslate"><span class="pre">summary</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequential (Input shape: 64 x 1 x 28 x 28)
+============================================================================
+Layer (type)         Output Shape         Param #    Trainable 
+============================================================================
+                     64 x 4 x 14 x 14    
+Conv2d                                    40         True      
+ReLU                                                           
+____________________________________________________________________________
+                     64 x 8 x 7 x 7      
+Conv2d                                    296        True      
+ReLU                                                           
+____________________________________________________________________________
+                     64 x 16 x 4 x 4     
+Conv2d                                    1168       True      
+ReLU                                                           
+____________________________________________________________________________
+                     64 x 32 x 2 x 2     
+Conv2d                                    4640       True      
+ReLU                                                           
+____________________________________________________________________________
+                     64 x 2 x 1 x 1      
+Conv2d                                    578        True      
+____________________________________________________________________________
+                     64 x 2              
+Flatten                                                        
+____________________________________________________________________________
+
+Total params: 6,722
+Total trainable params: 6,722
+Total non-trainable params: 0
+
+Optimizer used: &lt;function Adam at 0x00000211C6C9BBA0&gt;
+Loss function: &lt;function cross_entropy at 0x00000211BC6F40E0&gt;
+
+Callbacks:
+  - TrainEvalCallback
+  - CastToTensor
+  - Recorder
+  - ProgressCallback
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that the output of the final <code class="docutils literal notranslate"><span class="pre">Conv2d</span></code> layer is <code class="docutils literal notranslate"><span class="pre">64x2x1x1</span></code>. We need to remove those extra <code class="docutils literal notranslate"><span class="pre">1x1</span></code> axes; that’s what <code class="docutils literal notranslate"><span class="pre">Flatten</span></code> does. It’s basically the same as PyTorch’s <code class="docutils literal notranslate"><span class="pre">squeeze</span></code> method, but as a module.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.061466</td>
+      <td>0.031233</td>
+      <td>0.987733</td>
+      <td>00:18</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.022755</td>
+      <td>0.019546</td>
+      <td>0.994603</td>
+      <td>00:15</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+</section>
+<section id="understanding-convolution-arithmetic">
+<h3>Understanding Convolution Arithmetic<a class="headerlink" href="#understanding-convolution-arithmetic" title="Link to this heading">#</a></h3>
+<p>Examining the model’s summary reveals an input shape of <code class="docutils literal notranslate"><span class="pre">64x1x28x28</span></code>, where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">64</span></code> is the batch size</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> is the input channel count (e.g., grayscale images)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">28x28</span></code> are the height and width of the input images.</p></li>
+</ul>
+<p>Let’s analyze the first layer:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">learn</span><span class="o">.</span><span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">m</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sequential(
+  (0): Conv2d(1, 4, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+  (1): ReLU()
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The first convolutional layer has 1 input channel, 4 output channels, and a kernel of size 3×3. Checking its weights:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([4, 1, 3, 3])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The 40 parameters include 36 for the kernel (<code class="docutils literal notranslate"><span class="pre">4*1*3*3=36</span></code>) and 4 for the bias. Each channel has one bias parameter:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([4])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each stride-2 convolution reduces the grid size, while the number of filters increases to maintain overall capacity. For instance, the first layer maps a 28×28 input to a 14×14 output, then the next layer maps 14×14 to 7×7.</p>
+<p>The calculation for the total computation in each layer is as follows:</p>
+<ul class="simple">
+<li><p><em>Number of multiplications per feature map</em>: <span class="math notranslate nohighlight">\(H \times W \times C \times kH \times kW \)</span></p></li>
+<li><p>Where:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\( H, W \)</span> are the height and width of the activation map</p></li>
+<li><p><span class="math notranslate nohighlight">\( C \)</span> is the number of output channels</p></li>
+<li><p><span class="math notranslate nohighlight">\( kH, kW \)</span> are the height and width of the kernel</p></li>
+</ul>
+</li>
+</ul>
+<p>For example, if the input activation map is 14×14 with 4 output channels and a 3×3 kernel, the computation would be:</p>
+<div class="math notranslate nohighlight">
+\[
+14 \times 14 \times 4 \times 3 \times 3 = 7,056 \text{ multiplications per feature map.}
+\]</div>
+<p>By doubling the number of channels after each stride-2 operation, we maintain consistent computation as we reduce grid size. This design allows deeper layers to extract increasingly abstract and semantically rich features, balancing both capacity and efficiency in the network.</p>
+</section>
+</section>
+<section id="improving-training-stability">
+<h2>Improving Training Stability<a class="headerlink" href="#improving-training-stability" title="Link to this heading">#</a></h2>
+<p>Having successfully recognized 3s and 7s, let’s tackle a more challenging task: recognizing all 10 digits from the MNIST dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">untar_data</span><span class="p">(</span><span class="n">URLs</span><span class="o">.</span><span class="n">MNIST</span><span class="p">)</span>
+<span class="n">Path</span><span class="o">.</span><span class="n">BASE_PATH</span> <span class="o">=</span> <span class="n">path</span>
+<span class="n">path</span><span class="o">.</span><span class="n">ls</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(#2) [Path(&#39;testing&#39;),Path(&#39;training&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The data is organized into <em>training</em> and <em>testing</em> folders. We use <code class="docutils literal notranslate"><span class="pre">GrandparentSplitter</span></code> to split the data correctly since the folder names differ from the default <code class="docutils literal notranslate"><span class="pre">train</span></code> and <code class="docutils literal notranslate"><span class="pre">valid</span></code> labels. To facilitate experimentation with batch sizes, we define a <code class="docutils literal notranslate"><span class="pre">get_dls</span></code> function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_dls</span><span class="p">(</span><span class="n">bs</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">DataBlock</span><span class="p">(</span>
+        <span class="n">blocks</span><span class="o">=</span><span class="p">(</span><span class="n">ImageBlock</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="n">PILImageBW</span><span class="p">),</span> <span class="n">CategoryBlock</span><span class="p">),</span> 
+        <span class="n">get_items</span><span class="o">=</span><span class="n">get_image_files</span><span class="p">,</span> 
+        <span class="n">splitter</span><span class="o">=</span><span class="n">GrandparentSplitter</span><span class="p">(</span><span class="s1">&#39;training&#39;</span><span class="p">,</span><span class="s1">&#39;testing&#39;</span><span class="p">),</span>
+        <span class="n">get_y</span><span class="o">=</span><span class="n">parent_label</span><span class="p">,</span>
+        <span class="n">batch_tfms</span><span class="o">=</span><span class="n">Normalize</span><span class="p">()</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">bs</span><span class="o">=</span><span class="n">bs</span><span class="p">)</span>
+
+<span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Before proceeding, it’s good practice to inspect the data visually to ensure correctness:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dls</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">max_n</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/de2feec508ca94d8369131944d1e5cb625b7a8a8d2c3924194463a0111a32502.png" src="../_images/de2feec508ca94d8369131944d1e5cb625b7a8a8d2c3924194463a0111a32502.png" />
+</div>
+</div>
+<section id="a-simple-baseline-cnn">
+<h3>A Simple Baseline CNN<a class="headerlink" href="#a-simple-baseline-cnn" title="Link to this heading">#</a></h3>
+<p>Let’s start by building a basic convolutional neural network (CNN) as our baseline model. We can reuse the <code class="docutils literal notranslate"><span class="pre">conv</span></code> function from earlier, which makes it easy to build convolutional layers with configurable options.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">ks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">ks</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">ks</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">act</span><span class="p">:</span> <span class="n">res</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="increasing-model-complexity">
+<h4>Increasing Model Complexity<a class="headerlink" href="#increasing-model-complexity" title="Link to this heading">#</a></h4>
+<p>Given that our task now involves distinguishing 10 classes instead of just two, we likely need a more complex model with additional filters. Generally, doubling the number of filters at each stride-2 convolutional layer is beneficial, as it compensates for the reduction in spatial dimensions.</p>
+<p>However, there’s a subtle problem to consider. In convolutional networks, feature extraction is effective only if the number of outputs at each layer is significantly smaller than the number of inputs. For example, if we use a 3×3 kernel (covering 9 pixels) and generate only four output filters, the model will still be forced to compress information meaningfully. But if we increase the filters without adjusting the kernel size, we risk having too few inputs per output feature, reducing the model’s ability to learn effectively.</p>
+<p>To address this, we increase the kernel size in the first layer to 5×5, covering 25 pixels. This setup provides a more substantial input for each output feature, enhancing feature extraction:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simple_cnn</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">sequential</span><span class="p">(</span>
+        <span class="n">conv</span><span class="p">(</span><span class="mi">1</span> <span class="p">,</span><span class="mi">8</span><span class="p">,</span> <span class="n">ks</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>        <span class="c1">#14x14</span>
+        <span class="n">conv</span><span class="p">(</span><span class="mi">8</span> <span class="p">,</span><span class="mi">16</span><span class="p">),</span>             <span class="c1">#7x7</span>
+        <span class="n">conv</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">32</span><span class="p">),</span>             <span class="c1">#4x4</span>
+        <span class="n">conv</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span>             <span class="c1">#2x2</span>
+        <span class="n">conv</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>  <span class="c1">#1x1</span>
+        <span class="n">Flatten</span><span class="p">(),</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="analyzing-model-training-with-activation-statistics">
+<h3>Analyzing Model Training with Activation Statistics<a class="headerlink" href="#analyzing-model-training-with-activation-statistics" title="Link to this heading">#</a></h3>
+<p>To better understand the behavior of our model during training, we can use the <code class="docutils literal notranslate"><span class="pre">ActivationStats</span></code> callback. This callback records the mean, standard deviation, and histogram of activations at each layer. Examining these statistics allows us to detect issues such as activation values becoming too small (near zero) or too large, both of which can lead to training instability.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastai.callback.hook</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">simple_cnn</span><span class="p">(),</span> <span class="n">loss_func</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">,</span>
+                    <span class="n">metrics</span><span class="o">=</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="n">ActivationStats</span><span class="p">(</span><span class="n">with_hist</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">learn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">learn</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This initial attempt may result in poor training. Let’s diagnose why by examining activation statistics. <code class="docutils literal notranslate"><span class="pre">ActivationStats</span></code> provides a utility, <code class="docutils literal notranslate"><span class="pre">plot_layer_stats(idx)</span></code>, to visualize the mean, standard deviation, and percentage of activations near zero for each layer. Here’s an example for the first layer:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">activation_stats</span><span class="o">.</span><span class="n">plot_layer_stats</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d8eaea7ec610a07dabd0e2cd3254027d47915011db24a2a795ae622a08adeada.png" src="../_images/d8eaea7ec610a07dabd0e2cd3254027d47915011db24a2a795ae622a08adeada.png" />
+</div>
+</div>
+<p>Ideally, the mean and standard deviation should remain stable or follow a smooth trend. A high percentage of activations near zero indicates that a significant portion of the model is inactive or contributing minimally, which can propagate through layers, worsening at deeper levels.</p>
+<p>Now let’s check the penultimate layer:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">activation_stats</span><span class="o">.</span><span class="n">plot_layer_stats</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f20d37b7ff5a148113354159a9bee7264a7641171cecb55a522190d661833c17.png" src="../_images/f20d37b7ff5a148113354159a9bee7264a7641171cecb55a522190d661833c17.png" />
+</div>
+</div>
+<p>As expected, instability and zero activations often increase towards the end of the network, suggesting that some layers are “dead” and effectively passing zero values forward. This issue compounds through layers, making training difficult</p>
+</section>
+<section id="batch-size-and-gradient-stability">
+<h3>Batch Size and Gradient Stability<a class="headerlink" href="#batch-size-and-gradient-stability" title="Link to this heading">#</a></h3>
+<p>Increasing the batch size is a common technique to stabilize training. Mathematically, a larger batch size provides a better approximation of the population gradient by reducing the variance of the gradient estimate <span class="math notranslate nohighlight">\(\nabla L\)</span>, where <span class="math notranslate nohighlight">\(L\)</span> is the loss function. Formally, if the true gradient of the loss <span class="math notranslate nohighlight">\(L\)</span> over the entire dataset is represented as <span class="math notranslate nohighlight">\(\nabla L\)</span>, then the gradient computed with mini-batch <span class="math notranslate nohighlight">\(B\)</span> of size <span class="math notranslate nohighlight">\(N\)</span> can be written as:</p>
+<div class="math notranslate nohighlight">
+\[
+\nabla L_B = \frac{1}{N} \sum_{i=1}^N \nabla L(x_i, y_i)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> are the data-label pairs in the batch. As <span class="math notranslate nohighlight">\(N\)</span> increases, <span class="math notranslate nohighlight">\(\nabla L_B\)</span> converges to <span class="math notranslate nohighlight">\(\nabla L\)</span>, which generally results in more stable gradient updates. However, larger batches reduce the number of parameter updates per epoch, which may slow down convergence in certain cases.</p>
+<p>Let’s see if a batch size of 512 helps:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>2.308856</td>
+      <td>2.304741</td>
+      <td>0.113500</td>
+      <td>01:10</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>Let’s see what the penultimate layer looks like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">activation_stats</span><span class="o">.</span><span class="n">plot_layer_stats</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/783c6ba0cc045207c2af93281c07520343d4fd29ed2ed9f97eb26e3dc353e481.png" src="../_images/783c6ba0cc045207c2af93281c07520343d4fd29ed2ed9f97eb26e3dc353e481.png" />
+</div>
+</div>
+<p>Again, we’ve got most of our activations near zero. Let’s see what else we can do to improve training stability.</p>
+</section>
+<section id="cycle-training-dynamic-learning-rates-and-momentum">
+<h3>1cycle Training: Dynamic Learning Rates and Momentum<a class="headerlink" href="#cycle-training-dynamic-learning-rates-and-momentum" title="Link to this heading">#</a></h3>
+<p>1cycle training, introduced in <a class="reference external" href="https://arxiv.org/abs/1708.07120">Smith’s “Super-Convergence”</a>, involves a two-phase learning rate schedule to stabilize and speed up training. The learning rate <span class="math notranslate nohighlight">\( \alpha \)</span> follows a schedule that initially increases during a warmup phase and then decreases during an annealing phase, effectively performing a one-cycle loop. Mathematically, this schedule is expressed as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\alpha(t) = 
+\begin{cases} 
+      \alpha_{\text{min}} + \frac{t}{T} \left( \alpha_{\text{max}} - \alpha_{\text{min}} \right) &amp; \text{for} \; t \leq T \\
+      \alpha_{\text{max}} - \frac{(t - T)}{T} \left( \alpha_{\text{max}} - \alpha_{\text{min}} \right) &amp; \text{for} \; t &gt; T 
+   \end{cases}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(t\)</span> is the current iteration, <span class="math notranslate nohighlight">\(T\)</span> is the halfway point, <span class="math notranslate nohighlight">\(\alpha_{\text{min}}\)</span> and <span class="math notranslate nohighlight">\(\alpha_{\text{max}}\)</span> are the minimum and maximum learning rates, respectively. This cyclic schedule allows models to avoid poor local minima, leveraging high learning rates for rapid convergence and low learning rates for fine-tuning.</p>
+<p>1cycle training allows us to use a much higher maximum learning rate than other types of training, which gives two benefits:</p>
+<ul class="simple">
+<li><p>By training with higher learning rates, we train faster—hence the <em>super-convergence</em> of the title.</p></li>
+<li><p>By training with higher learning rates, we overfit less because we skip over the sharp local minima to end up in a smoother (and therefore more generalizable) part of the loss.</p></li>
+</ul>
+<p>The second point is an interesting and subtle one; it is based on the observation that a model that generalizes well is one whose loss would not change very much if you changed the input by a small amount. If a model trains at a large learning rate for quite a while, and can find a good loss when doing so, it must have found an area that also generalizes well, because it is jumping around a lot from batch to batch (that is basically the definition of a high learning rate). The problem is that, as we have discussed, just jumping to a high learning rate is more likely to result in diverging losses, rather than seeing your losses improve. So we don’t jump straight to a high learning rate. Instead, we start at a low learning rate, where our losses do not diverge, and we allow the optimizer to gradually find smoother and smoother areas of our parameters by gradually going to higher and higher learning rates.</p>
+<p>Then, once we have found a nice smooth area for our parameters, we want to find the very best part of that area, which means we have to bring our learning rates down again. This is why 1cycle training has a gradual learning rate warmup, and a gradual learning rate cooldown. Many researchers have found that in practice this approach leads to more accurate models and trains more quickly.</p>
+<p>We can use 1cycle training in fastai by calling <code class="docutils literal notranslate"><span class="pre">fit_one_cycle</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.06</span><span class="p">):</span>
+    <span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">simple_cnn</span><span class="p">(),</span> <span class="n">loss_func</span><span class="o">=</span><span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">,</span>
+                    <span class="n">metrics</span><span class="o">=</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="n">ActivationStats</span><span class="p">(</span><span class="n">with_hist</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">lr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">learn</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.210347</td>
+      <td>0.074806</td>
+      <td>0.974900</td>
+      <td>01:09</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>We’re finally making some progress! It’s giving us a reasonable accuracy now.</p>
+<p>We can view the learning rate and momentum throughout training by calling <code class="docutils literal notranslate"><span class="pre">plot_sched</span></code> on <code class="docutils literal notranslate"><span class="pre">learn.recorder</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">learn.recorder</span></code> (as the name suggests) records everything that happens during training, including losses, metrics, and hyperparameters such as learning rate and momentum:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">plot_sched</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e73e43add5a345de3e79c047169ed3da1fd6cb2039079f3436a20ec9f84c2b7c.png" src="../_images/e73e43add5a345de3e79c047169ed3da1fd6cb2039079f3436a20ec9f84c2b7c.png" />
+</div>
+</div>
+<p>Let’s take a look at our layer stats again:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">activation_stats</span><span class="o">.</span><span class="n">plot_layer_stats</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/735bf24962f2250fce13e93abeb03675598d10c04bb5b498782b762aec21cd5b.png" src="../_images/735bf24962f2250fce13e93abeb03675598d10c04bb5b498782b762aec21cd5b.png" />
+</div>
+</div>
+<p>The percentage of near-zero weights is getting much better, although it’s still quite high.</p>
+<p>This shows a classic “bad training.” We start with nearly all activations at zero. Then, over the first few batches we see the number of nonzero activations exponentially increasing. But it goes too far, and collapses! It almost looks like training restarts from scratch.</p>
+<p>It’s much better if training can be smooth from the start. The cycles of exponential increase and then collapse tend to result in a lot of near-zero activations, resulting in slow training and poor final results. One way to solve this problem is to use batch normalization.</p>
+</section>
+<section id="batch-normalization">
+<h3>Batch Normalization<a class="headerlink" href="#batch-normalization" title="Link to this heading">#</a></h3>
+<p>Batch Normalization (BatchNorm) mitigates the problem of <strong>internal covariate shift</strong>—the change in the distribution of layer inputs during training. By normalizing activations within each mini-batch, BatchNorm helps stabilize and accelerate training.</p>
+<p>Mathematically, for each mini-batch, BatchNorm computes the mean and variance of activations <span class="math notranslate nohighlight">\( \mu_B \)</span> and <span class="math notranslate nohighlight">\( \sigma_B^2 \)</span>, and then normalizes each activation <span class="math notranslate nohighlight">\( x_i \)</span> as:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{x}_i = \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\( \epsilon \)</span> is a small constant added for numerical stability. This normalized activation <span class="math notranslate nohighlight">\( \hat{x}_i \)</span> is then scaled and shifted using learnable parameters <span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+y_i = \gamma \hat{x}_i + \beta
+\]</div>
+<p>The parameters <span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> allow the model to maintain any mean and standard deviation for each layer that it deems optimal, enhancing flexibility and capacity. During inference, the running averages of <span class="math notranslate nohighlight">\(\mu_B\)</span> and <span class="math notranslate nohighlight">\(\sigma_B^2\)</span> (computed over training batches) are used for consistent normalization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">ks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">act</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">ks</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="n">ks</span><span class="o">//</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">act</span><span class="p">:</span> <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">())</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="n">nf</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>and fit our model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>accuracy</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.133975</td>
+      <td>0.058637</td>
+      <td>0.985600</td>
+      <td>01:10</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>That’s even better! Let’s take a look at the activation stats:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">activation_stats</span><span class="o">.</span><span class="n">plot_layer_stats</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8faec7fd93a7d6e679b279e32e5ff46178544cf68da30e5ad35fb459f2d6f3de.png" src="../_images/8faec7fd93a7d6e679b279e32e5ff46178544cf68da30e5ad35fb459f2d6f3de.png" />
+</div>
+</div>
+<p>This is closer to what we hope to see: a smooth development of activations, with no “crashes”. This gives us a hint of why batchnorm has been so successful that we see it (or something very similar) in nearly all modern neural networks.</p>
+<p>BatchNorm acts as a form of <strong>regularization</strong> by introducing slight stochasticity to the model’s activations during training, as each mini-batch’s statistics vary slightly. This randomness makes the model robust to small variations, leading to improved generalization. It has been empirically observed that BatchNorm often leads to better test performance and a reduction in overfitting compared to networks that do not include it.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="from-fully-connected-layers-to-convolutions">
+<h2>From Fully Connected Layers to Convolutions<a class="headerlink" href="#from-fully-connected-layers-to-convolutions" title="Link to this heading">#</a></h2>
+<p>So far, fully connected neural networks (MLPs) have been our main tool. They work well for <strong>tabular data</strong>, where each row corresponds to an example and each column to a feature. In this setting, we make no assumptions about how features interact; all dependencies must be learned directly.</p>
+<p>However, when we move to <strong>high-dimensional perceptual data</strong>, such as images or audio, this approach quickly breaks down. Consider image classification. Suppose we want to distinguish cats from dogs using photographs of size <span class="math notranslate nohighlight">\(1000 \times 1000\)</span> pixels (one megapixel). Flattening the image yields a million input features. Even if we reduce to just <span class="math notranslate nohighlight">\(1000\)</span> hidden units, a fully connected layer would require</p>
+<div class="math notranslate nohighlight">
+\[
+10^6 \times 10^3 = 10^9 \quad \text{parameters},
+\]</div>
+<p>just for one layer. Scaling such a network would demand massive datasets, distributed optimization across many GPUs, and enormous patience. And in practice, effective models would require even <em>larger</em> hidden layers, pushing parameter counts into the billions.</p>
+<p>Humans, of course, recognize cats and dogs effortlessly. Computers also manage it with modern deep learning models. The resolution of this apparent contradiction is that <strong>images are not just arbitrary vectors—they have structure</strong>. Neighboring pixels are related, objects appear at different locations but retain their identity, and patterns repeat across space. Convolutional neural networks (CNNs) were designed specifically to exploit this structure.</p>
+<section id="invariance-why-location-shouldnt-matter">
+<h3>Invariance: Why Location Shouldn’t Matter<a class="headerlink" href="#invariance-why-location-shouldnt-matter" title="Link to this heading">#</a></h3>
+<p>Imagine trying to detect Waldo in a picture. Waldo looks the same whether he is at the top or the bottom of the image. We want a detector that recognizes him <em>regardless of location</em>. This is the principle of <strong>translation invariance</strong> (or more precisely, <em>translation equivariance</em> at intermediate layers).</p>
+<p>Humans exploit this naturally—we can recognize shapes even if they appear shifted. CNNs encode this property by scanning the image with small filters that apply the same weights across all positions. Thus, instead of learning a separate parameter for every possible pixel-to-hidden-unit connection, we reuse the same filter everywhere.</p>
+<p>Two guiding principles emerge:</p>
+<ol class="arabic simple">
+<li><p><strong>Translation invariance:</strong> shifting the input should correspond to shifting the representation, not fundamentally changing it.</p></li>
+<li><p><strong>Locality:</strong> early features should depend only on local regions, not the entire image at once.</p></li>
+<li><p><strong>Hierarchy:</strong> deeper layers combine local features into larger, more abstract representations.</p></li>
+</ol>
+<p>Together, these principles let CNNs learn effective models with far fewer parameters.</p>
+</section>
+<section id="constraining-the-mlp">
+<h3>Constraining the MLP<a class="headerlink" href="#constraining-the-mlp" title="Link to this heading">#</a></h3>
+<p>To see how convolutions arise, let’s start from a fully connected view. Suppose the input image is <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and the hidden representation is <span class="math notranslate nohighlight">\(\mathbf{H}\)</span>, both treated as 2D arrays of the same shape. Then each hidden unit <span class="math notranslate nohighlight">\([\mathbf{H}]_{i,j}\)</span> depends on all input pixels:</p>
+<div class="math notranslate nohighlight">
+\[
+[\mathbf{H}]_{i,j} = [\mathbf{U}]_{i,j} + \sum_k \sum_l [\mathsf{W}]_{i,j,k,l} \,[\mathbf{X}]_{k,l},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathsf{W}\)</span> is a fourth-order weight tensor and <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> contains biases.</p>
+<p>This is already unrealistic: for a <span class="math notranslate nohighlight">\(1000 \times 1000\)</span> image, <span class="math notranslate nohighlight">\(\mathsf{W}\)</span> contains <span class="math notranslate nohighlight">\(10^{12}\)</span> parameters—far beyond current hardware limits.</p>
+<section id="step-1-translation-invariance">
+<h4>Step 1: Translation Invariance<a class="headerlink" href="#step-1-translation-invariance" title="Link to this heading">#</a></h4>
+<p>If we require that shifting <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> simply shifts <span class="math notranslate nohighlight">\(\mathbf{H}\)</span>, then the weights cannot depend on <span class="math notranslate nohighlight">\((i,j)\)</span> explicitly. Instead, the weights depend only on offsets <span class="math notranslate nohighlight">\((a,b)\)</span> relative to the current location:</p>
+<div class="math notranslate nohighlight">
+\[
+[\mathbf{H}]_{i,j} = u + \sum_a \sum_b [\mathbf{V}]_{a,b}\,[\mathbf{X}]_{i+a, j+b}.
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> is shared across the image, and <span class="math notranslate nohighlight">\(u\)</span> is a global bias. This is exactly the definition of a <strong>convolution</strong>. Already, the number of parameters drops dramatically, since we no longer need a separate weight tensor for each location.</p>
+</section>
+<section id="step-2-locality">
+<h4>Step 2: Locality<a class="headerlink" href="#step-2-locality" title="Link to this heading">#</a></h4>
+<p>Next, we impose <strong>locality</strong>: nearby pixels are most relevant. This means that offsets are limited to a small neighborhood:</p>
+<div class="math notranslate nohighlight">
+\[
+[\mathbf{H}]_{i,j} = u + \sum_{a=-\Delta}^{\Delta} \sum_{b=-\Delta}^{\Delta} [\mathbf{V}]_{a,b}\,[\mathbf{X}]_{i+a, j+b}.
+\]</div>
+<p>This is the <strong>convolutional layer</strong>, where <span class="math notranslate nohighlight">\(\Delta\)</span> controls the <em>receptive field size</em>. Typically, <span class="math notranslate nohighlight">\(\Delta \leq 3\)</span>, so filters are tiny (<span class="math notranslate nohighlight">\(3\times 3\)</span> or <span class="math notranslate nohighlight">\(5\times 5\)</span>). The parameter count now shrinks from trillions to just a few dozen per filter.</p>
+<p>By stacking many such layers, deeper networks can capture broader context: small filters combine into larger receptive fields, enabling recognition of global structures from local building blocks.</p>
+</section>
+</section>
+<section id="convolutions-and-cross-correlation">
+<h3>Convolutions and Cross-Correlation<a class="headerlink" href="#convolutions-and-cross-correlation" title="Link to this heading">#</a></h3>
+<p>Mathematically, convolution between functions <span class="math notranslate nohighlight">\(f,g:\mathbb{R}^d\to\mathbb{R}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+(f * g)(\mathbf{x}) = \int f(\mathbf{z})\, g(\mathbf{x}-\mathbf{z})\, d\mathbf{z}.
+\]</div>
+<p>In discrete 2D form:</p>
+<div class="math notranslate nohighlight">
+\[
+(f * g)(i,j) = \sum_a \sum_b f(a,b)\, g(i-a, j-b).
+\]</div>
+<p>In deep learning libraries, however, the operation is usually implemented as <strong>cross-correlation</strong>, which replaces <span class="math notranslate nohighlight">\((i-a,j-b)\)</span> with <span class="math notranslate nohighlight">\((i+a,j+b)\)</span>. The difference is only a flip in indexing, and in practice both are referred to as “convolution.”</p>
+</section>
+<section id="channels-from-grayscale-to-rgb-and-beyond">
+<h3>Channels: From Grayscale to RGB and Beyond<a class="headerlink" href="#channels-from-grayscale-to-rgb-and-beyond" title="Link to this heading">#</a></h3>
+<p>So far we treated images as 2D grids. Real images, however, have <strong>channels</strong> (e.g., RGB). Thus, the input is a 3D tensor <span class="math notranslate nohighlight">\(\mathsf{X}_{i,j,c}\)</span> with height, width, and channel dimensions. The hidden representation is also 3D, now with multiple <em>feature maps</em>.</p>
+<p>The convolution filter must therefore handle channels. A filter is defined as <span class="math notranslate nohighlight">\(\mathsf{V}_{a,b,c,d}\)</span>, where <span class="math notranslate nohighlight">\(c\)</span> indexes input channels and <span class="math notranslate nohighlight">\(d\)</span> indexes output channels. The operation is:</p>
+<div class="math notranslate nohighlight">
+\[
+[\mathsf{H}]_{i,j,d} = \sum_{a=-\Delta}^{\Delta} \sum_{b=-\Delta}^{\Delta} \sum_c [\mathsf{V}]_{a,b,c,d}\,[\mathsf{X}]_{i+a,j+b,c}.
+\]</div>
+<p>Thus each output channel <span class="math notranslate nohighlight">\(d\)</span> is computed as a weighted combination of local regions across <em>all</em> input channels. Different filters can specialize: some detect edges, others textures or color patterns. By stacking layers, higher-level features emerge—like shapes, objects, and eventually categories.</p>
+</section>
+<section id="why-this-works">
+<h3>Why This Works<a class="headerlink" href="#why-this-works" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Parameter efficiency:</strong> billions of parameters shrink to a few thousand.</p></li>
+<li><p><strong>Inductive bias:</strong> convolution encodes translation invariance and locality, properties true of natural images.</p></li>
+<li><p><strong>Hierarchical learning:</strong> shallow filters capture edges, deeper filters combine them into textures, shapes, and semantic objects.</p></li>
+</ul>
+<p>The cost is that we impose assumptions (e.g., translation invariance). If these assumptions fail, CNNs may struggle. But in vision and many perceptual tasks, they align well with reality, making CNNs the backbone of modern computer vision.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="24_MLP_ES.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Clasificación con Multilayer Perceptrons</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="26_resnet2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">ResNets for Biomedical Image Analysis</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-convolutions">Introduction to Convolutions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-convolution">What is a Convolution?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-edge-detection">Example: Edge Detection</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolution-in-action">Convolution in Action</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-convolution-output">Computing the Convolution Output</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutions-in-pytorch">Convolutions in PyTorch</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strides-and-padding">Strides and Padding</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#padding-example">Padding Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stride-example">Stride Example</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-formula-for-output-size">General Formula for Output Size</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-convolutional-neural-network">Building a Convolutional Neural Network</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-cnn">Creating the CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-convolutional-layers">Defining the Convolutional Layers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-learner">Creating the Learner</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-convolution-arithmetic">Understanding Convolution Arithmetic</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improving-training-stability">Improving Training Stability</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-baseline-cnn">A Simple Baseline CNN</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#increasing-model-complexity">Increasing Model Complexity</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analyzing-model-training-with-activation-statistics">Analyzing Model Training with Activation Statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-size-and-gradient-stability">Batch Size and Gradient Stability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cycle-training-dynamic-learning-rates-and-momentum">1cycle Training: Dynamic Learning Rates and Momentum</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#batch-normalization">Batch Normalization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-fully-connected-layers-to-convolutions">From Fully Connected Layers to Convolutions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#invariance-why-location-shouldnt-matter">Invariance: Why Location Shouldn’t Matter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraining-the-mlp">Constraining the MLP</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-translation-invariance">Step 1: Translation Invariance</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-locality">Step 2: Locality</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutions-and-cross-correlation">Convolutions and Cross-Correlation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#channels-from-grayscale-to-rgb-and-beyond">Channels: From Grayscale to RGB and Beyond</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-works">Why This Works</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

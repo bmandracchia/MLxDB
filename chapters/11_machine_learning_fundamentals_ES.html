@@ -1,0 +1,1378 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Fundamentos del Aprendizaje Automático &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/11_machine_learning_fundamentals_ES';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Ingeniería de características (Feature Engineering)" href="12_basic_feature_engineering_ES.html" />
+    <link rel="prev" title="Jupyter &amp; Markdown" href="03_jupyter_markdown.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering_ES.html">Ingeniería de características (Feature Engineering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables_ES.html">Variables categóricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers_ES.html">Clasificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees_ES.html">Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction_ES.html">Reducción de la dimensionalidad: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans_ES.html">Extracción de Características en Manifold No Lineales</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks_ES.html">Deep Learning en Ingeniería Biomédica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_NN_as_UA_ES.html">Redes neuronales como aproximadores universales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers_ES.html">Entrenamiento de un Clasificador de Dígitos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP_ES.html">Clasificación con Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_convolutions_ES.html">Redes Neuronales Convolucionales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2_ES.html">ResNets para Análisis de Imágenes Biomédicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers_ES.html">Mecanismos de Atención y Transformadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders_ES.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic_ES.html">Aprendizaje Probabilístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL_ES.html">Aprendizaje Profundo Basado en Física</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/11_machine_learning_fundamentals_ES.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/11_machine_learning_fundamentals_ES.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Fundamentos del Aprendizaje Automático</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptos-fundamentales-del-aprendizaje-automatico">Conceptos fundamentales del aprendizaje automático</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pasos-principales-de-la-canalizacion-pipeline-de-aprendizaje-automatico">Pasos principales de la canalización (<em>pipeline</em>) de aprendizaje automático</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representacion-matematica">Representación matemática</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tipos-de-aprendizaje-automatico">Tipos de Aprendizaje Automático</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regresion-clasificacion-y-clustering">Regresión, Clasificación y <em>Clustering</em></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regresion"><strong>Regresión</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificacion"><strong>Clasificación</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering-agrupamiento"><strong>Clustering (Agrupamiento)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-clave">Diferencias clave:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-de-regresion-volumenes-cerebrales-neonatales">Ejemplo de regresión: volúmenes cerebrales neonatales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-los-datos">Cargar los datos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccionar-y-entrenar-el-modelo">Seleccionar y entrenar el modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-de-modelo-un-modelo-lineal-simple">Selección de modelo: un modelo lineal simple</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#la-distribucion-normal-y-la-perdida-cuadratica">La distribución normal y la pérdida cuadrática</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-ecuacion-normal">La Ecuación Normal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimizacion-por-minimos-cuadrados">Minimización por Mínimos Cuadrados</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#principales-desafios-en-aprendizaje-automatico">Principales desafíos en aprendizaje automático</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cantidad-de-datos-de-entrenamiento-y-validacion-cruzada">Cantidad de datos de entrenamiento y validación cruzada</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-de-mala-calidad">Datos de mala calidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#caracteristicas-irrelevantes">Características irrelevantes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobreajuste-del-conjunto-de-entrenamiento">Sobreajuste del conjunto de entrenamiento</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#regularizacion-del-modelo">Regularización del modelo</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subajuste-del-conjunto-de-entrenamiento">Subajuste del conjunto de entrenamiento</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="fundamentos-del-aprendizaje-automatico">
+<h1>Fundamentos del Aprendizaje Automático<a class="headerlink" href="#fundamentos-del-aprendizaje-automatico" title="Link to this heading">#</a></h1>
+<p><strong>El aprendizaje automático</strong> consiste en ajustar modelos matemáticos a los datos para extraer información o hacer predicciones.</p>
+<blockquote>
+<div><p>“[El aprendizaje automático es el] campo de estudio que otorga a los ordenadores la capacidad de aprender sin ser programados explícitamente.”<br />
+—Arthur Samuel, 1959</p>
+</div></blockquote>
+<p>Estos modelos funcionan tomando <strong>características</strong> (<em>features</em>) como entradas. Una característica es una representación numérica de algún aspecto de los datos en bruto. Las características actúan como intermediarias entre los datos crudos y los modelos de aprendizaje automático dentro de la canalización completa.</p>
+<p>El aprendizaje automático es útil para:</p>
+<ul class="simple">
+<li><p>Problemas en los que las soluciones existentes requieren mucho ajuste manual y reglas complejas; un algoritmo de Aprendizaje Automático puede simplificar el código y rendir mejor.</p></li>
+<li><p>Problemas complejos para los que no existe una buena solución programando reglas explícitas; los mejores métodos de Aprendizaje Automático pueden encontrar una solución.</p></li>
+<li><p>Entornos cambiantes: un sistema de Aprendizaje Automático puede adaptarse a datos nuevos.</p></li>
+<li><p>Obtener información sobre problemas complejos y grandes volúmenes de datos.</p></li>
+</ul>
+<section id="conceptos-fundamentales-del-aprendizaje-automatico">
+<h2>Conceptos fundamentales del aprendizaje automático<a class="headerlink" href="#conceptos-fundamentales-del-aprendizaje-automatico" title="Link to this heading">#</a></h2>
+<p><strong>Datos</strong>: Los datos son observaciones de fenómenos del mundo real. Cada conjunto de datos puede contener errores, valores atípicos y ruido, por lo que suele ser esencial limpiarlos y procesarlos antes de analizarlos.</p>
+<p><strong>Modelos</strong>: Un modelo es una abstracción matemática que describe la relación entre las características de entrada y las salidas. Su objetivo es generalizar: aprender de observaciones pasadas para predecir o inferir resultados en datos nuevos.</p>
+<p><strong>Características (features)</strong>: Una característica es una representación numérica derivada de los datos brutos. Las buenas características son informativas, relevantes para la tarea y adecuadas a la arquitectura del modelo.</p>
+<p><strong>Ingeniería de características (feature engineering)</strong>: proceso de extraer y transformar variables a partir de datos brutos para mejorar el rendimiento del modelo, lo que a menudo conduce a predicciones más precisas y un mejor desempeño general.</p>
+<section id="pasos-principales-de-la-canalizacion-pipeline-de-aprendizaje-automatico">
+<h3>Pasos principales de la canalización (<em>pipeline</em>) de aprendizaje automático<a class="headerlink" href="#pasos-principales-de-la-canalizacion-pipeline-de-aprendizaje-automatico" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Mirar el panorama general.</p></li>
+<li><p>Obtener los datos.</p></li>
+<li><p>Explorar y visualizar los datos para extraer información.</p></li>
+<li><p>Preparar los datos para los algoritmos de Aprendizaje Automático.</p></li>
+<li><p>Seleccionar un modelo y entrenarlo.</p></li>
+<li><p>Ajustar los hiperparámetros y validar el modelo.</p></li>
+<li><p>Evaluar el modelo final y ponerlo en producción.</p></li>
+</ol>
+</section>
+</section>
+<section id="representacion-matematica">
+<h2>Representación matemática<a class="headerlink" href="#representacion-matematica" title="Link to this heading">#</a></h2>
+<p>En todas las tareas de aprendizaje automático, una muestra se caracteriza por un <strong>vector de características</strong> de dimensión <span class="math notranslate nohighlight">\(D\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\textbf{x} = (x_1, ..., x_D)^T .
+\]</div>
+<p>Buscamos encontrar un <strong>modelo</strong> matemático para predecir salidas que pueda expresarse como una función <span class="math notranslate nohighlight">\(f\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat{y} = f (\mathbf{x})
+\]</div>
+<p>Considerando múltiples muestras, denotaremos el vector de características de la muestra <span class="math notranslate nohighlight">\(i\)</span> como:</p>
+<div class="math notranslate nohighlight">
+\[\textbf{x}_i = (x_{i1}, ..., x_{iD})^T .\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{y}\)</span> is an output estimated by our model. In the case of regression it is an estimated
+target value, for classification and clustering it is an estimated label, and for dimensionality
+reduction it is a transformed feature vector.
+Let’s assume that we have N training samples with feature vectors <span class="math notranslate nohighlight">\(\mathbf{x}_1, ...,\mathbf{x}_N\)</span> defined
+as follows:</p>
+<div class="math notranslate nohighlight">
+\[\textbf{x}_i = (x_{i1}, ..., x_{iD})^T .\]</div>
+<p>Las características de las muestras de entrenamiento determinan una <strong>matriz de características</strong> <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> con dimensiones <span class="math notranslate nohighlight">\(N \times D\)</span>: las filas corresponden a muestras y las columnas a características. En aprendizaje supervisado esperamos una salida <span class="math notranslate nohighlight">\(\mathbf{y}_i\)</span> para cada muestra <span class="math notranslate nohighlight">\(\mathbf{x}_i\)</span>. Esto define el vector objetivo para regresión y el vector de etiquetas para clasificación:</p>
+<div class="math notranslate nohighlight">
+\[\textbf{y} = (y_1, ..., y_N)^T .\]</div>
+<p>Para encontrar el modelo matemático <span class="math notranslate nohighlight">\(f\)</span>, debemos seleccionar su forma, que varía según el algoritmo. En general, elegimos por adelantado una forma matemática para la función <span class="math notranslate nohighlight">\(f\)</span> que depende del vector de características <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> y del vector de parámetros <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ 
+\hat{y} = f(\mathbf{x},\theta) 
+\]</div>
+<p>Entrenar el modelo <span class="math notranslate nohighlight">\(f\)</span> puede expresarse matemáticamente como encontrar el vector de parámetros <span class="math notranslate nohighlight">\(\hat{\theta}\)</span> que minimiza una función de pérdida <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> para el conjunto de entrenamiento dado:</p>
+<div class="math notranslate nohighlight">
+\[ 
+\hat{\theta} = \mathrm{argmin}_\theta \, \mathbf{F}(\mathbf{X},\mathbf{y}, \theta) 
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> desaparece de la ecuación en tareas no supervisadas.</p>
+</section>
+<section id="tipos-de-aprendizaje-automatico">
+<h2>Tipos de Aprendizaje Automático<a class="headerlink" href="#tipos-de-aprendizaje-automatico" title="Link to this heading">#</a></h2>
+<p>Existen tres tipos clave: <strong>aprendizaje supervisado</strong>, <strong>aprendizaje no supervisado</strong> y <strong>aprendizaje por refuerzo</strong>.</p>
+<p><img alt="image.png" src="../_images/image-10.png" /></p>
+</section>
+<section id="regresion-clasificacion-y-clustering">
+<h2>Regresión, Clasificación y <em>Clustering</em><a class="headerlink" href="#regresion-clasificacion-y-clustering" title="Link to this heading">#</a></h2>
+<p>En el ámbito biomédico, <strong>regresión</strong>, <strong>clasificación</strong> y <strong>agrupamiento (clustering)</strong> cubren la mayoría de problemas relacionados con análisis de datos, diagnóstico e investigación.</p>
+<p><img alt="image.png" src="../_images/image-11.png" /></p>
+<section id="regresion">
+<h3><strong>Regresión</strong><a class="headerlink" href="#regresion" title="Link to this heading">#</a></h3>
+<p>En las tareas de regresión, el objetivo es predecir un resultado numérico continuo a partir de diversas características de entrada. Por ejemplo, en un contexto médico, se podría usar regresión para predecir la presión arterial de un paciente en función de variables como la edad, el peso, los hábitos de tabaquismo y los antecedentes familiares. El modelo aprende cómo estos factores influyen en el valor objetivo, que es el nivel de presión arterial, y predice un valor específico para un nuevo paciente.</p>
+<p>Otra aplicación común está en la farmacocinética, donde los modelos de regresión ayudan a estimar los niveles de concentración de un fármaco en el torrente sanguíneo a lo largo del tiempo. Al introducir variables específicas del paciente como la dosis, la tasa de metabolismo y la función renal, el modelo predice la concentración del medicamento en un momento dado.</p>
+<p>La regresión produce números reales, lo que la hace adecuada para problemas en los que se necesitan predicciones numéricas precisas en entornos médicos, como predecir tiempos de recuperación o estimar tasas de progresión de enfermedades.</p>
+</section>
+<section id="clasificacion">
+<h3><strong>Clasificación</strong><a class="headerlink" href="#clasificacion" title="Link to this heading">#</a></h3>
+<p>La clasificación, en cambio, se centra en predecir resultados categóricos. En el campo médico, esto suele implicar el diagnóstico de enfermedades. Por ejemplo, un modelo podría clasificar a los pacientes como diabéticos o no diabéticos en función de datos de entrada como los niveles de glucosa en sangre, el IMC y los factores genéticos. A cada paciente se le asigna una etiqueta, ya sea “diabético” o “no diabético”, según las características proporcionadas.</p>
+<p>Otra aplicación es la detección de cáncer mediante imágenes. Un modelo de clasificación podría analizar imágenes de biopsias o tomografías para determinar si un tumor es benigno o maligno. En este caso, el objetivo del modelo es asignar la imagen a una de dos categorías: “benigno” o “maligno”.</p>
+<p>A diferencia de la regresión, donde la salida es un valor continuo, la clasificación predice una etiqueta discreta. Esto es muy valioso en el diagnóstico médico, donde se necesitan decisiones claras, como “positivo” o “negativo” para una enfermedad en particular, para planificar un tratamiento.</p>
+</section>
+<section id="clustering-agrupamiento">
+<h3><strong>Clustering (Agrupamiento)</strong><a class="headerlink" href="#clustering-agrupamiento" title="Link to this heading">#</a></h3>
+<p>El <em>clustering</em> se utiliza normalmente para análisis exploratorio, donde el objetivo es descubrir patrones ocultos o grupos en los datos sin etiquetas predefinidas. En biomedicina, el <em>clustering</em> suele emplearse para agrupar pacientes en función de información genética o síntomas clínicos. Por ejemplo, los investigadores pueden agrupar pacientes con perfiles de expresión génica similares para identificar subtipos de cáncer que responden de manera diferente al tratamiento.</p>
+<p>En otro caso, el <em>clustering</em> podría ayudar a segmentar a los pacientes en función de la progresión de una enfermedad como el Alzheimer. Al agrupar pacientes en clústeres que muestran patrones similares de deterioro cognitivo, los médicos pueden adaptar mejor las estrategias de tratamiento o incluso descubrir nuevos subtipos de la enfermedad.</p>
+<p>El <em>clustering</em> no implica categorías predefinidas. En su lugar, encuentra estructuras inherentes en los datos, lo que lo hace especialmente útil en campos como la genómica o la medicina personalizada, donde comprender las relaciones ocultas entre los datos puede conducir a descubrimientos significativos.</p>
+</section>
+<section id="diferencias-clave">
+<h3>Diferencias clave:<a class="headerlink" href="#diferencias-clave" title="Link to this heading">#</a></h3>
+<p>En aplicaciones biomédicas, la distinción fundamental entre estos métodos radica en sus objetivos:</p>
+<ul class="simple">
+<li><p><strong>Regresión</strong> predice valores continuos, como la presión arterial o las concentraciones de fármacos.</p></li>
+<li><p><strong>Clasificación</strong> predice resultados categóricos, como diagnosticar una enfermedad o clasificar un tumor como benigno o maligno.</p></li>
+<li><p><strong>Clustering</strong> descubre agrupaciones naturales en los datos, como identificar subtipos de pacientes en función de marcadores genéticos o de la progresión de una enfermedad.</p></li>
+</ul>
+<p>Cada método cumple un propósito distinto, pero es fundamental para avanzar en el diagnóstico, el tratamiento y la investigación médica.</p>
+</section>
+</section>
+<section id="ejemplo-de-regresion-volumenes-cerebrales-neonatales">
+<h2>Ejemplo de regresión: volúmenes cerebrales neonatales<a class="headerlink" href="#ejemplo-de-regresion-volumenes-cerebrales-neonatales" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This project requires Python 3.7 or above:</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">assert</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="c1"># Scikit-Learn ≥1.0.1 is required:</span>
+<span class="kn">from</span> <span class="nn">packaging</span> <span class="kn">import</span> <span class="n">version</span>
+<span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="k">assert</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sklearn</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;1.0.1&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="c1"># Plot setup</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;axes&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">titlesize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;legend&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;xtick&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;ytick&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1"># Make this notebook&#39;s output stable across runs:</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="cargar-los-datos">
+<h3>Cargar los datos<a class="headerlink" href="#cargar-los-datos" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download and prepare the data</span>
+<span class="n">data_root</span> <span class="o">=</span> <span class="s2">&quot;datasets</span><span class="se">\\</span><span class="s2">ch1</span><span class="se">\\</span><span class="s2">neonatal_brain_volumes.csv&quot;</span>
+<span class="n">nbv</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_root</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">nbv</span><span class="p">[[</span><span class="s2">&quot;GA&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">nbv</span><span class="p">[[</span><span class="s2">&quot;brain volume&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># Visualize the data</span>
+<span class="n">nbv</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bb33344a5c8079f836bfc16373cc3c38ef08e7a8d638e8a1d5a47c2c8c1a4802.png" src="../_images/bb33344a5c8079f836bfc16373cc3c38ef08e7a8d638e8a1d5a47c2c8c1a4802.png" />
+</div>
+</div>
+</section>
+<section id="seleccionar-y-entrenar-el-modelo">
+<h3>Seleccionar y entrenar el modelo<a class="headerlink" href="#seleccionar-y-entrenar-el-modelo" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select a linear model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Make a prediction </span>
+<span class="n">X_new</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">37</span><span class="p">]]</span>  
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_new</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[281.66202738]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sustituir el modelo de Regresión Lineal por <strong>k-Vecinos más Cercanos</strong> en el código anterior es tan simple como reemplazar estas líneas:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>por estas otras:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsRegressor</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">KNeighborsRegressor</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select a 3-Nearest Neighbors regression model</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsRegressor</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">KNeighborsRegressor</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Make a prediction for Cyprus</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_new</span><span class="p">))</span> <span class="c1"># outputs [[6.33333333]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[272.57333333]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a function to save the figures:</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Where to save the figures</span>
+<span class="n">IMAGES_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;images&quot;</span> <span class="o">/</span> <span class="s2">&quot;fundamentals&quot;</span>
+<span class="n">IMAGES_PATH</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">save_fig</span><span class="p">(</span><span class="n">fig_id</span><span class="p">,</span> <span class="n">tight_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fig_extension</span><span class="o">=</span><span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">300</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">IMAGES_PATH</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fig_id</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">fig_extension</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">tight_layout</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">fig_extension</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">resolution</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Para ilustrar el riesgo de <strong>sobreajuste (overfitting)</strong>, usamos solo una parte de los datos de entrenamiento, ajustamos varios modelos y mostramos que no siguen la misma tendencia lineal.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_ga</span> <span class="o">=</span> <span class="mi">37</span>
+<span class="n">max_ga</span> <span class="o">=</span> <span class="mi">40</span>
+
+<span class="n">stats</span> <span class="o">=</span> <span class="n">nbv</span><span class="p">[(</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_ga</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">max_ga</span><span class="p">)]</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GA</th>
+      <th>brain volume</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>37.429</td>
+      <td>277.73</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>37.000</td>
+      <td>268.49</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>37.000</td>
+      <td>296.00</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>37.000</td>
+      <td>253.23</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>37.286</td>
+      <td>287.60</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Representemos algunos datos aleatorios.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/693beb882d7aad187aa3e74391f508273dcc8cedb93185a32e6bd0741fb11452.png" src="../_images/693beb882d7aad187aa3e74391f508273dcc8cedb93185a32e6bd0741fb11452.png" />
+</div>
+</div>
+</section>
+<section id="seleccion-de-modelo-un-modelo-lineal-simple">
+<h3>Selección de modelo: un modelo lineal simple<a class="headerlink" href="#seleccion-de-modelo-un-modelo-lineal-simple" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Brain</span> <span class="pre">Volume</span></code> = <span class="math notranslate nohighlight">\(\theta_0 + \theta_1 \times\)</span> <code class="docutils literal notranslate"><span class="pre">GA</span></code></p>
+<p>Este modelo es solo una función lineal de la característica de entrada <code class="docutils literal notranslate"><span class="pre">GA</span></code>. Los parámetros del modelo son <span class="math notranslate nohighlight">\(\theta_0\)</span> y <span class="math notranslate nohighlight">\(\theta_1\)</span>.</p>
+<p>Más en general, un modelo lineal realiza la predicción como una combinación lineal de las características, más una constante llamada <strong>término independiente</strong> (o <em>bias</em>):</p>
+<div class="math notranslate nohighlight">
+\[
+\hat y = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \dots + \theta_n x_n
+\]</div>
+<p>o sea:</p>
+<div class="math notranslate nohighlight">
+\[
+\hat y = \mathbf{\theta} \cdot \mathbf{x}
+\]</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_ga</span><span class="p">,</span> <span class="n">max_ga</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">220</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_0 = </span><span class="si">{</span><span class="n">w1</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_1 = </span><span class="si">{</span><span class="n">w2</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="mi">1470</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">380</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_0 = </span><span class="si">{</span><span class="n">w1</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">370</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_1 = </span><span class="si">{</span><span class="n">w2</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+
+<span class="n">w1</span><span class="p">,</span> <span class="n">w2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">650</span><span class="p">,</span> <span class="mi">25</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w1</span> <span class="o">+</span> <span class="n">w2</span>  <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">39.2</span><span class="p">,</span> <span class="mi">390</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_0 = </span><span class="si">{</span><span class="n">w1</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">39.2</span><span class="p">,</span> <span class="mi">380</span><span class="p">,</span> <span class="sa">fr</span><span class="s2">&quot;$\theta_1 = </span><span class="si">{</span><span class="n">w2</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/4dc3574a81dbc56110b272151698366fe18a091698dc4c399ec39f8412fc276a.png" src="../_images/4dc3574a81dbc56110b272151698366fe18a091698dc4c399ec39f8412fc276a.png" />
+</div>
+</div>
+<p>Ahora bien, ¿cómo entrenamos el modelo?</p>
+<blockquote>
+<div><p>Entrenar un modelo significa fijar sus parámetros de modo que se ajuste lo mejor posible al conjunto de entrenamiento.</p>
+</div></blockquote>
+<p>Para ello, primero necesitamos una medida de qué tan bien (o mal) el modelo se ajusta a los datos. La métrica más común en regresión es el <strong>Error Cuadrático Medio (MSE)</strong>. Así, para entrenar una Regresión Lineal, hay que encontrar el valor de <span class="math notranslate nohighlight">\(\theta\)</span> que minimiza el MSE.</p>
+<p>El MSE de una hipótesis de Regresión Lineal <span class="math notranslate nohighlight">\(h_\theta\)</span> sobre un conjunto de entrenamiento <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> se calcula como:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{MSE}(X, h_\theta) = \frac{1}{m} \sum_{i = 1}^{m} \big( \mathbf{\theta}^T \mathbf{x}^{(i)} − y^{(i)} \big)^2
+\]</div>
+<section id="la-distribucion-normal-y-la-perdida-cuadratica">
+<h4>La distribución normal y la pérdida cuadrática<a class="headerlink" href="#la-distribucion-normal-y-la-perdida-cuadratica" title="Link to this heading">#</a></h4>
+<p>Podemos dar una motivación más formal al objetivo de la pérdida cuadrática haciendo suposiciones probabilísticas sobre la distribución del ruido.</p>
+<p>Para empezar, recordemos que una distribución normal con media <span class="math notranslate nohighlight">\(\mu\)</span> y varianza <span class="math notranslate nohighlight">\(\sigma^2\)</span> se define como:</p>
+<p><span class="math notranslate nohighlight">\(p(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{1}{2 \sigma^2} (x - \mu)^2\right).\)</span></p>
+<p>Una forma de motivar la regresión lineal con pérdida cuadrática es asumir que las observaciones provienen de mediciones ruidosas, donde el ruido
+<span class="math notranslate nohighlight">\(\epsilon\)</span> sigue una distribución normal
+<span class="math notranslate nohighlight">\(\mathcal{N}(0, \sigma^2)\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(y = \theta^\top \mathbf{x} + \epsilon \textrm{ donde } \epsilon \sim \mathcal{N}(0, \sigma^2).\)</span></p>
+<p>Así, podemos escribir la <em>verosimilitud</em> de observar un valor <span class="math notranslate nohighlight">\(y\)</span> dado un <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> como</p>
+<p><span class="math notranslate nohighlight">\( P(y \mid \mathbf{x}) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{1}{2 \sigma^2} (y - \theta^\top \mathbf{x})^2\right).\)</span></p>
+<p>La verosimilitud se factoriza. Según el <em>principio de máxima verosimilitud</em>, los mejores valores de los parámetros <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> y <span class="math notranslate nohighlight">\(b\)</span> son aquellos que maximizan la <em>verosimilitud</em> de todo el conjunto de datos:</p>
+<p><span class="math notranslate nohighlight">\(P(\mathbf y \mid \mathbf X) = \prod_{i=1}^{n} p(y^{(i)} \mid \mathbf{x}^{(i)}).\)</span></p>
+<p>La igualdad se cumple porque todos los pares <span class="math notranslate nohighlight">\((\mathbf{x}^{(i)}, y^{(i)})\)</span> se extrajeron de manera independiente unos de otros. Los estimadores obtenidos siguiendo el principio de máxima verosimilitud se llaman <em>estimadores de máxima verosimilitud</em>. Aunque maximizar el producto de muchas funciones exponenciales parece difícil, podemos simplificarlo significativamente, sin cambiar el objetivo, maximizando el logaritmo de la verosimilitud en su lugar.</p>
+<p>Por razones históricas, las optimizaciones se suelen expresar como problemas de minimización en lugar de maximización. Así, sin cambiar nada, podemos <em>minimizar</em> la <em>log-verosimilitud negativa</em>, que se expresa como:</p>
+<p><span class="math notranslate nohighlight">\(-\log P(\mathbf y \mid \mathbf X) = \sum_{i=1}^n \frac{1}{2} \log(2 \pi \sigma^2) + \frac{1}{2 \sigma^2} \left(y^{(i)} - \theta^\top \mathbf{x}^{(i)} \right)^2.\)</span></p>
+<p>Si asumimos que <span class="math notranslate nohighlight">\(\sigma\)</span> es fijo, podemos ignorar el primer término, ya que no depende de <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> ni de <span class="math notranslate nohighlight">\(b\)</span>. El segundo término es idéntico a la pérdida cuadrática presentada antes, salvo por la constante multiplicativa <span class="math notranslate nohighlight">\(\frac{1}{\sigma^2}\)</span>. Afortunadamente, la solución tampoco depende de <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<p>Se concluye que minimizar el error cuadrático medio es equivalente a la estimación de máxima verosimilitud de un modelo lineal bajo la suposición de ruido gaussiano aditivo.</p>
+</section>
+</section>
+<section id="la-ecuacion-normal">
+<h3>La Ecuación Normal<a class="headerlink" href="#la-ecuacion-normal" title="Link to this heading">#</a></h3>
+<p>Para encontrar el valor de $\theta$ que minimiza la función de coste, existe una solución en forma cerrada —es decir, una ecuación matemática que da directamente el resultado.</p>
+<p>Esto se llama la <em>Ecuación Normal</em>:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbf{\hat \theta} = (\mathbf{X}^T\mathbf{X})^{−1} \mathbf{X}^T \mathbf{y}
+\]</div>
+<p>La ecuación normal puede calcularse usando el módulo de Álgebra Lineal de <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> (<code class="docutils literal notranslate"><span class="pre">np.linalg</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">theta_best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X_b</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X_b</span><span class="p">)</span> <span class="o">@</span> <span class="n">X_b</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>Sin embargo, la complejidad computacional de invertir una matriz de este tipo suele ser de aproximadamente $O(n^{2.4})$ a $O(n^3)$ (dependiendo de la implementación).</p>
+</div></blockquote>
+<p>En otras palabras, si duplicas el número de características, multiplicas el tiempo de cómputo aproximadamente por $2^{2.4} = 5.3$ a $2^3 = 8$.</p>
+<p>En su lugar, el enfoque usado por la clase <code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code> de <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> es de alrededor de $O(n^2)$.</p>
+<p>Si duplicas el número de características, multiplicas el tiempo de cómputo aproximadamente por 4.</p>
+</section>
+<section id="minimizacion-por-minimos-cuadrados">
+<h3>Minimización por Mínimos Cuadrados<a class="headerlink" href="#minimizacion-por-minimos-cuadrados" title="Link to this heading">#</a></h3>
+<p>La clase <code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code> se basa en la función <code class="docutils literal notranslate"><span class="pre">scipy.linalg.lstsq()</span></code>.</p>
+<p>Esta función calcula <span class="math notranslate nohighlight">\(\mathbf{\hat\theta} = \mathbf{X}^\dagger \mathbf{y}\)</span>, donde <span class="math notranslate nohighlight">\(\mathbf{X}^\dagger\)</span> es la <strong>pseudoinversa</strong> de <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p>
+<p>La pseudoinversa se calcula mediante una técnica estándar de factorización matricial llamada <strong>Descomposición en Valores Singulares</strong> (<em>SVD</em>).</p>
+<p>Este enfoque es más eficiente que calcular la <strong>Ecuación Normal</strong>, además de que gestiona bien casos límite. De hecho, la Ecuación Normal puede fallar si la matriz <span class="math notranslate nohighlight">\(\mathbf{X}^T \mathbf{X}\)</span> no es invertible, pero la pseudoinversa siempre está definida.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+
+<span class="n">y_sample</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[[</span><span class="s2">&quot;brain volume&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">X_sample</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[[</span><span class="s2">&quot;GA&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">lin1</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">lin1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_sample</span><span class="p">,</span> <span class="n">y_sample</span><span class="p">)</span>
+
+<span class="n">t0</span><span class="p">,</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">lin1</span><span class="o">.</span><span class="n">intercept_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lin1</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;θ0=</span><span class="si">{</span><span class="n">t0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, θ1=</span><span class="si">{</span><span class="n">t1</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>θ0=-700.35, θ1=2.64e+01
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_ga</span><span class="p">,</span> <span class="n">max_ga</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">t0</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>
+
+<span class="n">min_bv</span> <span class="o">=</span> <span class="mi">150</span>
+<span class="n">max_bv</span> <span class="o">=</span> <span class="mi">450</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">37.2</span><span class="p">,</span> <span class="n">max_bv</span> <span class="o">-</span> <span class="mi">25</span><span class="p">,</span>
+         <span class="sa">fr</span><span class="s2">&quot;$\theta_0 = </span><span class="si">{</span><span class="n">t0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">37.2</span><span class="p">,</span> <span class="n">max_bv</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span>
+         <span class="sa">fr</span><span class="s2">&quot;$\theta_1 = </span><span class="si">{</span><span class="n">t1</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="n">min_ga</span><span class="o">-</span><span class="mf">.2</span><span class="p">,</span> <span class="n">max_ga</span><span class="o">+</span><span class="mf">.2</span><span class="p">,</span> <span class="n">min_bv</span><span class="p">,</span> <span class="n">max_bv</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/ebbfd31c987bc4e7479528d0d2d13c75995117eb692f24306be7f973fec38af4.png" src="../_images/ebbfd31c987bc4e7479528d0d2d13c75995117eb692f24306be7f973fec38af4.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_ga</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">56</span><span class="p">]</span>
+<span class="n">example_ga</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>38.143
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_prediction</span> <span class="o">=</span> <span class="n">lin1</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="n">example_ga</span><span class="p">]])[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">example_prediction</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>304.8594393021576
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_ga</span><span class="p">,</span> <span class="n">max_ga</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">t0</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">)</span>
+
+<span class="n">min_bv</span> <span class="o">=</span> <span class="mi">150</span>
+<span class="n">max_bv</span> <span class="o">=</span> <span class="mi">450</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="n">max_bv</span> <span class="o">-</span> <span class="mi">25</span><span class="p">,</span>
+         <span class="sa">fr</span><span class="s2">&quot;$\theta_0 = </span><span class="si">{</span><span class="n">t0</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="n">max_bv</span> <span class="o">-</span><span class="mi">40</span><span class="p">,</span>
+         <span class="sa">fr</span><span class="s2">&quot;$\theta_1 = </span><span class="si">{</span><span class="n">t1</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">example_ga</span><span class="p">,</span> <span class="n">example_ga</span><span class="p">],</span>
+         <span class="p">[</span><span class="n">min_bv</span><span class="p">,</span> <span class="n">example_prediction</span><span class="p">],</span> <span class="s2">&quot;r--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">37.1</span><span class="p">,</span> <span class="mi">170</span><span class="p">,</span>
+         <span class="sa">fr</span><span class="s2">&quot;Prediction = </span><span class="si">{</span><span class="n">example_prediction</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">example_ga</span><span class="p">,</span> <span class="n">example_prediction</span><span class="p">,</span> <span class="s2">&quot;ro&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="n">min_ga</span><span class="o">-</span><span class="mf">.5</span><span class="p">,</span> <span class="n">max_ga</span><span class="o">+</span><span class="mf">.5</span><span class="p">,</span> <span class="n">min_bv</span><span class="p">,</span> <span class="n">max_bv</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/7f116c1943e133dfcb591c54a4a6d71b46ab89b90e85e21f2bd3a9fca3878184.png" src="../_images/7f116c1943e133dfcb591c54a4a6d71b46ab89b90e85e21f2bd3a9fca3878184.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;brain volume&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>253.23
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="principales-desafios-en-aprendizaje-automatico">
+<h2>Principales desafíos en aprendizaje automático<a class="headerlink" href="#principales-desafios-en-aprendizaje-automatico" title="Link to this heading">#</a></h2>
+<section id="cantidad-de-datos-de-entrenamiento-y-validacion-cruzada">
+<h3>Cantidad de datos de entrenamiento y validación cruzada<a class="headerlink" href="#cantidad-de-datos-de-entrenamiento-y-validacion-cruzada" title="Link to this heading">#</a></h3>
+<p>La mayoría de algoritmos de Aprendizaje Automático requieren <strong>muchos datos</strong> para funcionar correctamente. Incluso para problemas sencillos suelen necesitarse miles de ejemplos; para tareas como reconocimiento de imágenes o voz, <strong>millones</strong>.</p>
+<p>Además, para generalizar bien es crucial que los datos de entrenamiento sean <strong>representativos</strong> de los nuevos casos a los que se quiere generalizar.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">missing_data</span> <span class="o">=</span> <span class="n">nbv</span><span class="p">[(</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_ga</span><span class="p">)</span> <span class="o">|</span>
+                                  <span class="p">(</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_ga</span><span class="p">)]</span>
+<span class="n">missing_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GA</th>
+      <th>brain volume</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>35.714</td>
+      <td>252.41</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>36.143</td>
+      <td>266.36</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>36.714</td>
+      <td>266.13</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>42.286</td>
+      <td>308.35</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>40.143</td>
+      <td>303.76</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>40.857</td>
+      <td>344.04</td>
+    </tr>
+    <tr>
+      <th>158</th>
+      <td>34.857</td>
+      <td>196.40</td>
+    </tr>
+    <tr>
+      <th>159</th>
+      <td>34.429</td>
+      <td>232.43</td>
+    </tr>
+    <tr>
+      <th>160</th>
+      <td>40.429</td>
+      <td>428.26</td>
+    </tr>
+    <tr>
+      <th>161</th>
+      <td>35.429</td>
+      <td>307.99</td>
+    </tr>
+  </tbody>
+</table>
+<p>130 rows × 2 columns</p>
+</div></div></div>
+</div>
+<p>Por ejemplo, el conjunto que usamos antes para entrenar el modelo lineal no era perfectamente representativo; faltaban algunos valores. …</p>
+<p>Ahora, si permitimos que <span class="math notranslate nohighlight">\(\theta_1\)</span> varíe pero aplicamos regularización para <strong>penalizar grandes valores</strong> de <span class="math notranslate nohighlight">\(\theta_1\)</span>, el modelo se vuelve más simple (menos grados de libertad). La idea clave es evitar que el modelo siga de cerca el ruido.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+
+<span class="n">pos_data_x</span><span class="p">,</span> <span class="n">pos_data_y</span> <span class="o">=</span> <span class="n">missing_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">missing_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">30</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pos_data_x</span><span class="p">,</span> <span class="n">pos_data_y</span><span class="p">,</span> <span class="s2">&quot;rs&quot;</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">t0</span> <span class="o">+</span> <span class="n">t1</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;b:&quot;</span><span class="p">)</span>
+
+<span class="n">lin_reg_full</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">Xfull</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;GA&quot;</span><span class="p">]]</span>
+<span class="n">yfull</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">nbv</span><span class="p">[</span><span class="s2">&quot;brain volume&quot;</span><span class="p">]]</span>
+<span class="n">lin_reg_full</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xfull</span><span class="p">,</span> <span class="n">yfull</span><span class="p">)</span>
+
+<span class="n">t0full</span><span class="p">,</span> <span class="n">t1full</span> <span class="o">=</span> <span class="n">lin_reg_full</span><span class="o">.</span><span class="n">intercept_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lin_reg_full</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">t0full</span> <span class="o">+</span> <span class="n">t1full</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
+
+<span class="c1"># plt.axis([0, 115_000, min_life_sat, max_life_sat])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/34d34e963382a7c80837c5049880b0078a05770cdeea99e5638e52714126f685.png" src="../_images/34d34e963382a7c80837c5049880b0078a05770cdeea99e5638e52714126f685.png" />
+</div>
+</div>
+<p>Añadir unos pocos datos faltantes puede <strong>alterar significativamente</strong> la relación observada.</p>
+<p>En aplicaciones biomédicas solemos trabajar con conjuntos de datos <strong>pequeños</strong> para entrenar. En este escenario, excluir dos conjuntos (validación y prueba) es costoso.</p>
+<p>La <strong>validación cruzada</strong> proporciona un solución a este problema: primero apartamos un conjunto de prueba como antes, pero en lugar de reservar también un conjunto de validación fijo, dividimos los datos restantes en <em>k</em> grupos (<em>folds</em>). Entrenamos <em>k</em> veces, de forma que cada <em>fold</em> actúa como validación una única vez y los <em>k − 1</em> restantes forman el entrenamiento. Probamos diferentes hiperparámetros y elegimos los que mejor rendimiento promedio obtienen en los <em>k</em> folds de validación. Luego entrenamos el modelo final con <strong>todos</strong> los <em>k</em> folds y evaluamos el rendimiento final en el conjunto de prueba, nunca usado en la selección de hiperparámetros.</p>
+</section>
+<section id="datos-de-mala-calidad">
+<h3>Datos de mala calidad<a class="headerlink" href="#datos-de-mala-calidad" title="Link to this heading">#</a></h3>
+<p>Si los datos de entrenamiento están llenos de errores, valores atípicos y ruido (por ejemplo, por medidas de mala calidad), al sistema le costará más detectar los patrones subyacentes y su rendimiento bajará. Suele merecer la pena dedicar tiempo a <strong>limpiar</strong> los datos. Por ejemplo:</p>
+<ul class="simple">
+<li><p>Si algunas instancias son claramente atípicas, puede ayudar descartarlas o corregir los errores manualmente.</p></li>
+<li><p>Si a algunas instancias les faltan ciertas características (p. ej., un 5% de clientes no indicó su edad), decide si ignorar ese atributo por completo, ignorar esas instancias, <strong>imputar</strong> los valores que faltan (p. ej., con la mediana) o entrenar un modelo con la característica y otro sin ella, etc.</p></li>
+</ul>
+</section>
+<section id="caracteristicas-irrelevantes">
+<h3>Características irrelevantes<a class="headerlink" href="#caracteristicas-irrelevantes" title="Link to this heading">#</a></h3>
+<p>Basura que entra, basura que sale. Un modelo no puede aprender correctamente si le alimentas con características poco informativas o irrelevantes. La <strong>selección y construcción de características</strong> es crucial: eliminar variables redundantes, transformar variables (escalado, codificación), o crear nuevas características a partir de datos adicionales puede mejorar mucho el rendimiento.</p>
+</section>
+<section id="sobreajuste-del-conjunto-de-entrenamiento">
+<h3>Sobreajuste del conjunto de entrenamiento<a class="headerlink" href="#sobreajuste-del-conjunto-de-entrenamiento" title="Link to this heading">#</a></h3>
+<p>El <strong>sobreajuste (overfitting)</strong> ocurre cuando el modelo es demasiado complejo en relación con la cantidad de datos y su nivel de ruido. En ese caso el modelo aprende peculiaridades del conjunto de entrenamiento y no generaliza bien a datos nuevos.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">pipeline</span>
+
+<span class="n">nbv</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">y</span><span class="o">=</span><span class="s2">&quot;brain volume&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GA&quot;</span><span class="p">,</span>
+             <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Brain Volume (mL)&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Gestational Age&quot;</span><span class="p">)</span>
+
+<span class="n">poly</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PolynomialFeatures</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">include_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">lin_reg2</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">pipeline_reg</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="n">poly</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;scal&#39;</span><span class="p">,</span> <span class="n">scaler</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;lin&#39;</span><span class="p">,</span> <span class="n">lin_reg2</span><span class="p">)])</span>
+<span class="n">pipeline_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xfull</span><span class="p">,</span> <span class="n">yfull</span><span class="p">)</span>
+<span class="n">curve</span> <span class="o">=</span> <span class="n">pipeline_reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">curve</span><span class="p">)</span>
+
+<span class="c1"># plt.axis([0, 115_000, min_life_sat, max_life_sat])</span>
+
+<span class="n">save_fig</span><span class="p">(</span><span class="s1">&#39;overfitting_model_plot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/d8e13380f52835fac9343571bf69f97094c944716d487f5ff8a1d098a9372f7e.png" src="../_images/d8e13380f52835fac9343571bf69f97094c944716d487f5ff8a1d098a9372f7e.png" />
+</div>
+</div>
+<p>Las posibles soluciones son:</p>
+<ul class="simple">
+<li><p><strong>Simplificar el modelo</strong>, seleccionando uno con menos parámetros (por ejemplo, lineal en lugar de un polinomio de alto grado), reduciendo el número de atributos o imponiendo restricciones (regularización).</p></li>
+<li><p><strong>Obtener más datos de entrenamiento</strong>.</p></li>
+<li><p><strong>Reducir el ruido</strong> en los datos de entrenamiento (p. ej., corregir errores y eliminar valores atípicos).</p></li>
+</ul>
+<section id="regularizacion-del-modelo">
+<h4>Regularización del modelo<a class="headerlink" href="#regularizacion-del-modelo" title="Link to this heading">#</a></h4>
+<p>La <strong>regularización</strong> consiste en imponer restricciones al modelo para evitar que se ajuste demasiado a los datos de entrenamiento, capturando el ruido en lugar del patrón subyacente.</p>
+<p>Considera el modelo lineal discutido antes, con dos parámetros <span class="math notranslate nohighlight">\(\theta_0\)</span> (intercepto) y <span class="math notranslate nohighlight">\(\theta_1\)</span> (pendiente). Si fijáramos <span class="math notranslate nohighlight">\(\theta_1 = 0\)</span>, el modelo perdería la capacidad de ajustar la pendiente y solo podría ajustar el intercepto, dificultando capturar relaciones significativas.</p>
+<p>Si permitimos que <span class="math notranslate nohighlight">\(\theta_1\)</span> varíe pero añadimos una penalización para valores grandes (p. ej., L2), obligamos al modelo a permanecer simple, de modo que pueda generalizar a datos no vistos.</p>
+</section>
+</section>
+<section id="subajuste-del-conjunto-de-entrenamiento">
+<h3>Subajuste del conjunto de entrenamiento<a class="headerlink" href="#subajuste-del-conjunto-de-entrenamiento" title="Link to this heading">#</a></h3>
+<p>El <strong>subajuste (underfitting)</strong> ocurre cuando el modelo es demasiado simple para capturar la estructura subyacente de los datos: sus predicciones serán pobres incluso en entrenamiento.</p>
+<p>Para afrontarlo:</p>
+<ul class="simple">
+<li><p><strong>Elige un modelo más potente</strong> (con más parámetros) que capture mayor complejidad.</p></li>
+<li><p><strong>Mejora la ingeniería de características</strong>, incorporando información más relevante o transformaciones que representen mejor los patrones.</p></li>
+<li><p><strong>Reduce las restricciones</strong> del modelo (p. ej., menos regularización) para darle más flexibilidad.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_jupyter_markdown.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Jupyter &amp; Markdown</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="12_basic_feature_engineering_ES.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Ingeniería de características (Feature Engineering)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptos-fundamentales-del-aprendizaje-automatico">Conceptos fundamentales del aprendizaje automático</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pasos-principales-de-la-canalizacion-pipeline-de-aprendizaje-automatico">Pasos principales de la canalización (<em>pipeline</em>) de aprendizaje automático</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representacion-matematica">Representación matemática</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tipos-de-aprendizaje-automatico">Tipos de Aprendizaje Automático</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regresion-clasificacion-y-clustering">Regresión, Clasificación y <em>Clustering</em></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regresion"><strong>Regresión</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clasificacion"><strong>Clasificación</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering-agrupamiento"><strong>Clustering (Agrupamiento)</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-clave">Diferencias clave:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-de-regresion-volumenes-cerebrales-neonatales">Ejemplo de regresión: volúmenes cerebrales neonatales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-los-datos">Cargar los datos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccionar-y-entrenar-el-modelo">Seleccionar y entrenar el modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seleccion-de-modelo-un-modelo-lineal-simple">Selección de modelo: un modelo lineal simple</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#la-distribucion-normal-y-la-perdida-cuadratica">La distribución normal y la pérdida cuadrática</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-ecuacion-normal">La Ecuación Normal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimizacion-por-minimos-cuadrados">Minimización por Mínimos Cuadrados</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#principales-desafios-en-aprendizaje-automatico">Principales desafíos en aprendizaje automático</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cantidad-de-datos-de-entrenamiento-y-validacion-cruzada">Cantidad de datos de entrenamiento y validación cruzada</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#datos-de-mala-calidad">Datos de mala calidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#caracteristicas-irrelevantes">Características irrelevantes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sobreajuste-del-conjunto-de-entrenamiento">Sobreajuste del conjunto de entrenamiento</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#regularizacion-del-modelo">Regularización del modelo</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#subajuste-del-conjunto-de-entrenamiento">Subajuste del conjunto de entrenamiento</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

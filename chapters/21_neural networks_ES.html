@@ -1,0 +1,1579 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Deep Learning en Ingeniería Biomédica &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/21_neural networks_ES';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Redes neuronales como aproximadores universales" href="22_NN_as_UA_ES.html" />
+    <link rel="prev" title="Extracción de Características en Manifold No Lineales" href="17_kmeans_ES.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11_machine_learning_fundamentals_ES.html">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering_ES.html">Ingeniería de características (Feature Engineering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables_ES.html">Variables categóricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers_ES.html">Clasificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees_ES.html">Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction_ES.html">Reducción de la dimensionalidad: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans_ES.html">Extracción de Características en Manifold No Lineales</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Deep Learning en Ingeniería Biomédica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_NN_as_UA_ES.html">Redes neuronales como aproximadores universales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers_ES.html">Entrenamiento de un Clasificador de Dígitos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP_ES.html">Clasificación con Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_convolutions_ES.html">Redes Neuronales Convolucionales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2_ES.html">ResNets para Análisis de Imágenes Biomédicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers_ES.html">Mecanismos de Atención y Transformadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders_ES.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic_ES.html">Aprendizaje Probabilístico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL_ES.html">Aprendizaje Profundo Basado en Física</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/21_neural networks_ES.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/21_neural networks_ES.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Deep Learning en Ingeniería Biomédica</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#redes-neuronales-una-breve-historia">Redes Neuronales: Una Breve Historia</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-aprender-deep-learning">Cómo aprender Deep Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-una-red-neuronal">¿Qué es una red neuronal?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-inherentes-al-aprendizaje-automatico">Limitaciones inherentes al aprendizaje automático</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-funciona-un-reconocedor-de-imagenes-medicas">Cómo funciona un reconocedor de imágenes médicas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-las-redes-neuronales-hacen-predicciones">Cómo las redes neuronales hacen predicciones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mejorando-el-modelo">Mejorando el modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-del-rendimiento-del-modelo">Evaluación del rendimiento del modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-y-consideraciones-eticas">Limitaciones y consideraciones éticas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manejo-del-sobreajuste">Manejo del sobreajuste</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-learning">Transfer Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#despliegue-del-modelo-en-escenarios-reales">Despliegue del modelo en escenarios reales</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conjuntos-de-validacion-y-de-prueba">Conjuntos de validación y de prueba</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#hide</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="deep-learning-en-ingenieria-biomedica">
+<h1>Deep Learning en Ingeniería Biomédica<a class="headerlink" href="#deep-learning-en-ingenieria-biomedica" title="Link to this heading">#</a></h1>
+<p>El deep learning, un subcampo del aprendizaje automático, ha revolucionado numerosos ámbitos, incluida la ingeniería biomédica. Al permitir que los modelos aprendan representaciones automáticamente a partir de grandes volúmenes de datos, el deep learning se ha convertido en un pilar de aplicaciones como el análisis de imágenes médicas, el descubrimiento de fármacos y la monitorización de pacientes. Gracias a su capacidad para manejar patrones complejos en los datos, cada vez se emplea más para abordar retos críticos en salud, desde la detección temprana de enfermedades hasta la medicina personalizada.</p>
+<p>El deep learning es un método computacional que extrae y transforma datos mediante el uso de múltiples capas de redes neuronales. En ingeniería biomédica se ha aplicado, por ejemplo, al reconocimiento de patrones en imágenes médicas (como resonancias magnéticas o tomografías) o al análisis de datos de expresión génica. Cada capa de la red procesa las entradas de la capa anterior, refinando progresivamente la salida. Las capas se entrenan mediante algoritmos que minimizan el error y mejoran la precisión, lo que permite a la red realizar tareas como diagnosticar enfermedades o predecir la evolución clínica de un paciente. Los algoritmos de entrenamiento se tratarán en detalle en la siguiente sección.</p>
+<p>Algunas de las tareas en las que el deep learning está liderando el avance, en particular en ingeniería biomédica y salud:</p>
+<ul class="simple">
+<li><p><strong>Procesamiento del Lenguaje Natural (NLP)</strong>: extracción de información clave de historiales médicos; resumen de notas clínicas; reconocimiento automático de voz para dictado médico; sistemas de preguntas y respuestas para apoyo a la decisión clínica.</p></li>
+<li><p><strong>Imagen médica</strong>: detección de anomalías en radiografías, TAC o resonancias; cuantificación de características en láminas de patología; medición de estructuras anatómicas en ecografías; diagnóstico de retinopatía diabética y otras patologías en imágenes de retina.</p></li>
+<li><p><strong>Genómica y proteómica</strong>: predicción de estructuras proteicas (p. ej., AlphaFold); clasificación de proteínas a partir de secuencias; análisis de secuenciación tumoral-normal en investigación oncológica; identificación de mutaciones genéticas clínicamente relevantes; clasificación celular en imágenes de microscopía.</p></li>
+<li><p><strong>Generación de imágenes</strong>: mejora de imágenes médicas aumentando resolución; eliminación de ruido en resonancias o ecografías; generación de datos médicos sintéticos para entrenamiento de modelos.</p></li>
+<li><p><strong>Sistemas de recomendación</strong>: sugerencia de opciones de tratamiento personalizadas; identificación de ensayos clínicos adecuados para pacientes según su historia médica y genética.</p></li>
+<li><p><strong>Robótica</strong>: asistencia en cirugías robóticas; automatización de tareas de laboratorio como la manipulación de muestras biológicas; aumento de la precisión en sistemas de administración de fármacos.</p></li>
+<li><p><strong>Otras aplicaciones</strong>: predicción de la progresión de enfermedades; estimación de la demanda de recursos hospitalarios; conversión de texto a voz para pacientes con discapacidad visual, entre muchas más.</p></li>
+</ul>
+<p>Lo más notable del deep learning es su <strong>versatilidad</strong> en tantas aplicaciones, y aun así casi todos estos avances se basan en un único tipo de modelo: la <strong>red neuronal</strong>. En el ámbito biomédico, las redes neuronales están en el núcleo de sistemas para diagnosticar enfermedades a partir de imágenes médicas, predecir resultados clínicos e incluso diseñar planes de tratamiento personalizados. El poder de este modelo radica en su capacidad para aprender patrones complejos de grandes volúmenes de datos sanitarios, ya provengan de imágenes, genómica o sistemas de monitorización de pacientes.</p>
+<section id="redes-neuronales-una-breve-historia">
+<h2>Redes Neuronales: Una Breve Historia<a class="headerlink" href="#redes-neuronales-una-breve-historia" title="Link to this heading">#</a></h2>
+<p>Las redes neuronales, un componente fundamental del deep learning, tienen una larga historia que se remonta a mediados del siglo XX. Inspiradas inicialmente en la arquitectura del cerebro humano, han evolucionado hasta convertirse en una de las herramientas más poderosas de la inteligencia artificial. Gracias a su capacidad para aprender relaciones complejas y no lineales, en ingeniería biomédica se utilizan para analizar conjuntos de datos médicos complejos, como resonancias magnéticas o tomografías, y detectar patrones que ayudan al diagnóstico de enfermedades. Un ejemplo destacado es el uso de redes neuronales para la detección temprana del Alzheimer, procesando imágenes de resonancia magnética para identificar señales iniciales de degeneración cerebral.</p>
+<p>En 1943, Warren McCulloch, neurofisiólogo, y Walter Pitts, lógico, desarrollaron un modelo matemático de una neurona artificial. Su artículo fundacional <em>A Logical Calculus of the Ideas Immanent in Nervous Activity</em> propuso que:</p>
+<blockquote>
+<div><p>Debido a la naturaleza de “todo o nada” de la actividad nerviosa, los eventos neuronales y sus relaciones podían modelarse usando lógica proposicional. El comportamiento de cualquier red neuronal podía describirse con estos términos.</p>
+</div></blockquote>
+<p>Este trabajo sentó las bases de las redes neuronales modernas, que hoy impulsan innovaciones biomédicas como la interpretación de la actividad cerebral, el diagnóstico de enfermedades neurológicas y la rehabilitación cognitiva. McCulloch y Pitts reconocieron que un modelo simplificado de una neurona biológica podía representarse mediante operaciones matemáticas básicas, como la suma y el umbral. El modelo imitaba el comportamiento neuronal: entradas de distintas fuentes se combinan y se produce una salida solo si se supera cierto umbral. Hoy este concepto es la base de las redes neuronales artificiales aplicadas en ingeniería biomédica, desde el análisis de la actividad neuronal hasta el desarrollo de interfaces cerebro-computadora.</p>
+<p><img alt="perceptron" src="../_images/perceptron.png" /></p>
+<p>Rosenblatt amplió el concepto de neurona artificial dándole la capacidad de aprender, y construyó el primer dispositivo físico que implementaba estos principios: el <em>Mark I Perceptron</em>. Sin embargo, en su libro <em>Perceptrons</em> (MIT Press), Minsky y Papert demostraron que un perceptrón de una sola capa no podía aprender funciones matemáticas básicas (como XOR). También señalaron que el uso de múltiples capas podría superar esas limitaciones, aunque solo la primera observación tuvo gran repercusión. Esto provocó un declive en la investigación sobre redes neuronales durante dos décadas. A pesar de ello, el deep learning moderno, especialmente en biomedicina (imágenes médicas, genómica), depende en gran medida de redes neuronales de múltiples capas para resolver problemas complejos de salud.</p>
+<p>El trabajo más influyente de los últimos 50 años fue <em>Parallel Distributed Processing</em> (PDP), publicado en 1986 por David Rumelhart, James McClellan y el PDP Research Group. En su capítulo inicial expresaban una idea similar a la de Rosenblatt:</p>
+<blockquote>
+<div><p>Las personas son más inteligentes que las computadoras porque el cerebro emplea una arquitectura computacional básica más adecuada para procesar información natural. Propondremos un marco computacional para modelar procesos cognitivos que parece más cercano al estilo de cómputo del cerebro.</p>
+</div></blockquote>
+<p>La premisa sugiere que los métodos tradicionales de computación son fundamentalmente diferentes al funcionamiento cerebral, lo que explicaría por qué las computadoras han tenido dificultades en tareas como el reconocimiento de objetos en imágenes, que el cerebro realiza con facilidad. En ingeniería biomédica, esta visión ha impulsado el desarrollo de redes neuronales capaces de analizar actividad cerebral, diagnosticar condiciones neurológicas y mejorar la comprensión de los procesos cognitivos.</p>
+<p>El enfoque de <em>Parallel Distributed Processing</em> (PDP) es sorprendentemente parecido a las redes neuronales actuales, especialmente en aplicaciones biomédicas. PDP definió el procesamiento distribuido en paralelo mediante varios componentes clave:</p>
+<ul class="simple">
+<li><p>Un conjunto de <strong>unidades de procesamiento</strong> (neuronas biológicas o artificiales).</p></li>
+<li><p>Un <strong>estado de activación</strong> (si la neurona está activa o “dispara”).</p></li>
+<li><p>Una <strong>función de salida</strong> para cada unidad (cuánto se activa la neurona).</p></li>
+<li><p>Un <strong>patrón de conectividad</strong> entre unidades (similar a las sinapsis cerebrales).</p></li>
+<li><p>Una <strong>regla de propagación</strong> para transmitir patrones de actividad por la red.</p></li>
+<li><p>Una <strong>regla de activación</strong> para combinar entradas y determinar la salida.</p></li>
+<li><p>Una <strong>regla de aprendizaje</strong> para ajustar conexiones en función de la experiencia (análoga a la plasticidad sináptica).</p></li>
+<li><p>Un <strong>entorno</strong> en el que opera el sistema (como datos de imágenes médicas, genómica o monitorización de pacientes en tiempo real).</p></li>
+</ul>
+<p>Estos conceptos influyeron enormemente en los enfoques modernos de deep learning en salud, particularmente en el análisis de imágenes médicas, la predicción de progresión de enfermedades y el estudio de procesos neuronales.</p>
+<p>Aunque hace más de 30 años ya se demostró que las redes neuronales prácticas necesitan más de dos capas para obtener buen rendimiento, este conocimiento solo se ha apreciado y aplicado plenamente en tiempos recientes. Hoy, gracias a redes más profundas, mejoras en hardware, mayor disponibilidad de datos médicos y avances algorítmicos, las redes neuronales están alcanzando su potencial. Esto ha permitido avances en diagnóstico médico automatizado, descubrimiento de fármacos y planificación de tratamientos personalizados.</p>
+</section>
+<section id="como-aprender-deep-learning">
+<h2>Cómo aprender Deep Learning<a class="headerlink" href="#como-aprender-deep-learning" title="Link to this heading">#</a></h2>
+<p>Aprender deep learning es una habilidad esencial para resolver problemas biomédicos complejos. Desde el análisis de grandes volúmenes de historiales clínicos hasta el desarrollo de modelos predictivos para la progresión de enfermedades, el deep learning se está convirtiendo en una herramienta clave para los ingenieros biomédicos. Esta sección presenta los conceptos, herramientas y recursos fundamentales para aplicar estas técnicas a desafíos reales en salud.</p>
+<p>La parte más difícil del deep learning es práctica: ¿cómo asegurarse de tener suficientes datos médicos? ¿Están en el formato correcto? ¿Está entrenando bien el modelo? Si no, ¿cómo se corrige? Por eso es fundamental <strong>aprender haciendo</strong>. En ingeniería biomédica, la experiencia práctica con datos reales—como historiales clínicos, imágenes médicas o secuencias genómicas—mejora mucho más rápido las habilidades que enfocarse solo en la teoría. Resolver problemas de salud mediante programación da el contexto y la motivación necesarios para profundizar después en los aspectos teóricos.</p>
+</section>
+<section id="que-es-una-red-neuronal">
+<h2>¿Qué es una red neuronal?<a class="headerlink" href="#que-es-una-red-neuronal" title="Link to this heading">#</a></h2>
+<p>Si consideramos una red neuronal como una función matemática, es increíblemente flexible según sus pesos. De acuerdo con el <em>teorema de aproximación universal</em>, una red neuronal puede resolver en teoría cualquier problema con el nivel de precisión que se requiera. Esta flexibilidad la hace especialmente adecuada para abordar problemas biomédicos complejos, como detectar lesiones cutáneas o analizar secuencias genómicas. El desafío clave está en <strong>entrenar la red de manera efectiva</strong>, lo que implica encontrar la asignación correcta de pesos para el modelo.</p>
+<p>Afortunadamente, no necesitamos un mecanismo nuevo de ajuste de pesos para cada tarea. En su lugar, el <em>descenso estocástico de gradiente</em> (SGD) permite actualizar los pesos automáticamente y mejorar el modelo para cualquier tarea, como clasificar imágenes médicas o predecir la evolución de pacientes.</p>
+</section>
+<section id="limitaciones-inherentes-al-aprendizaje-automatico">
+<h2>Limitaciones inherentes al aprendizaje automático<a class="headerlink" href="#limitaciones-inherentes-al-aprendizaje-automatico" title="Link to this heading">#</a></h2>
+<p>A partir de esto, podemos destacar algunos aspectos fundamentales del entrenamiento de un modelo de deep learning, especialmente en aplicaciones biomédicas:</p>
+<ul class="simple">
+<li><p>No se puede crear un modelo sin datos.</p></li>
+<li><p>Un modelo solo puede aprender a reconocer los patrones presentes en los datos de entrada usados durante el entrenamiento.</p></li>
+<li><p>Este enfoque de aprendizaje genera <strong>predicciones</strong>, no <strong>acciones</strong> recomendadas (p. ej., diagnosticar una lesión cutánea, pero no determinar el tratamiento).</p></li>
+<li><p>No basta con tener ejemplos de datos de entrada; también necesitamos <strong>etiquetas</strong> para esos datos. Por ejemplo, tener imágenes de lesiones cutáneas no es suficiente para entrenar un modelo: cada imagen debe estar etiquetada con información como si indica una condición benigna o maligna.</p></li>
+</ul>
+<p>En salud, muchas organizaciones afirman no tener suficientes datos, pero en realidad a menudo carecen de datos <strong>etiquetados</strong>. Por ejemplo, clínicas de dermatología pueden disponer de archivos de imágenes de lesiones cutáneas, pero estas imágenes podrían no tener etiquetas estructuradas, ya que los médicos suelen redactar informes en texto libre.
+<img alt="cover" src="../_images/cover.png" /></p>
+<p>Otro punto crítico proviene de considerar cómo un modelo interactúa con su entorno, especialmente en contextos sanitarios. Esta interacción puede crear un <strong>bucle de retroalimentación positiva</strong>: cuanto más se usa el modelo, más sesgados se vuelven los datos, lo que puede conducir a predicciones aún más sesgadas. Por ejemplo, si un modelo entrenado con demografías de pacientes limitadas o sesgadas se utiliza en una clínica, sus predicciones pueden reforzar sesgos existentes en el diagnóstico, afectando negativamente la atención al paciente.</p>
+</section>
+<section id="como-funciona-un-reconocedor-de-imagenes-medicas">
+<h2>Cómo funciona un reconocedor de imágenes médicas<a class="headerlink" href="#como-funciona-un-reconocedor-de-imagenes-medicas" title="Link to this heading">#</a></h2>
+<p>En esta sección, construiremos y afinaremos un reconocedor de imágenes médicas que pueda clasificar patologías de colon a partir de láminas histológicas usando el conjunto de datos MedMNIST.</p>
+<p>El siguiente código hará lo siguiente:</p>
+<ol class="arabic simple">
+<li><p>Un <strong>conjunto de datos</strong> con miles de imágenes de láminas histológicas etiquetadas para la detección de patologías de colon se descargará en tu máquina local y se extraerá.</p></li>
+<li><p>Se descargará de internet un <strong>modelo preentrenado</strong> que ya ha sido entrenado en conjuntos de datos de imágenes médicas a gran escala.</p></li>
+<li><p>El modelo preentrenado se <strong>ajustará finamente</strong> mediante <em>transfer learning</em>, creando un modelo especialmente adaptado para reconocer enfermedades específicas —por ejemplo, neumonía o anomalías pulmonares— a partir de radiografías de tórax.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastai.vision.all</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">medmnist</span>
+
+<span class="c1"># Choose a specific MedMNIST dataset (e.g., &#39;pathmnist&#39;)</span>
+<span class="n">data_flag</span> <span class="o">=</span> <span class="s1">&#39;pathmnist&#39;</span>
+<span class="n">download</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># Ensure the target folder exists</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;./datasets/ch8&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Load the chosen MedMNIST dataset</span>
+<span class="n">info</span> <span class="o">=</span> <span class="n">medmnist</span><span class="o">.</span><span class="n">INFO</span><span class="p">[</span><span class="n">data_flag</span><span class="p">]</span>
+<span class="n">dataset_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">medmnist</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;python_class&#39;</span><span class="p">])</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">dataset_class</span><span class="p">(</span><span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="n">download</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">dataset_class</span><span class="p">(</span><span class="n">split</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="n">download</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using downloaded and verified file: ./datasets/ch8\pathmnist.npz
+Using downloaded and verified file: ./datasets/ch8\pathmnist.npz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastai.vision.all</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">medmnist</span>
+<span class="kn">from</span> <span class="nn">medmnist</span> <span class="kn">import</span> <span class="n">INFO</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+
+<span class="c1"># Choose a specific MedMNIST dataset (e.g., &#39;pathmnist&#39;)</span>
+<span class="n">data_flag</span> <span class="o">=</span> <span class="s1">&#39;pathmnist&#39;</span>
+<span class="n">download</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># Ensure the target folder exists</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;./datasets/ch8&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Load the chosen MedMNIST dataset</span>
+<span class="n">info</span> <span class="o">=</span> <span class="n">INFO</span><span class="p">[</span><span class="n">data_flag</span><span class="p">]</span>
+<span class="n">dataset_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">medmnist</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;python_class&#39;</span><span class="p">])</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">dataset_class</span><span class="p">(</span><span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="n">download</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">dataset_class</span><span class="p">(</span><span class="n">split</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="n">download</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using downloaded and verified file: datasets\ch8\pathmnist.npz
+Using downloaded and verified file: datasets\ch8\pathmnist.npz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a function to convert MedMNIST dataset to Fastai&#39;s DataLoader</span>
+<span class="k">def</span> <span class="nf">medmnist_to_fastai</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">):</span>
+    <span class="n">train_images</span><span class="p">,</span> <span class="n">train_labels</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">imgs</span><span class="p">,</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">labels</span>
+    <span class="n">test_images</span><span class="p">,</span> <span class="n">test_labels</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="o">.</span><span class="n">imgs</span><span class="p">,</span> <span class="n">test_dataset</span><span class="o">.</span><span class="n">labels</span>
+    
+    <span class="c1"># Convert images and labels into a DataFrame to work with Fastai&#39;s DataBlock</span>
+    <span class="n">df_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;image&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s1">&#39;RGB&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">train_images</span><span class="p">],</span> 
+                             <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">train_labels</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()})</span>
+    <span class="n">df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;image&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s1">&#39;RGB&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">test_images</span><span class="p">],</span> 
+                            <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="n">test_labels</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()})</span>
+    
+    <span class="k">return</span> <span class="n">df_train</span><span class="p">,</span> <span class="n">df_test</span>
+
+<span class="c1"># Convert MedMNIST to DataFrame suitable for Fastai</span>
+<span class="n">df_train</span><span class="p">,</span> <span class="n">df_test</span> <span class="o">=</span> <span class="n">medmnist_to_fastai</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">)</span>
+
+<span class="n">valid_pct</span> <span class="o">=</span> <span class="mf">0.02</span> <span class="c1"># the validation percentage is low to speed up calculations</span>
+
+<span class="c1"># Define DataBlock for Fastai</span>
+<span class="n">dblock</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">(</span>
+    <span class="n">blocks</span><span class="o">=</span><span class="p">(</span><span class="n">ImageBlock</span><span class="p">(</span><span class="n">PILImage</span><span class="p">),</span> <span class="n">CategoryBlock</span><span class="p">),</span>
+    <span class="n">get_x</span><span class="o">=</span><span class="n">ColReader</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">),</span>
+    <span class="n">get_y</span><span class="o">=</span><span class="n">ColReader</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">),</span>
+    <span class="n">splitter</span><span class="o">=</span><span class="n">RandomSplitter</span><span class="p">(</span><span class="n">valid_pct</span><span class="o">=</span><span class="n">valid_pct</span><span class="p">),</span> 
+    <span class="c1">#item_tfms=Resize(28),</span>
+    <span class="n">batch_tfms</span><span class="o">=</span><span class="n">aug_transforms</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">DataLoaders</span></code> es una clase ligera que simplemente almacena los objetos <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> que le pases y los expone como <code class="docutils literal notranslate"><span class="pre">train</span></code> y <code class="docutils literal notranslate"><span class="pre">valid</span></code>. Aunque es muy simple, es muy importante en fastai: proporciona los datos para tu modelo. La funcionalidad clave de <code class="docutils literal notranslate"><span class="pre">DataLoaders</span></code> se logra con estas cuatro líneas de código (tiene otras funciones menores que omitiremos por ahora):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DataLoaders</span><span class="p">(</span><span class="n">GetAttr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">loaders</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span> <span class="o">=</span> <span class="n">loaders</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaders</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">train</span><span class="p">,</span><span class="n">valid</span> <span class="o">=</span> <span class="n">add_props</span><span class="p">(</span><span class="k">lambda</span> <span class="n">i</span><span class="p">,</span><span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>DataLoaders: clase de fastai que almacena múltiples objetos <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> que le pasas, normalmente <code class="docutils literal notranslate"><span class="pre">train</span></code> y <code class="docutils literal notranslate"><span class="pre">valid</span></code>, aunque puedes tener tantos como quieras. Los dos primeros se exponen como propiedades.</p>
+</div></blockquote>
+<p>Para convertir nuestros datos descargados en un objeto <code class="docutils literal notranslate"><span class="pre">DataLoaders</span></code> tenemos que decirle a fastai al menos cuatro cosas:</p>
+<ul class="simple">
+<li><p>Qué tipos de datos estamos usando</p></li>
+<li><p>Cómo obtener la lista de ítems</p></li>
+<li><p>Cómo etiquetar esos ítems</p></li>
+<li><p>Cómo crear el conjunto de validación</p></li>
+</ul>
+<p>fastai incluye varios <em>métodos de fábrica</em> para combinaciones concretas de estos aspectos, útiles cuando tu aplicación y estructura de datos encajan en esos métodos predefinidos. Cuando no es así, fastai ofrece un sistema muy flexible llamado <em>data block API</em>. Con esta API puedes personalizar por completo cada etapa de la creación de tus <code class="docutils literal notranslate"><span class="pre">DataLoaders</span></code>.</p>
+<p>Veamos cada argumento. Primero proporcionamos una tupla donde especificamos los tipos que queremos para las variables independiente y dependiente:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">blocks</span><span class="o">=</span><span class="p">(</span><span class="n">ImageBlock</span><span class="p">,</span> <span class="n">CategoryBlock</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>La <em>variable independiente</em> es aquello a partir de lo cual hacemos predicciones, y la <em>variable dependiente</em> es nuestro objetivo. En este caso, las variables independientes son imágenes y las dependientes son las categorías (tipo de oso) de cada imagen.</p>
+<p>Para este <code class="docutils literal notranslate"><span class="pre">DataLoaders</span></code> los ítems subyacentes estarán en un <em>dataframe</em>. Para decirle a fastai cómo obtenerlos usamos:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">get_x</span><span class="o">=</span><span class="n">ColReader</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A la variable independiente a menudo se la denomina <code class="docutils literal notranslate"><span class="pre">x</span></code> y a la dependiente <code class="docutils literal notranslate"><span class="pre">y</span></code>. Aquí le indicamos a fastai qué función llamar para crear las etiquetas de nuestro conjunto de datos:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">get_y</span><span class="o">=</span><span class="n">ColReader</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>En el <em>data block</em> definimos las <code class="docutils literal notranslate"><span class="pre">Transform</span></code>s que necesitamos. Un <code class="docutils literal notranslate"><span class="pre">Transform</span></code> contiene código que se aplica automáticamente durante el entrenamiento; fastai incluye muchas transformaciones predefinidas y añadir nuevas es tan simple como crear una función de Python. Hay dos tipos: <code class="docutils literal notranslate"><span class="pre">item_tfms</span></code> se aplican a cada ítem, mientras que <code class="docutils literal notranslate"><span class="pre">batch_tfms</span></code> se aplican a un <em>lote</em> de ítems a la vez usando la GPU, por lo que son especialmente rápidas.</p>
+<p>Ahora que tenemos un objeto <code class="docutils literal notranslate"><span class="pre">DataBlock</span></code>, lo usamos como una <em>plantilla</em> para crear un <code class="docutils literal notranslate"><span class="pre">DataLoaders</span></code>. Aún debemos indicarle a fastai la fuente real de los datos—en este caso, el <em>dataframe</em>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create DataLoaders</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">dls</span> <span class="o">=</span> <span class="n">dblock</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">df_train</span><span class="p">,</span> <span class="n">bs</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span> <span class="c1"># to speed up training we use only 500 images from the training dataset, you can either change the number or remove it to use the whole dataset.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Un <code class="docutils literal notranslate"><span class="pre">DataLoaders</span></code> incluye los <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> de validación y de entrenamiento. <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> es una clase que proporciona lotes de unos pocos ítems a la GPU. Al iterar sobre un <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code>, fastai te dará 64 ítems (por defecto) a la vez, apilados en un único tensor. Podemos ver algunos de esos ítems llamando al método <code class="docutils literal notranslate"><span class="pre">show_batch</span></code> sobre un <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dls</span><span class="o">.</span><span class="n">show_batch</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/9c33ca393beffe024eed00bc795f7f5552c82e2b1e65ba527354dc5d156f03df.png" src="../_images/9c33ca393beffe024eed00bc795f7f5552c82e2b1e65ba527354dc5d156f03df.png" />
+</div>
+</div>
+<p>La siguiente línea del código que entrena nuestro reconocedor de imágenes le indica a fastai que cree una <em>red neuronal convolucional</em> (CNN) y especifica qué <em>arquitectura</em> usar (es decir, qué tipo de modelo crear), con qué <em>datos</em> entrenarla y qué <em>métrica</em> usar:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span> <span class="o">=</span> <span class="n">vision_learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">resnet18</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">error_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Las CNN son el enfoque de referencia actual para crear modelos de visión por computador. Su estructura se inspira en el funcionamiento del sistema visual humano.</p>
+<p>Sin embargo, la elección de la arquitectura rara vez es la parte más importante del proceso. Es un tema muy discutido en el ámbito académico, pero en la práctica no suele requerir mucho tiempo. Existen arquitecturas estándar que funcionan la mayor parte del tiempo; en este caso usamos <strong>ResNet</strong>, que es rápida y precisa para muchos conjuntos de datos y problemas. El <code class="docutils literal notranslate"><span class="pre">18</span></code> en <code class="docutils literal notranslate"><span class="pre">resnet18</span></code> se refiere al número de capas de esta variante (otras opciones son <code class="docutils literal notranslate"><span class="pre">34</span></code>, <code class="docutils literal notranslate"><span class="pre">50</span></code>, <code class="docutils literal notranslate"><span class="pre">101</span></code> y <code class="docutils literal notranslate"><span class="pre">152</span></code>). Los modelos con más capas tardan más en entrenar y son más propensos al sobreajuste (no se pueden entrenar durante tantas <em>epochs</em> antes de que la exactitud en validación empiece a empeorar). Por otro lado, con más datos pueden ser bastante más precisos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Train the model using a ResNet architecture</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">vision_learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> 
+                       <span class="n">resnet18</span><span class="p">,</span> 
+                       <span class="n">metrics</span><span class="o">=</span><span class="n">error_rate</span><span class="p">,</span> 
+                       <span class="c1"># cbs=ShortEpochCallback(.01, short_valid=False),</span>
+                       <span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Show some results</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">show_results</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>error_rate</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>3.261369</td>
+      <td>1.991843</td>
+      <td>0.743747</td>
+      <td>00:03</td>
+    </tr>
+  </tbody>
+</table></div><div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>error_rate</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>2.329051</td>
+      <td>1.788579</td>
+      <td>0.648138</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2.204921</td>
+      <td>1.521289</td>
+      <td>0.540300</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2.098126</td>
+      <td>1.478716</td>
+      <td>0.496943</td>
+      <td>00:06</td>
+    </tr>
+  </tbody>
+</table></div><div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"></div><img alt="../_images/cc249edfad405a18698b47db784bd480b1935273b43a5a5518921d136b7de200.png" src="../_images/cc249edfad405a18698b47db784bd480b1935273b43a5a5518921d136b7de200.png" />
+</div>
+</div>
+<p>Una <em>métrica</em> es una función que mide la calidad de las predicciones del modelo usando el conjunto de validación y se imprime al final de cada <em>epoch</em>. En este caso usamos <code class="docutils literal notranslate"><span class="pre">error_rate</span></code>, una función de fastai que indica el porcentaje de imágenes del conjunto de validación clasificadas incorrectamente. Otra métrica común para clasificación es <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> (simplemente <code class="docutils literal notranslate"><span class="pre">1.0</span> <span class="pre">-</span> <span class="pre">error_rate</span></code>).</p>
+<p>El concepto de métrica recuerda a la <em>pérdida</em> (<em>loss</em>), pero hay una diferencia importante. La pérdida define una “medida de rendimiento” que el sistema de entrenamiento puede usar para actualizar los pesos automáticamente; es decir, una buena pérdida es aquella que el descenso estocástico de gradiente puede optimizar con facilidad. En cambio, una métrica está pensada para humanos: debe ser fácil de entender y lo más cercana posible a lo que realmente quieres que haga el modelo. A veces la función de pérdida puede servir como métrica, pero no necesariamente.</p>
+<p><code class="docutils literal notranslate"><span class="pre">vision_learner</span></code> también tiene el parámetro <code class="docutils literal notranslate"><span class="pre">pretrained</span></code>, que por defecto es <code class="docutils literal notranslate"><span class="pre">True</span></code> (así que se usa aunque no lo especifiquemos). Esto fija los pesos del modelo a valores ya entrenados por expertos para reconocer mil categorías en 1,3 millones de fotos (usando el famoso conjunto <em>ImageNet</em>). Un modelo con pesos entrenados previamente se denomina <em>pretrained model</em>. Es muy útil porque, incluso antes de ver tus datos, el modelo ya “sabe” mucho: por ejemplo, partes del modelo detectan bordes, gradientes y colores, algo necesario en muchas tareas.</p>
+<p>Al usar un modelo preentrenado, <code class="docutils literal notranslate"><span class="pre">vision_learner</span></code> elimina la última capa (que estaba ajustada a la tarea original, p. ej., clasificar ImageNet) y la sustituye por una o más capas nuevas con pesos aleatorios, de tamaño apropiado para tu conjunto de datos. A esta parte final se le llama <em>head</em> del modelo.</p>
+<p>Usar modelos preentrenados es el método más importante para entrenar modelos más precisos, más rápido, con menos datos y menos coste.</p>
+<blockquote>
+<div><p><em>Transfer learning</em>: usar un modelo preentrenado para una tarea distinta de aquella para la que fue entrenado.</p>
+</div></blockquote>
+<p>fastai siempre muestra la exactitud del modelo usando solo el conjunto de validación, nunca el de entrenamiento. Esto es crucial: si entrenas un modelo lo bastante grande durante suficiente tiempo, acabará memorizando las etiquetas de todos los ejemplos del conjunto de entrenamiento. Ese modelo no sería útil, porque nos interesa el rendimiento sobre <em>imágenes no vistas</em>. Ese es siempre el objetivo: que el modelo sea útil con datos futuros.</p>
+<p>Incluso antes de memorizarlo todo, el modelo puede memorizar partes del conjunto de entrenamiento. Así, cuanto más entrenes, mejor será la exactitud en entrenamiento; la exactitud en validación también mejora un tiempo, pero luego empeora cuando el modelo empieza a memorizar en lugar de encontrar patrones generalizables. Cuando esto ocurre, decimos que hay <em>sobreajuste</em>.</p>
+<p>El modelo que acabamos de afinar usa una <strong>ResNet preentrenada</strong>, que ya aprendió a reconocer imágenes generales; luego la adaptamos al conjunto PathMNIST. Tras el <em>fine-tuning</em>, el modelo se especializa en clasificar patologías de colon.</p>
+<p>¿Cómo sabemos si el modelo es bueno? En la última columna de la tabla puedes ver la <strong>tasa de error</strong>, que es la proporción de imágenes clasificadas incorrectamente (p. ej., una patología mal diagnosticada). La tasa de error es nuestra métrica clave, una medida intuitiva de la calidad del modelo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Evaluate the model</span>
+<span class="n">interp</span> <span class="o">=</span> <span class="n">ClassificationInterpretation</span><span class="o">.</span><span class="n">from_learner</span><span class="p">(</span><span class="n">learn</span><span class="p">)</span>
+<span class="n">interp</span><span class="o">.</span><span class="n">plot_confusion_matrix</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"></div><div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"></div><img alt="../_images/3cfcebf5332ea3bdbfb0923b41882e647e2906c90413983bdce4f07eec166123.png" src="../_images/3cfcebf5332ea3bdbfb0923b41882e647e2906c90413983bdce4f07eec166123.png" />
+</div>
+</div>
+<p>La <strong>matriz de confusión</strong> muestra el número de predicciones correctas e incorrectas que hizo el modelo. Esta visualización ayuda a entender dónde tiene dificultades, por ejemplo al distinguir entre lesiones cutáneas similares.</p>
+<p>Ahora puedes pasar una imagen de una lámina histológica al modelo para su clasificación. Asegúrate de que sea una imagen válida. El cuaderno analizará la imagen y devolverá su predicción junto con una puntuación de confianza.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">im</span> <span class="o">=</span> <span class="n">PILImage</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">test_dataset</span><span class="o">.</span><span class="n">imgs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">pred</span><span class="p">,</span> <span class="n">pred_idx</span><span class="p">,</span> <span class="n">probs</span> <span class="o">=</span> <span class="n">learn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prediction: </span><span class="si">{</span><span class="n">pred</span><span class="si">}</span><span class="s2">; Probability: </span><span class="si">{</span><span class="n">probs</span><span class="p">[</span><span class="n">pred_idx</span><span class="p">]</span><span class="si">:</span><span class="s2">.04f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">im</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prediction: 7; Probability: 0.3714
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
+</pre></div>
+</div>
+<img alt="../_images/c4d4f2fe44976065a21bbd92ea7a70466065923d58ac2770c600030ed23ddba8.png" src="../_images/c4d4f2fe44976065a21bbd92ea7a70466065923d58ac2770c600030ed23ddba8.png" />
+</div>
+</div>
+</section>
+<section id="como-las-redes-neuronales-hacen-predicciones">
+<h2>Cómo las redes neuronales hacen predicciones<a class="headerlink" href="#como-las-redes-neuronales-hacen-predicciones" title="Link to this heading">#</a></h2>
+<p>Cuando pasas una imagen por la red neuronal, el modelo la procesa a través de varias capas. Cada capa realiza operaciones matemáticas sobre los datos de entrada (p. ej., los píxeles de la imagen) y va refinando progresivamente la comprensión de las características. Por ejemplo, las primeras capas pueden detectar patrones simples como bordes, mientras que las capas más profundas reconocen estructuras más complejas, como formas características de ciertas lesiones cutáneas. Finalmente, el modelo hace una predicción asignando una probabilidad a cada clase posible (p. ej., benigna o maligna).</p>
+<section id="mejorando-el-modelo">
+<h3>Mejorando el modelo<a class="headerlink" href="#mejorando-el-modelo" title="Link to this heading">#</a></h3>
+<p>Si el rendimiento del modelo no es satisfactorio, hay varias formas de mejorarlo:</p>
+<ol class="arabic simple">
+<li><p><strong>Aumento de datos</strong>: aplicar transformaciones como voltear, rotar o hacer zoom en las imágenes para incrementar artificialmente la diversidad del conjunto de entrenamiento.</p></li>
+<li><p><strong>Ajuste fino (<em>fine-tuning</em>)</strong>: entrenar el modelo durante más <em>epochs</em> o ajustar la tasa de aprendizaje para mejorar el rendimiento.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of data augmentation</span>
+<span class="n">dblock</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">(</span>
+    <span class="n">blocks</span><span class="o">=</span><span class="p">(</span><span class="n">ImageBlock</span><span class="p">(</span><span class="n">PILImage</span><span class="p">),</span> <span class="n">CategoryBlock</span><span class="p">),</span>
+    <span class="n">get_x</span><span class="o">=</span><span class="n">ColReader</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">),</span>
+    <span class="n">get_y</span><span class="o">=</span><span class="n">ColReader</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">),</span>
+    <span class="n">splitter</span><span class="o">=</span><span class="n">RandomSplitter</span><span class="p">(</span><span class="n">valid_pct</span><span class="o">=</span><span class="n">valid_pct</span><span class="p">),</span>
+    <span class="c1">#item_tfms=Resize(28),</span>
+    <span class="n">batch_tfms</span><span class="o">=</span><span class="n">aug_transforms</span><span class="p">(</span><span class="n">do_flip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">flip_vert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_rotate</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Create DataLoaders</span>
+<span class="n">dls</span> <span class="o">=</span> <span class="n">dblock</span><span class="o">.</span><span class="n">dataloaders</span><span class="p">(</span><span class="n">df_train</span><span class="p">,</span> <span class="n">bs</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">vision_learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> 
+                       <span class="n">resnet18</span><span class="p">,</span> 
+                       <span class="n">metrics</span><span class="o">=</span><span class="n">error_rate</span><span class="p">,</span>
+                    <span class="c1">#    cbs=ShortEpochCallback(.1, short_valid=False),</span>
+                       <span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>error_rate</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>3.223267</td>
+      <td>1.971703</td>
+      <td>0.767649</td>
+      <td>00:03</td>
+    </tr>
+  </tbody>
+</table></div><div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>error_rate</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>2.756138</td>
+      <td>1.978324</td>
+      <td>0.758755</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2.596331</td>
+      <td>1.620664</td>
+      <td>0.555864</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2.398460</td>
+      <td>1.464274</td>
+      <td>0.487493</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2.201341</td>
+      <td>1.493079</td>
+      <td>0.470817</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2.026988</td>
+      <td>1.461085</td>
+      <td>0.450806</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1.895333</td>
+      <td>1.492575</td>
+      <td>0.429127</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>1.818913</td>
+      <td>1.432546</td>
+      <td>0.412451</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>1.730843</td>
+      <td>1.443276</td>
+      <td>0.413007</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>1.669149</td>
+      <td>1.406350</td>
+      <td>0.410228</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>1.632360</td>
+      <td>1.405136</td>
+      <td>0.409672</td>
+      <td>00:07</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>Al aumentar los datos y afinar el modelo, podemos reducir la tasa de error y mejorar la capacidad del modelo para generalizar.</p>
+</section>
+<section id="evaluacion-del-rendimiento-del-modelo">
+<h3>Evaluación del rendimiento del modelo<a class="headerlink" href="#evaluacion-del-rendimiento-del-modelo" title="Link to this heading">#</a></h3>
+<p>Una vez entrenado el modelo, es fundamental evaluar su rendimiento usando un conjunto de validación. En nuestro caso, dividimos el conjunto de datos en 80% imágenes de entrenamiento y 20% de validación. El rendimiento del modelo sobre el conjunto de validación es un buen indicador de qué tan bien generalizará a datos nuevos y no vistos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the loss curves to evaluate training and validation performance</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">plot_loss</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={&#39;center&#39;: &#39;learning curve&#39;}, xlabel=&#39;steps&#39;, ylabel=&#39;loss&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/650f35681f0d4ad384d69d498374efad5a86250e23f6430e7607f05a04bc76b0.png" src="../_images/650f35681f0d4ad384d69d498374efad5a86250e23f6430e7607f05a04bc76b0.png" />
+</div>
+</div>
+<p>La <strong>curva de pérdida</strong> nos ayuda a entender si el modelo está sobreajustando (aprendiendo demasiado de los datos de entrenamiento pero rindiendo mal en datos nuevos) o subajustando (incapaz de captar la complejidad de los datos).</p>
+</section>
+<section id="limitaciones-y-consideraciones-eticas">
+<h3>Limitaciones y consideraciones éticas<a class="headerlink" href="#limitaciones-y-consideraciones-eticas" title="Link to this heading">#</a></h3>
+<p>Es importante reconocer que, aunque modelos de aprendizaje automático como este pueden ayudar en el diagnóstico médico, no son perfectos. Pueden ocurrir errores de clasificación, y es crucial que estos modelos se evalúen rigurosamente antes de usarse en entornos clínicos. Además, deben abordarse aspectos como la privacidad de los datos, el consentimiento informado y los sesgos en los datos de entrenamiento para evitar consecuencias no deseadas, como diagnósticos sesgados en ciertos grupos demográficos.</p>
+</section>
+<section id="manejo-del-sobreajuste">
+<h3>Manejo del sobreajuste<a class="headerlink" href="#manejo-del-sobreajuste" title="Link to this heading">#</a></h3>
+<p>Uno de los desafíos más comunes en machine learning, especialmente con conjuntos de datos pequeños como ISIC, es el <strong>sobreajuste</strong>. Este ocurre cuando el modelo aprende los detalles y el ruido de los datos de entrenamiento hasta el punto de perjudicar su rendimiento en datos nuevos. Para mitigar el sobreajuste, podemos usar técnicas como <strong>dropout</strong> y <strong>regularización</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply dropout and regularization to improve generalization</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">vision_learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">resnet18</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">error_rate</span><span class="p">,</span> 
+                       <span class="n">model_dir</span><span class="o">=</span><span class="s1">&#39;/tmp/model/&#39;</span><span class="p">,</span>
+                       <span class="n">ps</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="c1"># probabilities used for the dropouts</span>
+                    <span class="c1">#    cbs=ShortEpochCallback(.1, short_valid=False),</span>
+                       <span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>error_rate</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>3.199423</td>
+      <td>2.032626</td>
+      <td>0.748193</td>
+      <td>00:03</td>
+    </tr>
+  </tbody>
+</table></div><div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>error_rate</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>2.659537</td>
+      <td>1.905746</td>
+      <td>0.707615</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2.471174</td>
+      <td>1.614642</td>
+      <td>0.548638</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2.308626</td>
+      <td>1.510100</td>
+      <td>0.504169</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2.131850</td>
+      <td>1.447852</td>
+      <td>0.467482</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.974621</td>
+      <td>1.428242</td>
+      <td>0.440245</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1.838841</td>
+      <td>1.494769</td>
+      <td>0.429127</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>1.726485</td>
+      <td>1.509884</td>
+      <td>0.424125</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>1.658963</td>
+      <td>1.474761</td>
+      <td>0.418566</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>1.602255</td>
+      <td>1.444819</td>
+      <td>0.414675</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>1.580153</td>
+      <td>1.485377</td>
+      <td>0.420233</td>
+      <td>00:07</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p>Al añadir <strong>dropout</strong> a la red, deshabilitamos aleatoriamente una fracción de las neuronas durante el entrenamiento, lo que ayuda a evitar que el modelo dependa demasiado de una sola característica de los datos.</p>
+</section>
+<section id="transfer-learning">
+<h3>Transfer Learning<a class="headerlink" href="#transfer-learning" title="Link to this heading">#</a></h3>
+<p>El <em>transfer learning</em> es especialmente útil en ingeniería biomédica porque los conjuntos de datos médicos suelen ser pequeños y costosos de recopilar. Al usar un modelo preentrenado en un conjunto de datos grande y general, y ajustarlo después en un conjunto más pequeño y específico del dominio, podemos lograr un alto rendimiento sin necesidad de grandes volúmenes de datos etiquetados.</p>
+<p>En este cuaderno aprovechamos un modelo <strong>ResNet preentrenado</strong>, originalmente entrenado con millones de imágenes generales, y lo afinamos para especializarlo en la clasificación de lesiones cutáneas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of using a different pretrained model, such as EfficientNet</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">vision_learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">efficientnet_b0</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">error_rate</span><span class="p">,</span> 
+                    <span class="c1">#    cbs=ShortEpochCallback(.1, short_valid=False),</span>
+                       <span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>error_rate</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>3.211165</td>
+      <td>2.640593</td>
+      <td>0.889939</td>
+      <td>00:04</td>
+    </tr>
+  </tbody>
+</table></div><div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>error_rate</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>2.742377</td>
+      <td>1.971537</td>
+      <td>0.689828</td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2.629692</td>
+      <td>1.749916</td>
+      <td>0.586993</td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2.525275</td>
+      <td>1.714116</td>
+      <td>0.554753</td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2.372823</td>
+      <td>1.741643</td>
+      <td>0.534742</td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2.299573</td>
+      <td>1.752741</td>
+      <td>0.535853</td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2.243513</td>
+      <td>1.792108</td>
+      <td>0.531406</td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2.158350</td>
+      <td>1.798456</td>
+      <td>0.533074</td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>2.102549</td>
+      <td>1.737350</td>
+      <td>0.518621</td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2.066642</td>
+      <td>1.729988</td>
+      <td>0.526959</td>
+      <td>00:05</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2.045389</td>
+      <td>1.736192</td>
+      <td>0.530295</td>
+      <td>00:05</td>
+    </tr>
+  </tbody>
+</table></div></div>
+</div>
+<p><strong>EfficientNet</strong> es otra arquitectura potente que, al afinarse para tareas específicas, puede ofrecer incluso mejor rendimiento que ResNet.
+La última línea de nuestro código anterior le dice a fastai cómo <em>ajustar</em> el modelo:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>La arquitectura solo describe una <em>plantilla</em> de función matemática; no hace nada hasta que le damos valores a los millones de parámetros que contiene.</p>
+<p>Esta es la clave del deep learning: determinar cómo ajustar los parámetros de un modelo para resolver tu problema. Para ajustar un modelo, debemos proporcionar al menos una información: cuántas veces mirar cada imagen (el número de <em>epochs</em>). El número de epochs depende del tiempo disponible y de cuánto tarde en la práctica el ajuste del modelo. Si el número es demasiado pequeño, siempre podemos entrenar más epochs después.</p>
+<p>Pero, ¿por qué el método se llama <code class="docutils literal notranslate"><span class="pre">fine_tune</span></code> y no <code class="docutils literal notranslate"><span class="pre">fit</span></code>? fastai sí tiene un método <code class="docutils literal notranslate"><span class="pre">fit</span></code>, que entrena un modelo desde cero. Pero en este caso partimos de un modelo preentrenado y no queremos perder las capacidades ya adquiridas.</p>
+<blockquote>
+<div><p><strong>Fine-tuning</strong>: técnica de <em>transfer learning</em> donde los parámetros de un modelo preentrenado se actualizan entrenando durante más epochs con una tarea distinta de la original.</p>
+</div></blockquote>
+<p>Al usar <code class="docutils literal notranslate"><span class="pre">fine_tune</span></code>, fastai aplica automáticamente ciertas técnicas. En su forma por defecto, hace dos pasos:</p>
+<ol class="arabic simple">
+<li><p>Usa un epoch para ajustar solo las partes del modelo necesarias para que la nueva <em>head</em> aleatoria funcione correctamente con tu conjunto de datos.</p></li>
+<li><p>Usa el número de epochs solicitado para ajustar todo el modelo, actualizando más rápido los pesos de las capas finales (especialmente la <em>head</em>) que los de las capas iniciales (que, en general, no requieren muchos cambios respecto a los pesos preentrenados).</p></li>
+</ol>
+<p>La <em>head</em> de un modelo es la parte recién añadida para adaptarlo al nuevo conjunto de datos. Un <em>epoch</em> es un recorrido completo sobre el dataset. Tras llamar a <code class="docutils literal notranslate"><span class="pre">fit</span></code>, los resultados se imprimen después de cada epoch, mostrando el número de epoch, la pérdida en entrenamiento y validación (la “medida de rendimiento” usada en el ajuste del modelo), y las métricas solicitadas (en este caso, la tasa de error).</p>
+</section>
+<section id="despliegue-del-modelo-en-escenarios-reales">
+<h3>Despliegue del modelo en escenarios reales<a class="headerlink" href="#despliegue-del-modelo-en-escenarios-reales" title="Link to this heading">#</a></h3>
+<p>Una vez entrenado y validado, el modelo puede desplegarse para ayudar a profesionales sanitarios en contextos reales. Para su despliegue en un dispositivo local o en la nube, el modelo puede exportarse e integrarse en software médico.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Export the model for deployment</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="s1">&#39;model.pkl&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This exported model can then be loaded in other applications.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the exported model</span>
+<span class="n">learn_inf</span> <span class="o">=</span> <span class="n">load_learner</span><span class="p">(</span><span class="s1">&#39;model.pkl&#39;</span><span class="p">)</span>
+<span class="n">pred</span><span class="p">,</span> <span class="n">pred_idx</span><span class="p">,</span> <span class="n">probs</span> <span class="o">=</span> <span class="n">learn_inf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prediction: </span><span class="si">{</span><span class="n">pred</span><span class="si">}</span><span class="s2">; Probability: </span><span class="si">{</span><span class="n">probs</span><span class="p">[</span><span class="n">pred_idx</span><span class="p">]</span><span class="si">:</span><span class="s2">.04f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div><div class="output text_html"></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prediction: 6; Probability: 0.8935
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="conjuntos-de-validacion-y-de-prueba">
+<h3>Conjuntos de validación y de prueba<a class="headerlink" href="#conjuntos-de-validacion-y-de-prueba" title="Link to this heading">#</a></h3>
+<p>Al entrenar un modelo, el proceso se centra en optimizar las predicciones únicamente con los datos de entrenamiento para determinar los parámetros de los pesos. Sin embargo, nosotros, como modeladores, influimos indirectamente en el modelo de una forma distinta: ajustamos los hiperparámetros basándonos en el rendimiento observado en los datos de validación. Esto implica que nuestra exploración y ajustes pueden llevar inadvertidamente a un <em>sobreajuste</em> sobre el propio conjunto de validación, ya que lo usamos repetidamente para probar y afinar. De la misma forma en que el modelo corre el riesgo de sobreajustar los datos de entrenamiento, nosotros corremos el riesgo de sobreajustar nuestras decisiones de hiperparámetros a los datos de validación.</p>
+<p>La solución a este dilema es añadir otra capa de datos reservados: el <em>conjunto de prueba</em>. Igual que el conjunto de validación se mantiene separado del entrenamiento, el conjunto de prueba debe reservarse por completo, incluso de nuestros propios esfuerzos de ajuste. Nunca debe usarse para mejorar el modelo; se reserva únicamente para evaluar el rendimiento final. En esta estructura, los datos se dividen en una jerarquía según su nivel de exposición: los de entrenamiento se usan por completo, los de validación se emplean parcialmente para afinar, y los de prueba permanecen ocultos hasta el final. Esta jerarquía se alinea con las etapas de modelado: entrenamiento mediante backpropagation, ajuste manual de hiperparámetros y evaluación final de la capacidad de generalización.</p>
+<p>Para obtener estimaciones fiables de exactitud, tanto el conjunto de validación como el de prueba deben incluir suficientes datos. Por ejemplo, si construyes un detector de gatos, conviene tener al menos 30 imágenes de gatos en el conjunto de validación. Si se dispone de un conjunto de datos grande, la división estándar del 20% para validación puede ser más de lo necesario; en cambio, cuando los datos son abundantes, destinar una parte a validación apenas afecta a la capacidad del modelo de generalizar.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="17_kmeans_ES.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Extracción de Características en Manifold No Lineales</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="22_NN_as_UA_ES.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Redes neuronales como aproximadores universales</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#redes-neuronales-una-breve-historia">Redes Neuronales: Una Breve Historia</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-aprender-deep-learning">Cómo aprender Deep Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#que-es-una-red-neuronal">¿Qué es una red neuronal?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-inherentes-al-aprendizaje-automatico">Limitaciones inherentes al aprendizaje automático</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-funciona-un-reconocedor-de-imagenes-medicas">Cómo funciona un reconocedor de imágenes médicas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#como-las-redes-neuronales-hacen-predicciones">Cómo las redes neuronales hacen predicciones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mejorando-el-modelo">Mejorando el modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluacion-del-rendimiento-del-modelo">Evaluación del rendimiento del modelo</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitaciones-y-consideraciones-eticas">Limitaciones y consideraciones éticas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manejo-del-sobreajuste">Manejo del sobreajuste</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transfer-learning">Transfer Learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#despliegue-del-modelo-en-escenarios-reales">Despliegue del modelo en escenarios reales</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conjuntos-de-validacion-y-de-prueba">Conjuntos de validación y de prueba</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

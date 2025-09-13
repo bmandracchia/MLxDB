@@ -1,0 +1,655 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Aprendizaje Profundo Basado en Física &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/29_PBDL_ES';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Aprendizaje Probabilístico" href="28b_probabilistic_ES.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11_machine_learning_fundamentals_ES.html">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering_ES.html">Ingeniería de características (Feature Engineering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables_ES.html">Variables categóricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers_ES.html">Clasificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees_ES.html">Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction_ES.html">Reducción de la dimensionalidad: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans_ES.html">Extracción de Características en Manifold No Lineales</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks_ES.html">Deep Learning en Ingeniería Biomédica</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_NN_as_UA_ES.html">Redes neuronales como aproximadores universales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers_ES.html">Entrenamiento de un Clasificador de Dígitos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP_ES.html">Clasificación con Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_convolutions_ES.html">Redes Neuronales Convolucionales</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2_ES.html">ResNets para Análisis de Imágenes Biomédicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers_ES.html">Mecanismos de Atención y Transformadores</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders_ES.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic_ES.html">Aprendizaje Probabilístico</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Aprendizaje Profundo Basado en Física</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/29_PBDL_ES.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/29_PBDL_ES.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Aprendizaje Profundo Basado en Física</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorias-de-enfoques-en-pbdl">Categorías de Enfoques en PBDL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulacion-matematica">Formulación Matemática</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelado-de-datos-experimentales">Modelado de Datos Experimentales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-ingenuidad-de-los-enfoques-puramente-basados-en-datos">La “ingenuidad” de los enfoques puramente basados en datos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#redes-neuronales-informadas-por-fisica-pinns">Redes Neuronales Informadas por Física (PINNs)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-filtrado-physics-informed-en-4d-flow-mri">Ejemplo: Filtrado <em>Physics-Informed</em> en 4D-Flow MRI</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#otros-ejemplos">Otros Ejemplos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deconvolucion-espacialmente-variable">Deconvolución Espacialmente Variable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aprendizaje-profundo-biologicamente-informado">Aprendizaje Profundo Biológicamente Informado</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retos-y-direcciones-futuras">Retos y Direcciones Futuras</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="aprendizaje-profundo-basado-en-fisica">
+<h1>Aprendizaje Profundo Basado en Física<a class="headerlink" href="#aprendizaje-profundo-basado-en-fisica" title="Link to this heading">#</a></h1>
+<p>El <strong>Aprendizaje Profundo Basado en Física (PBDL, por sus siglas en inglés)</strong> es un campo interdisciplinar que combina el modelado físico con técnicas de aprendizaje profundo para mejorar la precisión y eficiencia de las simulaciones y predicciones en ingeniería e investigación científica. Al incorporar leyes físicas en los modelos de <em>machine learning</em>, el PBDL supera las limitaciones de los enfoques puramente basados en datos, dando lugar a modelos más eficientes en el uso de datos y físicamente consistentes.</p>
+<p>Los modelos tradicionales de <em>machine learning</em> son muy efectivos en reconocimiento de patrones y tareas predictivas cuando se dispone de grandes volúmenes de datos. Sin embargo, en muchas aplicaciones de ingeniería, los datos pueden ser escasos, ruidosos o costosos de obtener. Además, los modelos puramente basados en datos suelen fallar al generalizar más allá de los datos de entrenamiento, especialmente cuando carecen de comprensión de los principios físicos subyacentes que rigen el sistema. El PBDL mitiga estos problemas integrando leyes físicas conocidas, típicamente expresadas como <strong>ecuaciones en derivadas parciales (PDEs)</strong>, en el proceso de aprendizaje.</p>
+<p><img alt="overview" src="../_images/overview.png" /></p>
+<section id="categorias-de-enfoques-en-pbdl">
+<h2>Categorías de Enfoques en PBDL<a class="headerlink" href="#categorias-de-enfoques-en-pbdl" title="Link to this heading">#</a></h2>
+<p>Los métodos de PBDL pueden clasificarse de forma general según el grado de integración entre modelos físicos y algoritmos de aprendizaje:</p>
+<ol class="arabic simple">
+<li><p><strong>Métodos Basados en Datos:</strong> Se apoyan únicamente en datos generados por sistemas físicos, ya sean reales o simulados, sin incorporar explícitamente leyes físicas. Son directos, pero pueden tener problemas de generalización y requieren grandes conjuntos de datos.</p></li>
+<li><p><strong>Funciones de Pérdida Informadas por Física:</strong> Aquí, las leyes físicas se integran en la función de pérdida de la red neuronal. Al calcular los residuos de las ecuaciones diferenciales que gobiernan el sistema e incluirlos en la pérdida, la red aprende soluciones consistentes con la física. Un ejemplo destacado son las <strong>Redes Neuronales Informadas por Física (PINNs)</strong>, aplicadas a problemas directos e inversos que involucran PDEs no lineales.</p></li>
+<li><p><strong>Métodos Intercalados:</strong> Integran estrechamente redes neuronales con simulaciones físicas, a menudo requiriendo simuladores diferenciables. Esta combinación permite modelar con precisión evoluciones temporales y sistemas dinámicos. Los <strong>motores de física diferenciables</strong> son un ejemplo, ya que integran simulaciones físicas en el entrenamiento, facilitando modelos capaces de predecir el comportamiento futuro de sistemas dinámicos.</p></li>
+</ol>
+</section>
+<section id="formulacion-matematica">
+<h2>Formulación Matemática<a class="headerlink" href="#formulacion-matematica" title="Link to this heading">#</a></h2>
+<p>Consideremos un sistema físico gobernado por una PDE:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{F}(u(\mathbf{x}, t)) = 0
+\]</div>
+<p>donde  <span class="math notranslate nohighlight">\(u(\mathbf{x}, t) \)</span> representa la variable de estado (ej. temperatura, presión) en la posición  <span class="math notranslate nohighlight">\( \mathbf{x}  \)</span> y tiempo  <span class="math notranslate nohighlight">\( t  \)</span>, y  <span class="math notranslate nohighlight">\( \mathcal{F}  \)</span> es el operador diferencial.</p>
+<p>En una PINN, aproximamos  <span class="math notranslate nohighlight">\(u(\mathbf{x}, t) \)</span> mediante una red neuronal  <span class="math notranslate nohighlight">\(u _{\text{NN}}(\mathbf{x}, t; \theta) \)</span> con parámetros  <span class="math notranslate nohighlight">\(\theta \)</span>. La función de pérdida  <span class="math notranslate nohighlight">\(\mathcal{L} \)</span> combina componentes basados en datos y en física:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathcal{L} = \mathcal{L}_{\text{data}} + \lambda \mathcal{L}_{\text{physics}}
+\]</div>
+<p>donde:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( \mathcal{L}_{\text{data}} = \frac{1}{N} \sum*{i=1}^{N} \left| u _{\text{NN}}(\mathbf{x}*i, t _i; \theta) - u*{\text{true}}(\mathbf{x} _i, t _i) \right|^2  \)</span> mide el error cuadrático medio frente a los datos disponibles.</p></li>
+<li><p><span class="math notranslate nohighlight">\( \mathcal{L}_{\text{physics}} = \frac{1}{M} \sum*{j=1}^{M} \left| \mathcal{F}(u _{\text{NN}}(\mathbf{x} _j, t _j; \theta)) \right|^2  \)</span> impone las restricciones de la PDE en puntos de colación.</p></li>
+<li><p><span class="math notranslate nohighlight">\( \lambda  \)</span> es un hiperparámetro que regula el balance entre datos y restricciones físicas.</p></li>
+</ul>
+<p>Minimizando  <span class="math notranslate nohighlight">\(\mathcal{L} \)</span>, la red neuronal aprende soluciones que no solo ajustan los datos observados, sino que también cumplen las leyes físicas.</p>
+</section>
+<section id="modelado-de-datos-experimentales">
+<h2>Modelado de Datos Experimentales<a class="headerlink" href="#modelado-de-datos-experimentales" title="Link to this heading">#</a></h2>
+<p>Supongamos que recibimos puntos de datos experimentales de un fenómeno físico desconocido (puntos naranjas en la animación).</p>
+<p>La tarea científica común es encontrar un modelo que prediga correctamente nuevas mediciones.</p>
+<p><img alt="image.png" src="../_images/Lesson_09_nn.gif" /></p>
+<p>Un enfoque habitual es usar una red neuronal. Dada la localización de un punto de entrada  <span class="math notranslate nohighlight">\(x \)</span>, la red predice un valor  <span class="math notranslate nohighlight">\(u \)</span>:</p>
+<p><img alt="image.png" src="../_images/Lesson_09_nn-768x420.png" /></p>
+<p>Entrenamos los parámetros libres  <span class="math notranslate nohighlight">\(\theta \)</span> para minimizar el error cuadrático medio entre predicciones y datos:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathrm{min} \frac{1}{N} \sum^{N}_{i} (u_{\mathrm{NN}}(x_{i};\theta) - u_{\mathrm{true}}(x_i) )^2
+\]</div>
+<section id="la-ingenuidad-de-los-enfoques-puramente-basados-en-datos">
+<h3>La “ingenuidad” de los enfoques puramente basados en datos<a class="headerlink" href="#la-ingenuidad-de-los-enfoques-puramente-basados-en-datos" title="Link to this heading">#</a></h3>
+<p>El problema es que un enfoque solo basado en datos puede fallar al <strong>generalizar</strong>. Puede ajustarse bien a la vecindad de los datos experimentales, pero fallar lejos de ellos. Esto muestra que el modelo no ha “entendido” realmente el problema científico.</p>
+<p>De ahí surge el campo emergente del <strong>Aprendizaje Automático Científico (SciML)</strong>, que busca integrar conocimiento previo en los flujos de <em>machine learning</em>.</p>
+</section>
+</section>
+<section id="redes-neuronales-informadas-por-fisica-pinns">
+<h2>Redes Neuronales Informadas por Física (PINNs)<a class="headerlink" href="#redes-neuronales-informadas-por-fisica-pinns" title="Link to this heading">#</a></h2>
+<p>La idea es simple: añadir directamente las ecuaciones diferenciales conocidas en la función de pérdida durante el entrenamiento.</p>
+<p>Esto se hace muestreando ubicaciones de entrada  <span class="math notranslate nohighlight">\({x _j} \)</span>, pasando por la red, calculando gradientes respecto a la entrada y evaluando los residuos de la ecuación diferencial.</p>
+<p><img alt="pinn" src="../_images/Lesson_09_pinn-768x304.png" /></p>
+<p>Ejemplo clásico:</p>
+<div class="math notranslate nohighlight">
+\[
+m\frac{d^2u}{dx^2} + \mu \frac{du}{dx} + k u = 0
+\]</div>
+<p>La función de pérdida se convierte en:</p>
+<div class="math notranslate nohighlight">
+\[
+  \mathrm{min}\frac{1}{N} \sum^{N}_{i} (u_{\mathrm{NN}}(x_{i};\theta) - u_{\mathrm{true}}(x_i) )^2 
+  + \frac{1}{M} \sum^{M}_{j} \left( \left[ m\frac{d^2}{dx^2} + \mu \frac{d}{dx} + k \right] u_{\mathrm{NN}}(x_{j};\theta)  \right)^2
+\]</div>
+<p>Así, la “pérdida física” obliga a que la solución aprendida sea consistente con la física conocida.</p>
+<p><img alt="pinn _gif" src="../_images/Lesson_09_pinn.gif" /></p>
+<section id="ejemplo-filtrado-physics-informed-en-4d-flow-mri">
+<h3>Ejemplo: Filtrado <em>Physics-Informed</em> en 4D-Flow MRI<a class="headerlink" href="#ejemplo-filtrado-physics-informed-en-4d-flow-mri" title="Link to this heading">#</a></h3>
+<p>Las PINNs se han aplicado con éxito a datos de <strong>resonancia magnética 4D-flow</strong> para mejorar diagnósticos cardiovasculares. Al integrar las ecuaciones de Navier–Stokes, estas redes permiten <strong>reducir ruido</strong>, reconstruir campos de velocidad y presión consistentes con conservación de masa y momento, e identificar marcadores críticos como <strong>esfuerzo cortante</strong>, energía cinética y disipación.</p>
+<p>Persisten retos en condiciones de ruido elevado o flujos complejos (capas límite, turbulencias), pero en contextos fisiológicos (flujos laminares) las PINNs muestran un rendimiento robusto.</p>
+<p><img alt="4d _flow" src="../_images/4dflow.png" /></p>
+</section>
+</section>
+<section id="otros-ejemplos">
+<h2>Otros Ejemplos<a class="headerlink" href="#otros-ejemplos" title="Link to this heading">#</a></h2>
+<section id="deconvolucion-espacialmente-variable">
+<h3>Deconvolución Espacialmente Variable<a class="headerlink" href="#deconvolucion-espacialmente-variable" title="Link to this heading">#</a></h3>
+<p>En sistemas de imagen, la deconvolución puede recuperar imágenes nítidas a partir de medidas borrosas. Sin embargo, la función de transferencia varía espacialmente.</p>
+<p>El modelo <strong>MultiWienerNet</strong> combina múltiples filtros de Wiener diferenciables con una CNN para incorporar variaciones espaciales, logrando reconstrucciones rápidas en 2D y 3D. Aunque no se ajusta al marco clásico de PINNs, aprovecha información específica del sistema (PSFs variables) y supera a métodos puramente basados en datos.</p>
+<p><img alt="deconv" src="../_images/deconv.png" /></p>
+</section>
+<section id="aprendizaje-profundo-biologicamente-informado">
+<h3>Aprendizaje Profundo Biológicamente Informado<a class="headerlink" href="#aprendizaje-profundo-biologicamente-informado" title="Link to this heading">#</a></h3>
+<p>En medicina de precisión, los modelos <strong>BINNs (Biologically Informed Neural Networks)</strong> integran conocimiento biológico en la arquitectura de las redes. Así, se mejora tanto la interpretabilidad como la capacidad predictiva.</p>
+<p>Los BINNs alinean la red con procesos biológicos conocidos, permitiendo identificar proteínas y vías clave en la progresión de enfermedades. En estudios de COVID-19 o daño renal agudo séptico, han permitido diferenciar subfenotipos en base al proteoma, guiando terapias personalizadas.</p>
+<p><img alt="bio" src="../_images/bio.png" />
+<img alt="bio2" src="../_images/bio2.png" /></p>
+</section>
+</section>
+<section id="retos-y-direcciones-futuras">
+<h2>Retos y Direcciones Futuras<a class="headerlink" href="#retos-y-direcciones-futuras" title="Link to this heading">#</a></h2>
+<p>Aunque el PBDL ofrece grandes ventajas, persisten desafíos:</p>
+<ul class="simple">
+<li><p><strong>Complejidad de Entrenamiento:</strong> incorporar PDEs genera paisajes de pérdida complejos; se exploran técnicas de ponderación adaptativa y muestreo dinámico.</p></li>
+<li><p><strong>Escalabilidad:</strong> aplicar PBDL a problemas de gran escala requiere algoritmos eficientes y recursos computacionales significativos.</p></li>
+<li><p><strong>Integración con Métodos Tradicionales:</strong> la combinación con elementos finitos u otros métodos numéricos promete modelos más precisos y fiables.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="28b_probabilistic_ES.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Aprendizaje Probabilístico</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categorias-de-enfoques-en-pbdl">Categorías de Enfoques en PBDL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulacion-matematica">Formulación Matemática</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelado-de-datos-experimentales">Modelado de Datos Experimentales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-ingenuidad-de-los-enfoques-puramente-basados-en-datos">La “ingenuidad” de los enfoques puramente basados en datos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#redes-neuronales-informadas-por-fisica-pinns">Redes Neuronales Informadas por Física (PINNs)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-filtrado-physics-informed-en-4d-flow-mri">Ejemplo: Filtrado <em>Physics-Informed</em> en 4D-Flow MRI</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#otros-ejemplos">Otros Ejemplos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deconvolucion-espacialmente-variable">Deconvolución Espacialmente Variable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aprendizaje-profundo-biologicamente-informado">Aprendizaje Profundo Biológicamente Informado</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retos-y-direcciones-futuras">Retos y Direcciones Futuras</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

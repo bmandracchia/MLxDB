@@ -1,0 +1,824 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Neural Networks as Universal Approximators &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/22_NN_as_UA';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Training a Digit Classifier" href="23_Loss_Metrics_and_Optimizers.html" />
+    <link rel="prev" title="Deep Learning in Biomedical Engineering" href="21_neural%20networks.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11_machine_learning_fundamentals_ES.html">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_basic_feature_engineering_ES.html">Ingeniería de características (Feature Engineering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables_ES.html">Variables categóricas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers_ES.html">Clasificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees_ES.html">Árboles de decisión</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction_ES.html">Reducción de la dimensionalidad: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans_ES.html">Extracción de Características en Manifold No Lineales</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks.html">Deep Learning in Biomedical Engineering</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Neural Networks as Universal Approximators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers.html">Training a Digit Classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP.html">Classification with Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_convolutions.html">Convolutional Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2.html">ResNets for Biomedical Image Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers.html">Attention Mechanisms and Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic.html">Probabilistic Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL.html">Physics-Based Deep Learning</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/22_NN_as_UA.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/22_NN_as_UA.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Neural Networks as Universal Approximators</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-structure-of-a-neural-network">Basic Structure of a Neural Network</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-networks-as-flexible-function-approximators">Neural Networks as Flexible Function Approximators</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-building-blocks-of-neural-networks">The Building Blocks of Neural Networks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-multiple-linear-layers-alone-are-not-sufficient">Why Multiple Linear Layers Alone are Not Sufficient</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-nonlinearity-the-key-to-complex-representations">Adding Nonlinearity: The Key to Complex Representations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-complex-models-with-layers-and-activation-functions">Building Complex Models with Layers and Activation Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-universal-approximation-theorem">The Universal Approximation Theorem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-functions">Activation Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relu-function">ReLU Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sigmoid-function">Sigmoid Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tanh-function">Tanh Function</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="neural-networks-as-universal-approximators">
+<h1>Neural Networks as Universal Approximators<a class="headerlink" href="#neural-networks-as-universal-approximators" title="Link to this heading">#</a></h1>
+<section id="basic-structure-of-a-neural-network">
+<h2>Basic Structure of a Neural Network<a class="headerlink" href="#basic-structure-of-a-neural-network" title="Link to this heading">#</a></h2>
+<p>A neural network is a mathematical function that takes inputs, transforms them through layers of computation, and produces outputs. In a standard neural network:</p>
+<ol class="arabic simple">
+<li><p>Each input is multiplied by a set of weights, which are adjustable values, or <em>parameters</em>.</p></li>
+<li><p>These weighted inputs are summed together and passed through an <em>activation function</em> that adds non-linearity to the network.</p></li>
+<li><p>The outputs of one layer become the inputs to the next layer, repeating the process until we reach the final layer, which produces the network’s prediction.</p></li>
+</ol>
+<p>The initial weights are typically set randomly, so a newly initialized neural network doesn’t perform any useful task—it behaves as a random function. The real magic of neural networks happens when we adjust these weights to improve the network’s performance on a specific task, a process called <em>training</em>.</p>
+</section>
+<section id="neural-networks-as-flexible-function-approximators">
+<h2>Neural Networks as Flexible Function Approximators<a class="headerlink" href="#neural-networks-as-flexible-function-approximators" title="Link to this heading">#</a></h2>
+<p>With deep neural networks, we use observational data to jointly learn both a representation via hidden layers and a linear predictor that acts upon that representation.</p>
+<p>By combining multiple layers, each with its own parameters and activation functions, neural networks can approximate highly complex functions. This capability is central to the Universal Approximation Theorem, which states that a neural network with enough parameters can approximate any continuous function.</p>
+<section id="the-building-blocks-of-neural-networks">
+<h3>The Building Blocks of Neural Networks<a class="headerlink" href="#the-building-blocks-of-neural-networks" title="Link to this heading">#</a></h3>
+<p>The two fundamental operations in neural networks are:</p>
+<ol class="arabic simple">
+<li><p><strong>Matrix Multiplication</strong>: This involves multiplying inputs by weights and adding biases. In neural networks, this operation is the core of each layer’s computation.</p></li>
+<li><p><strong>Activation Functions</strong>: Non-linear functions, like the rectified linear unit (ReLU), allow the network to capture complex patterns. ReLU replaces negative values with zero, enabling the network to learn non-linear transformations.</p></li>
+</ol>
+<p>Here’s a simple implementation of a rectified linear function (ReLU):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rectified_linear</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">m</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">b</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s what it looks like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span>
+<span class="kn">from</span> <span class="nn">fastai.basics</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">plot_function</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mf">2.1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span> <span class="mi">100</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">ylim</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">color</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">title</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_function</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">rectified_linear</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/745688bc17c16dbd622d264a96c04ce2efa2832460b82399f9e96f11ccb1bef5.png" src="../_images/745688bc17c16dbd622d264a96c04ce2efa2832460b82399f9e96f11ccb1bef5.png" />
+</div>
+</div>
+<p>To understand how this function works, try using this interactive version to play around with the parameters <code class="docutils literal notranslate"><span class="pre">m</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@interact</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">plot_relu</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">plot_function</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">rectified_linear</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span><span class="n">b</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "1fbe66f72135414bad02bf27a6143928", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>As you see, <code class="docutils literal notranslate"><span class="pre">m</span></code> changes the slope, and <code class="docutils literal notranslate"><span class="pre">b</span></code> changes where the “hook” appears. This function doesn’t do much on its own, but let’s see what happens when we add two of them together:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">double_relu</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="n">b2</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">rectified_linear</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">rectified_linear</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span><span class="n">b2</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+
+<span class="nd">@interact</span><span class="p">(</span><span class="n">m1</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">b1</span><span class="o">=-</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">m2</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">b2</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">plot_double_relu</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">b2</span><span class="p">):</span>
+    <span class="n">plot_function</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="n">double_relu</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="n">b2</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "71da28cc229e46e6a9faa6ef7cfe0831", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>By stacking and combining ReLU functions, neural networks can create intricate mappings between inputs and outputs. This allows them to approximate non-linear functions, which is essential for tasks like image recognition and natural language processing.</p>
+<p>This exact same approach can be expanded to functions of 2, 3, or more parameters.</p>
+<p>The basic idea is that by using multiple <strong>linear layers</strong> in a model, we allow it to perform more computations, thereby making it capable of modeling increasingly complex functions. However, if we simply stack one linear layer directly after another without any nonlinearity in between, it does not increase the expressive power of the model.</p>
+</section>
+<section id="why-multiple-linear-layers-alone-are-not-sufficient">
+<h3>Why Multiple Linear Layers Alone are Not Sufficient<a class="headerlink" href="#why-multiple-linear-layers-alone-are-not-sufficient" title="Link to this heading">#</a></h3>
+<p>Let’s break this down mathematically:</p>
+<ol class="arabic">
+<li><p><strong>Linear Transformation</strong>: A linear layer performs a transformation on its input, given by:</p>
+<div class="math notranslate nohighlight">
+\[
+   f(x) = W \cdot x + b
+   \]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( W \)</span> is a matrix of weights,</p></li>
+<li><p><span class="math notranslate nohighlight">\( x \)</span> is the input vector, and</p></li>
+<li><p><span class="math notranslate nohighlight">\( b \)</span> is a bias vector.</p></li>
+</ul>
+</li>
+<li><p><strong>Composition of Linear Functions</strong>: Suppose we apply two consecutive linear layers, <span class="math notranslate nohighlight">\( f(x) = W_1 \cdot x + b_1 \)</span> and <span class="math notranslate nohighlight">\( g(x) = W_2 \cdot f(x) + b_2 \)</span>. Expanding <span class="math notranslate nohighlight">\( g(x) \)</span> yields:</p>
+<div class="math notranslate nohighlight">
+\[
+   g(x) = W_2 \cdot (W_1 \cdot x + b_1) + b_2
+   \]</div>
+<p>This simplifies to:</p>
+<div class="math notranslate nohighlight">
+\[
+   g(x) = (W_2 \cdot W_1) \cdot x + (W_2 \cdot b_1 + b_2)
+   \]</div>
+<p>which is again a linear transformation of <span class="math notranslate nohighlight">\( x \)</span>. Thus, applying multiple linear layers in sequence still results in a single linear transformation.</p>
+</li>
+</ol>
+<blockquote>
+<div><p><strong>Mathematical Insight</strong>: The composition of two linear transformations is itself a linear transformation. Therefore, stacking multiple linear layers without any nonlinear activation functions in between results in a model no more expressive than a single linear layer.</p>
+</div></blockquote>
+</section>
+<section id="adding-nonlinearity-the-key-to-complex-representations">
+<h3>Adding Nonlinearity: The Key to Complex Representations<a class="headerlink" href="#adding-nonlinearity-the-key-to-complex-representations" title="Link to this heading">#</a></h3>
+<p>To overcome this limitation, we introduce a <strong>nonlinear function</strong>, also known as an <strong>activation function</strong>, between the layers. This breaks the linearity of the transformation chain and allows each layer to learn different aspects of the data.</p>
+<p>Consider the <strong>ReLU (Rectified Linear Unit)</strong> activation function, which is one of the simplest and most effective nonlinear functions in deep learning. ReLU is defined as:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{ReLU}(z) = \max(0, z)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\( z = W \cdot x + b \)</span>.</p>
+<p>ReLU has two important properties:</p>
+<ol class="arabic simple">
+<li><p><strong>Nonlinearity</strong>: By setting negative values to zero, ReLU introduces a nonlinear element, which means that the composition of layers containing ReLU functions is no longer purely linear.</p></li>
+<li><p><strong>Conditional Behavior</strong>: The ReLU function can be thought of as a simple <code class="docutils literal notranslate"><span class="pre">if</span></code> statement that returns 0 for negative inputs and the input itself for positive inputs, effectively adding a decision-making element to each layer.</p></li>
+</ol>
+</section>
+<section id="building-complex-models-with-layers-and-activation-functions">
+<h3>Building Complex Models with Layers and Activation Functions<a class="headerlink" href="#building-complex-models-with-layers-and-activation-functions" title="Link to this heading">#</a></h3>
+<p>With this nonlinear function, we can build a network that consists of:</p>
+<ul class="simple">
+<li><p>A <strong>sequence of linear transformations</strong> (layers), each with its own set of weights and biases.</p></li>
+<li><p><strong>Activation functions</strong> (such as ReLU) inserted between these layers to add complexity to the model’s behavior.</p></li>
+</ul>
+<p>Consider a neural network with two layers:</p>
+<ol class="arabic">
+<li><p><strong>First Layer</strong>: Applies a linear transformation, followed by a ReLU:</p>
+<div class="math notranslate nohighlight">
+\[
+   h(x) = \text{ReLU}(W_1 \cdot x + b_1)
+   \]</div>
+</li>
+<li><p><strong>Second Layer</strong>: Applies another linear transformation to the output of the ReLU:</p>
+<div class="math notranslate nohighlight">
+\[
+   f(x) = W_2 \cdot h(x) + b_2
+   \]</div>
+</li>
+</ol>
+<p>Now, <span class="math notranslate nohighlight">\( f(x) \)</span> is no longer a simple linear function of <span class="math notranslate nohighlight">\( x \)</span>; it is a composition of linear and nonlinear transformations, enabling it to capture much more complex patterns.</p>
+</section>
+<section id="the-universal-approximation-theorem">
+<h3>The Universal Approximation Theorem<a class="headerlink" href="#the-universal-approximation-theorem" title="Link to this heading">#</a></h3>
+<p>The addition of nonlinearity allows neural networks to approximate any continuous function to an arbitrary degree of accuracy, provided they have enough layers and units. This concept is formalized in the <strong>Universal Approximation Theorem</strong>, which states that:</p>
+<blockquote>
+<div><p>A neural network with at least one hidden layer containing a sufficient number of neurons, and a non-linear activation function, can approximate any continuous function on a compact subset of <span class="math notranslate nohighlight">\(\mathbb{R}^n\)</span> to any desired accuracy.</p>
+</div></blockquote>
+<p>This means that, theoretically, a neural network with just one hidden layer and a nonlinear activation function can approximate functions as complex as we need, given sufficient capacity.</p>
+</section>
+</section>
+<section id="activation-functions">
+<h2>Activation Functions<a class="headerlink" href="#activation-functions" title="Link to this heading">#</a></h2>
+<p>Activation functions decide whether a neuron should be activated or not by calculating the weighted sum and further adding bias to it. They are differentiable operators for transforming input signals to outputs, while most of them add nonlinearity. Because activation functions are fundamental to deep learning, let’s briefly survey some common ones.</p>
+<section id="relu-function">
+<h3>ReLU Function<a class="headerlink" href="#relu-function" title="Link to this heading">#</a></h3>
+<p>The most popular choice, due to both simplicity of implementation and its good performance on a variety of predictive tasks, is the rectified linear unit (ReLU) (Nair and Hinton, 2010). ReLU provides a very simple nonlinear transformation. Given an element, the function is defined as the maximum of that element and</p>
+<div class="math notranslate nohighlight">
+\[
+\text{ReLU}(z) = \max(0, z)
+\]</div>
+<p>Informally, the ReLU function retains only positive elements and discards all negative elements by setting the corresponding activations to 0. To gain some intuition, we can plot the function. As you can see, the activation function is piecewise linear.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_function</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;ReLU Function&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">8</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ad3106c927b296bc5e7fa84140af3a8ce638143a9eb034e39dd883c58c5c3f27.png" src="../_images/ad3106c927b296bc5e7fa84140af3a8ce638143a9eb034e39dd883c58c5c3f27.png" />
+</div>
+</div>
+<p>When the input is negative, the derivative of the ReLU function is 0, and when the input is positive, the derivative of the ReLU function is 1. Note that the ReLU function is not differentiable when the input takes value precisely equal to 0. In these cases, we default to the left-hand-side derivative and say that the derivative is 0 when the input is 0. We can get away with this because the input may never actually be zero (mathematicians would say that it is nondifferentiable on a set of measure zero).</p>
+<p>The reason for using ReLU is that its derivatives are particularly well behaved: either they vanish or they just let the argument through. This makes optimization better behaved and it mitigated the well-documented problem of vanishing gradients that plagued previous versions of neural networks.</p>
+</section>
+<section id="sigmoid-function">
+<h3>Sigmoid Function<a class="headerlink" href="#sigmoid-function" title="Link to this heading">#</a></h3>
+<p>The <em>sigmoid function</em> transforms those inputs whose values lie in the
+domain <span class="math notranslate nohighlight">\(\mathbb{R}\)</span>, to outputs that lie on the interval (0, 1).
+For that reason, the sigmoid is often called a <em>squashing function</em>: it
+squashes any input in the range (-inf, inf) to some value in the range
+(0, 1):</p>
+<div class="math notranslate nohighlight">
+\[ \operatorname{sigmoid}(x) = \frac{1}{1 + \exp(-x)}.\]</div>
+<p>In the earliest neural networks, scientists were interested in modeling
+biological neurons that either <em>fire</em> or <em>do not fire</em>. Thus the
+pioneers of this field, going all the way back to McCulloch and Pitts,
+the inventors of the artificial neuron, focused on thresholding units. A thresholding activation takes value 0
+when its input is below some threshold and value 1 when the input
+exceeds the threshold.</p>
+<p>When attention shifted to gradient-based learning, the sigmoid function
+was a natural choice because it is a smooth, differentiable
+approximation to a thresholding unit. Sigmoids are still widely used as
+activation functions on the output units when we want to interpret the
+outputs as probabilities for binary classification problems: you can
+think of the sigmoid as a special case of the softmax. However, the
+sigmoid has largely been replaced by the simpler and more easily
+trainable ReLU for most use in hidden layers. Much of this has to do
+with the fact that the sigmoid poses challenges for optimization since its gradient vanishes for large
+positive <em>and</em> negative arguments. This can lead to plateaus that are
+difficult to escape from. Nonetheless sigmoids are important. For example, recurrent neural networks leverage sigmoid units to control the
+flow of information across time.</p>
+<p>Below, we plot the sigmoid function. Note that when the input is close
+to 0, the sigmoid function approaches a linear transformation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_function</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Sigmoid Function&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">8</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/947aecc50e650ff0bfa9628eb01be77abedabeec198dd1dc0d5050ba73f318e8.png" src="../_images/947aecc50e650ff0bfa9628eb01be77abedabeec198dd1dc0d5050ba73f318e8.png" />
+</div>
+</div>
+<p>The derivative of the sigmoid function is given by the following
+equation:</p>
+<div class="math notranslate nohighlight">
+\[\frac{d}{dx} \operatorname{sigmoid}(x) = \frac{\exp(-x)}{(1 + \exp(-x))^2} = \operatorname{sigmoid}(x)\left(1-\operatorname{sigmoid}(x)\right).\]</div>
+<p>Note that when the input is 0, the derivative of the sigmoid function reaches a maximum
+of 0.25. As the input diverges from 0 in either direction, the
+derivative approaches 0.</p>
+</section>
+<section id="tanh-function">
+<h3>Tanh Function<a class="headerlink" href="#tanh-function" title="Link to this heading">#</a></h3>
+<p>Like the sigmoid function, the tanh (hyperbolic tangent) function also
+squashes its inputs, transforming them into elements on the interval
+between <span class="math notranslate nohighlight">\(-1\)</span> and <span class="math notranslate nohighlight">\(1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \operatorname{tanh}(x) = \frac{1 - \exp(-2x)}{1 + \exp(-2x)}.\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_function</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Tanh Function&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=-</span><span class="mi">8</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.1</span><span class="p">,</span><span class="mf">1.1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d58c3529aa802ae7c70e49ba425a6b10d39a03e58e4903bc3ac13294d1a07f54.png" src="../_images/d58c3529aa802ae7c70e49ba425a6b10d39a03e58e4903bc3ac13294d1a07f54.png" />
+</div>
+</div>
+<p>Note that as input nears 0, the tanh
+function approaches a linear transformation. Although the shape of the
+function is similar to that of the sigmoid function, the tanh function
+exhibits point symmetry about the origin of the coordinate system</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="21_neural%20networks.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Deep Learning in Biomedical Engineering</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="23_Loss_Metrics_and_Optimizers.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Training a Digit Classifier</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-structure-of-a-neural-network">Basic Structure of a Neural Network</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neural-networks-as-flexible-function-approximators">Neural Networks as Flexible Function Approximators</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-building-blocks-of-neural-networks">The Building Blocks of Neural Networks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-multiple-linear-layers-alone-are-not-sufficient">Why Multiple Linear Layers Alone are Not Sufficient</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-nonlinearity-the-key-to-complex-representations">Adding Nonlinearity: The Key to Complex Representations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-complex-models-with-layers-and-activation-functions">Building Complex Models with Layers and Activation Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-universal-approximation-theorem">The Universal Approximation Theorem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activation-functions">Activation Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relu-function">ReLU Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sigmoid-function">Sigmoid Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tanh-function">Tanh Function</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

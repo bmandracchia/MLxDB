@@ -1,0 +1,2078 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Basic Feature Engineering &#8212; Introduction to Machine Learning for Biomedical Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/12_basic_feature_engineering';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Categorical Variables" href="13_categorical_variables.html" />
+    <link rel="prev" title="Fundamentos del Aprendizaje Automático" href="11_machine_learning_fundamentals_ES.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Introduction to Machine Learning for Biomedical Data - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Introduction to Machine Learning for Biomedical Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Feature Engineering</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="11_machine_learning_fundamentals_ES.html">Fundamentos del Aprendizaje Automático</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Basic Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_categorical_variables.html">Categorical Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_classifiers.html">Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_decision_trees.html">Decision Trees</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_dimensionality_reduction.html">Dimensionality Reduction: PCA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_kmeans.html">Nonlinear Manifold Feature Extraction</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Deep Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="21_neural%20networks.html">Deep Learning in Biomedical Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_NN_as_UA.html">Neural Networks as Universal Approximators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_Loss_Metrics_and_Optimizers.html">Training a Digit Classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_MLP.html">Classification with Multilayer Perceptrons</a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_convolutions.html">Convolutional Neural Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_resnet2.html">ResNets for Biomedical Image Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="27_transformers.html">Attention Mechanisms and Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28_autoencoders.html">Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="28b_probabilistic.html">Probabilistic Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="29_PBDL.html">Physics-Based Deep Learning</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bmandracchia/MLxDB/issues/new?title=Issue%20on%20page%20%2Fchapters/12_basic_feature_engineering.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/12_basic_feature_engineering.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Basic Feature Engineering</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-counts">Dealing with Counts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-or-binning">Quantization or Binning</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-width-binning">Fixed-Width Binning</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#quantile-binning">Quantile Binning</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#log-transformation">Log Transformation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#power-transforms-generalization-of-the-log-transform">Power Transforms: Generalization of the Log Transform</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-scaling-and-normalization">Feature Scaling and Normalization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-scaling">Min-Max Scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-scaling-standardization">Variance Scaling (Standardization)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#l2-normalization">L2 Normalization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection">Feature Selection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering">Filtering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupervised-methods">Unsupervised Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapper-methods">Wrapper Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#embedded-methods">Embedded Methods</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-example-the-mobile-price-dataset">Code Example: The Mobile Price dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-description">Data description</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-the-data">Loading the data</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-models">Comparing Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Filtering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Unsupervised Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Wrapper methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Embedded methods</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="basic-feature-engineering">
+<h1>Basic Feature Engineering<a class="headerlink" href="#basic-feature-engineering" title="Link to this heading">#</a></h1>
+<hr class="docutils" />
+<p>Before diving into more complex data types such as text or images, let’s start with the simplest type: numeric data. Since numeric data is already in a format that’s easily digestible by mathematical models, it might seem like little work is needed. However, feature engineering remains essential. Effective features not only capture the key characteristics of the data but also align with the assumptions of the model. This often requires transforming the raw numeric data. Mastering these basic techniques is crucial, as they form the foundation of feature engineering across all data types.</p>
+<p>The first check for numeric data is to assess whether the <strong>magnitude</strong> of the values is important. Do you need to know the exact magnitude, or is it sufficient to distinguish between positive and negative values? Sometimes, coarse granularity is all that’s necessary. This is especially true for automatically generated counts, such as daily website visits or the number of reviews for a restaurant.</p>
+<p>Next, consider the <strong>scale</strong> of the features. What are the smallest and largest values? Do they vary across a wide range or even several orders of magnitude? This is crucial because many models are sensitive to the scale of the input. For instance, in a simple linear function like <span class="math notranslate nohighlight">\(3x + 1\)</span>, the output scales directly with the input. Methods like k-means clustering, nearest neighbors, and any algorithm relying on Euclidean distance are highly dependent on the scale of the features. In these cases, it’s a good practice to normalize the data, ensuring the model’s output stays within a predictable range.</p>
+<p>On the other hand, some models, such as those involving logical functions, aren’t affected by feature scale. Logical functions, like the AND operation, produce binary outputs regardless of the magnitude of the inputs. Similarly, decision trees, which are built from step functions of input features, don’t require normalization. However, one caveat exists: if a numeric feature is an accumulated count that grows over time, it may eventually exceed the range the tree was trained on. In that case, periodic rescaling of inputs might be necessary to maintain model performance.</p>
+<p>Another critical aspect to consider is the <strong>distribution</strong> of numeric features. The distribution defines the likelihood of a feature taking on certain values and can impact different models in various ways. For example, linear regression models assume that prediction errors are normally distributed (Gaussian). This assumption typically holds unless the target variable spans several orders of magnitude. In such cases, the Gaussian error assumption may no longer apply, and transforming the target can help normalize the distribution. A common approach is to apply a log transform, which is a type of <em>power transformation</em> that brings the distribution closer to Gaussian.</p>
+<p>Understanding these key elements—magnitude, scale, and distribution—will help you design features that improve model performance and generalization.</p>
+<section id="dealing-with-counts">
+<h2>Dealing with Counts<a class="headerlink" href="#dealing-with-counts" title="Link to this heading">#</a></h2>
+<p>In the age of Big Data, counts can accumulate rapidly and without limit. With the ability to produce data at high volume and velocity, it’s common to encounter a few extreme values. These outliers can skew analysis if not handled appropriately.</p>
+<p>Therefore, it’s important to assess the scale of your data and decide how to represent it. Depending on the context, you might choose to:</p>
+<ul class="simple">
+<li><p>Keep the data as raw numbers.</p></li>
+<li><p>Convert them into binary values to indicate presence or absence.</p></li>
+<li><p>Group the data into bins with coarser granularity to manage extreme values and simplify the analysis.</p></li>
+</ul>
+<p>This decision can have a significant impact on how well your model performs, especially when dealing with large datasets that may contain outliers or unbalanced distributions.</p>
+<section id="quantization-or-binning">
+<h3>Quantization or Binning<a class="headerlink" href="#quantization-or-binning" title="Link to this heading">#</a></h3>
+<p>Suppose our task is to use collaborative filtering to predict the rating a user might give to a business. The review count could be a valuable input feature, as there’s often a strong correlation between a business’s popularity and its ratings. But the question arises: should we use the raw review count, or should we process it further?</p>
+<p>Raw counts that span several orders of magnitude can be problematic for many models. For instance, in a linear model, a single coefficient would need to account for the full range of values, from very small counts to extremely large ones. This can result in poor model performance. Similarly, in unsupervised learning methods like k-means clustering, which relies on Euclidean distance for similarity, large counts in one feature could dominate the similarity calculation, overshadowing the influence of other features and skewing the results.</p>
+<p>One effective solution is to control the scale by quantizing the count values. Quantization groups continuous data into bins, mapping each value to a discrete bin. The bins can be thought of as representing different levels of intensity. By doing this, we eliminate the issues caused by extreme values while preserving the relative importance of the counts.</p>
+<p>To quantize data, we first need to decide how wide each bin should be. The two main approaches are fixed-width binning and adaptive binning, each with its own advantages.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="c1"># Suppress warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="c1"># Generate skewed synthetic review counts using a log-normal distribution</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">review_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="c1"># Define fixed bin edges</span>
+<span class="n">bin_edges</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+<span class="n">bin_labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+
+<span class="c1"># Digitize the review counts into bins</span>
+<span class="n">binned_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">review_counts</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bin_edges</span><span class="p">)</span>
+
+<span class="c1"># Count occurrences in each bin</span>
+<span class="n">binned_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bin_labels</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">)):</span>
+    <span class="n">binned_data</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">binned_counts</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span>
+
+<span class="c1"># Create a DataFrame for plotting</span>
+<span class="n">binned_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Bin&#39;</span><span class="p">:</span> <span class="n">bin_labels</span><span class="p">,</span> <span class="s1">&#39;Count&#39;</span><span class="p">:</span> <span class="n">binned_data</span><span class="p">})</span>
+
+<span class="c1"># Plotting</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Bin&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Count&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">binned_df</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Fixed Binning&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Review Count Bins&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of Reviews&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/f875dc569402267fe349c794009277970aa1a1bc1e6f6696bb2e09578f1650df.png" src="../_images/f875dc569402267fe349c794009277970aa1a1bc1e6f6696bb2e09578f1650df.png" />
+</div>
+</div>
+<section id="fixed-width-binning">
+<h4>Fixed-Width Binning<a class="headerlink" href="#fixed-width-binning" title="Link to this heading">#</a></h4>
+<p>With fixed-width binning, each bin represents a specific numeric range. These ranges can either be custom-designed or automatically segmented, depending on the data and the modeling needs. The bins can be linearly scaled (equal-sized intervals) or exponentially scaled (wider bins for larger values).</p>
+<p>While fixed-width binning is simple to compute, it may not always be optimal. If the data contains large gaps or unevenly distributed counts, many bins could end up empty, making this approach less effective.</p>
+</section>
+<section id="quantile-binning">
+<h4>Quantile Binning<a class="headerlink" href="#quantile-binning" title="Link to this heading">#</a></h4>
+<p>To address the issue of uneven data distribution, we can use an adaptive technique: quantile binning. Quantile binning positions bins based on the distribution of the data, ensuring that each bin contains roughly the same number of data points. This prevents empty bins and maintains a balanced representation of the data.</p>
+<p>Quantiles divide the data into equal portions. For example, the median splits the data into two halves, while quartiles divide it into quarters, and deciles divide it into tenths.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define deciles for binning</span>
+<span class="n">deciles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">review_counts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">bin_labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">deciles</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">deciles</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">deciles</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+
+<span class="c1"># Digitize the review counts into decile bins</span>
+<span class="n">binned_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">review_counts</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">deciles</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">bin_labels</span><span class="p">,</span> <span class="n">include_lowest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Count occurrences in each decile bin</span>
+<span class="n">binned_data</span> <span class="o">=</span> <span class="n">binned_counts</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+
+<span class="c1"># Create a DataFrame for plotting</span>
+<span class="n">binned_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Bin&#39;</span><span class="p">:</span> <span class="n">binned_data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;Count&#39;</span><span class="p">:</span> <span class="n">binned_data</span><span class="o">.</span><span class="n">values</span><span class="p">})</span>
+
+<span class="c1"># Plotting</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Bin&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Count&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">binned_df</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Decile Binning of Skewed Review Counts&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Review Count Decile Bins&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of Reviews&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/a8a7610c0c148605f8e02338c41f5bf7760077c46871f840d9d076e8f036dd33.png" src="../_images/a8a7610c0c148605f8e02338c41f5bf7760077c46871f840d9d076e8f036dd33.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="log-transformation">
+<h3>Log Transformation<a class="headerlink" href="#log-transformation" title="Link to this heading">#</a></h3>
+<p>Another powerful technique for handling large ranges in counts is the logarithmic transform. The log function compresses the range of large numbers and expands smaller ones. As values grow larger, the rate of increase of their logarithm slows down, making it a useful way to tame extreme values. This can be particularly effective when raw counts span several orders of magnitude, as the log transform creates a more manageable range for the model to work with.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Apply log transformation (adding 1 to avoid log(0))</span>
+<span class="n">log_transformed_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">review_counts</span><span class="p">)</span>
+
+<span class="c1"># Create DataFrames for original and log-transformed data</span>
+<span class="n">original_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Review Counts&#39;</span><span class="p">:</span> <span class="n">review_counts</span><span class="p">})</span>
+<span class="n">log_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Log Transformed Counts&#39;</span><span class="p">:</span> <span class="n">log_transformed_counts</span><span class="p">})</span>
+
+<span class="c1"># Plotting the original and log-transformed data side by side</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Original Data Plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">original_df</span><span class="p">[</span><span class="s1">&#39;Review Counts&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Original Review Counts&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Review Counts&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># Log Transformed Data Plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">log_df</span><span class="p">[</span><span class="s1">&#39;Log Transformed Counts&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;maroon&#39;</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Log Transformed Review Counts&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Log Transformed Counts&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/61b077002d3a845cac2725d381dbf645caa5fdca63ecd0a2a4c7ad19e06999f4.png" src="../_images/61b077002d3a845cac2725d381dbf645caa5fdca63ecd0a2a4c7ad19e06999f4.png" />
+</div>
+</div>
+<p>Notice that the distribution looks much more Gaussian after log transformation.</p>
+<p>By applying these methods—whether it’s binning or using a log transform—we can significantly improve the model’s ability to handle the variability, ultimately leading to better predictions.</p>
+</section>
+<section id="power-transforms-generalization-of-the-log-transform">
+<h3>Power Transforms: Generalization of the Log Transform<a class="headerlink" href="#power-transforms-generalization-of-the-log-transform" title="Link to this heading">#</a></h3>
+<p>The <strong>log transform</strong> is a specific example of a broader family of transformations known as <strong>power transforms</strong>. These transformations are used in statistics to stabilize variance, meaning they adjust the distribution of a variable so that its variance is no longer dependent on its mean.</p>
+<p>A key generalization of both the square root and log transforms is the <strong>Box-Cox transform</strong>. The Box-Cox transform is defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} 
+X^{(\lambda)} = \left\{
+\begin{array}{l}
+\frac{X^{\lambda} - 1}{\lambda} \ \text{for} \ \lambda \neq 0, \\[10pt]
+\log(X) \ \text{for} \ \lambda = 0.
+\end{array}
+\right.
+\end{split}\]</div>
+<p>In this equation, <span class="math notranslate nohighlight">\(X\)</span> is the original variable, and <span class="math notranslate nohighlight">\(\lambda\)</span> is the <strong>power parameter</strong> that controls the shape of the transformation. The formula is constructed so that when <span class="math notranslate nohighlight">\(\lambda = 0\)</span>, it reduces to the <strong>logarithmic transform</strong>, <span class="math notranslate nohighlight">\(\log(X)\)</span>. For other values of <span class="math notranslate nohighlight">\(\lambda\)</span>, it applies a power transformation to the data. The Box-Cox transformation is continuous as <span class="math notranslate nohighlight">\(\lambda\)</span> approaches zero and ensures that the transformed values are <strong>monotonic</strong>, meaning the order of data points is preserved after transformation.</p>
+<p>Notable power transforms are:</p>
+<ol class="arabic simple">
+<li><p><strong>Square Root Transform (<span class="math notranslate nohighlight">\(\lambda = 0.5\)</span>)</strong>: The square root transform is useful for stabilizing variance when the variable consists of positive counts or values that grow quadratically. It can help reduce right-skewness in data.</p></li>
+<li><p><strong>Log Transform (<span class="math notranslate nohighlight">\(\lambda = 0\)</span>)</strong>: /aThe log transform is commonly applied to data with exponential growth or values that span several orders of magnitude. It compresses large values and stretches small ones, making the data easier to model.</p></li>
+<li><p><strong>Inverse Transform (<span class="math notranslate nohighlight">\(\lambda = -1\)</span>)</strong>: The inverse transform is sometimes used when larger values of a variable are less significant than smaller values, effectively giving more weight to smaller numbers.</p></li>
+</ol>
+<p>The power parameter <span class="math notranslate nohighlight">\(\lambda\)</span> is crucial in determining the transformation’s behavior. It can be estimated using graphical techniques, which help to visualize how the transformation affects the distribution, allwing to choose a <span class="math notranslate nohighlight">\(\lambda\)</span> that minimizes skewness or makes the data more symmetric. Alternatively, it can be estimated more rigorously through the <strong>maximum-likelihood method</strong>, which uses maximum-likelihood estimation to identify the transformation that best fits the data to a normal distribution.</p>
+<p>Power transforms, including the Box-Cox transform, are highly useful when working with skewed data or when it’s necessary to make a variable’s distribution more symmetric and normal-like, which can improve the performance of many statistical models. However, they are not without limitations. For example, the Box-Cox transform only works on strictly positive data, though this can be handled by shifting the data to make all values positive. While simpler power transforms like the log or square root are easy to understand, arbitrary <span class="math notranslate nohighlight">\(\lambda\)</span> values in the Box-Cox transform can be harder to interpret, making the transformed data more challenging to work with. Additionally, excessive use of transformations, especially in complex models, may lead to overfitting, causing the model to fit the transformed data too closely and reducing its ability to generalize to new data.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+
+<span class="c1"># Define lambda values for Box-Cox transformation</span>
+<span class="n">lambda_values</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">transformed_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Apply Box-Cox transformation for each lambda</span>
+<span class="k">for</span> <span class="n">lam</span> <span class="ow">in</span> <span class="n">lambda_values</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">lam</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Use log transformation for lambda = 0</span>
+        <span class="n">transformed_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">review_counts</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">transformed_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">boxcox</span><span class="p">(</span><span class="n">review_counts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lmbda</span><span class="o">=</span><span class="n">lam</span><span class="p">))</span>  <span class="c1"># Adding 1 to avoid issues with zero values</span>
+
+<span class="c1"># Create DataFrame for transformed data</span>
+<span class="n">transformed_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">transformed_data</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">transformed_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;Lambda = </span><span class="si">{</span><span class="n">lam</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">lam</span> <span class="ow">in</span> <span class="n">lambda_values</span><span class="p">]</span>
+
+<span class="c1"># Create a grid for plotting</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">18</span><span class="p">))</span>
+
+<span class="c1"># Plot transformed data distributions</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">lam</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lambda_values</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">transformed_df</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;Lambda = </span><span class="si">{</span><span class="n">lam</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightblue&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Box-Cox Transformation (λ = </span><span class="si">{</span><span class="n">lam</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Transformed Counts&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/32dac7066fb4fc422cf74ba74da58ad7d66a1fef141774f1bd4da9409eb444b0.png" src="../_images/32dac7066fb4fc422cf74ba74da58ad7d66a1fef141774f1bd4da9409eb444b0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="feature-scaling-and-normalization">
+<h2>Feature Scaling and Normalization<a class="headerlink" href="#feature-scaling-and-normalization" title="Link to this heading">#</a></h2>
+<p>Feature scaling and normalization are crucial preprocessing steps in machine learning. Many algorithms, especially those based on distances or gradients, perform better when the input features are on comparable scales. Without proper scaling, features with larger ranges can disproportionately influence the model.</p>
+<section id="min-max-scaling">
+<h3>Min-Max Scaling<a class="headerlink" href="#min-max-scaling" title="Link to this heading">#</a></h3>
+<p>Min-max scaling transforms the features to a fixed range, usually between 0 and 1.
+Let <span class="math notranslate nohighlight">\(x\)</span> be an individual feature value (i.e., a value of the feature in some data point), and <span class="math notranslate nohighlight">\(\min(x)\)</span> and <span class="math notranslate nohighlight">\(\max(x)\)</span>, respectively, be the minimum and maximum values of this feature over the entire dataset.</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde x  = \frac{x - \min(x)}{\max(x) - \min(x)}
+\]</div>
+<p>This is particularly useful for algorithms like k-nearest neighbors (KNN) and k-means clustering, which rely on distance metrics. However, it’s sensitive to outliers because extreme values can distort the scaling.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># Sample data (100 points)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="p">[[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">]]</span>  <span class="c1"># Feature 1 in [0, 10000], Feature 2 in [0, 100]</span>
+
+<span class="k">def</span> <span class="nf">plot_with_histograms</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">JointGrid</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Feature 2&#39;</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">,</span> <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.03</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Apply Min-Max scaling</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+<span class="n">scaled_data</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Create DataFrames to store the original and scaled data</span>
+<span class="n">df_original</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Feature 2&#39;</span><span class="p">])</span>
+<span class="n">df_scaled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">scaled_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Feature 2&#39;</span><span class="p">])</span>
+
+<span class="n">plot_with_histograms</span><span class="p">(</span><span class="n">df_original</span><span class="p">,</span> <span class="s1">&#39;Original Data&#39;</span><span class="p">)</span>
+<span class="n">plot_with_histograms</span><span class="p">(</span><span class="n">df_scaled</span><span class="p">,</span> <span class="s1">&#39;Min-max Scaling&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/40f50023ea5dcbc8ee19ee0042a8c2056b2451600d93bc6fc57d34e2ac15d45d.png" src="../_images/40f50023ea5dcbc8ee19ee0042a8c2056b2451600d93bc6fc57d34e2ac15d45d.png" />
+<img alt="../_images/411cd3b09ce0cef784984d2e5ce48deb70ffb5ffa6a3fb8ddf82738f181de2b6.png" src="../_images/411cd3b09ce0cef784984d2e5ce48deb70ffb5ffa6a3fb8ddf82738f181de2b6.png" />
+</div>
+</div>
+</section>
+<section id="variance-scaling-standardization">
+<h3>Variance Scaling (Standardization)<a class="headerlink" href="#variance-scaling-standardization" title="Link to this heading">#</a></h3>
+<p>Variance scaling (or standardization) transforms features so that they have a mean of 0 and a standard deviation of 1. If the original feature has a Gaussian distribution, the scaled feature does too.</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde x  = \frac{x - \bar x}{\hat \sigma_x}
+\]</div>
+<p>This is useful for models like linear regression, logistic regression, and neural networks, where features are assumed to be normally distributed.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="c1"># Apply Standardization</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">standardized_data</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Create DataFrames to store the standardized data</span>
+<span class="n">df_standardized</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">standardized_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Feature 2&#39;</span><span class="p">])</span>
+
+<span class="n">plot_with_histograms</span><span class="p">(</span><span class="n">df_standardized</span><span class="p">,</span> <span class="s1">&#39;Variance Scaling&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/44717c19bc3eb5b90a18ce77e2b5ac287c2856c626d79bc621e74d1316e2c67c.png" src="../_images/44717c19bc3eb5b90a18ce77e2b5ac287c2856c626d79bc621e74d1316e2c67c.png" />
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>DON’T “CENTER” SPARSE DATA!</p>
+<p>Use caution when performing min-max scaling and standardization on sparse features. Both subtract a quantity from the original feature value.
+If the shift is not zero, then these two transforms can turn a sparse feature vector where most values are zero into a dense one. This in turn could create a huge computational burden for the classifier, depending on how it is implemented.</p>
+</div>
+</section>
+<section id="l2-normalization">
+<h3>L2 Normalization<a class="headerlink" href="#l2-normalization" title="Link to this heading">#</a></h3>
+<p>L2 normalization divides each feature vector by its <span class="math notranslate nohighlight">\(L_2\)</span> norm, also known as the Euclidean norm, so that the resulting vectors all have a length of 1.
+This measures the length of the vector in coordinate space and it’s defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde x = \frac{x}{||x||_2}
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+||x||_2 =  \sqrt{x^2_1 + x^2_2 + \dots + x^2_m}
+\]</div>
+<p>This is particularly useful in models like SVM or KNN, where the direction of vectors is more important than their magnitude.
+L2 normalization preserves the relative distances between points and ensures that no individual feature dominates due to its scale.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">Normalizer</span>
+
+<span class="c1"># Apply L2 Normalization</span>
+<span class="n">normalizer</span> <span class="o">=</span> <span class="n">Normalizer</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">)</span>
+<span class="n">normalized_data</span> <span class="o">=</span> <span class="n">normalizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Create DataFrames to store the standardized data</span>
+<span class="n">df_normalized</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">normalized_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Feature 2&#39;</span><span class="p">])</span>
+
+<span class="n">plot_with_histograms</span><span class="p">(</span><span class="n">df_normalized</span><span class="p">,</span> <span class="s1">&#39;L2 normalization&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/0a8ea85f9e93861414dbf67a98235a88d783809dd90178a095f4008e235714f9.png" src="../_images/0a8ea85f9e93861414dbf67a98235a88d783809dd90178a095f4008e235714f9.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="feature-selection">
+<h2>Feature Selection<a class="headerlink" href="#feature-selection" title="Link to this heading">#</a></h2>
+<p>Feature selection techniques prune away nonuseful features in order to reduce the complexity of the resulting model.</p>
+<blockquote>
+<div><p>Given a set of <span class="math notranslate nohighlight">\(d\)</span> features, select a subset of size <span class="math notranslate nohighlight">\(m\)</span> that leads to the smallest classification error.</p>
+</div></blockquote>
+<p>The end goal is a parsimonious model that is quicker to compute, with little or no degradation in predictive accuracy. In order to arrive at such a model, some feature selection techniques require training more than one candidate model. In other words, feature selection is not about reducing training time—in fact, some techniques increase overall training time—but about reducing model scoring time.</p>
+<p>Once <span class="math notranslate nohighlight">\(m\)</span> has been decided (rule of thumb <span class="math notranslate nohighlight">\(N_{class}/m&gt;10\)</span>) choose the <span class="math notranslate nohighlight">\(m\)</span> most informative features keeping:</p>
+<ul class="simple">
+<li><p>Large distances between classes</p></li>
+<li><p>Small distances within class</p></li>
+</ul>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+
+<span class="c1"># Set random seed for reproducibility</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Create synthetic data with two classes</span>
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cluster_std</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># Reduced std for better separation</span>
+
+<span class="c1"># Poor feature selection case: mixing the features</span>
+<span class="c1"># Adding a noise feature that doesn&#39;t help in classification</span>
+<span class="n">X_poor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">),</span> 
+                           <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)))</span>
+
+<span class="c1"># Good feature selection case: using the original features</span>
+<span class="n">X_good</span> <span class="o">=</span> <span class="n">X</span>
+
+<span class="c1"># Plotting</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Poor Feature Selection</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_poor</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">X_poor</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">hue</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;Set1&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Poor Feature Selection: Classes Overlapping&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Feature A (Poor)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Feature B (Poor)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+
+<span class="c1"># Good Feature Selection</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_good</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">X_good</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">hue</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;Set1&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Good Feature Selection: Classes Well Separated&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Feature 1 (Good)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Feature 2 (Good)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/bc655bcfb022e057a418f7988887144cc42633e86e413f6bb117a8ef47c2b74f.png" src="../_images/bc655bcfb022e057a418f7988887144cc42633e86e413f6bb117a8ef47c2b74f.png" />
+</div>
+</div>
+<p>Feature selection techniques can be broadly categorized into four main classes:</p>
+<section id="filtering">
+<h3>Filtering<a class="headerlink" href="#filtering" title="Link to this heading">#</a></h3>
+<p>Filtering methods assess the relevance of features based on their intrinsic properties, independent of any specific model. These techniques typically use statistical measures to evaluate the relationship between each feature and the target variable. Common filtering methods include:</p>
+<ul class="simple">
+<li><p><strong>Correlation Coefficients</strong>: Evaluating the correlation between each feature and the target variable. Features with low correlation may be discarded.</p></li>
+<li><p><strong>Chi-Squared Test</strong>: Assessing the independence between categorical features and the target, helping to select features that have the strongest association with the output.</p></li>
+<li><p><strong>Information Gain</strong>: Measuring the reduction in uncertainty about the target variable given the feature. Higher information gain indicates a more informative feature.</p></li>
+</ul>
+<p>Filtering methods are often fast and efficient, making them suitable for high-dimensional datasets. However, they may miss interactions between features that could be important for prediction.</p>
+</section>
+<section id="unsupervised-methods">
+<h3>Unsupervised Methods<a class="headerlink" href="#unsupervised-methods" title="Link to this heading">#</a></h3>
+<p>Unsupervised feature selection techniques do not rely on labeled data. Instead, they focus on finding patterns or structures within the data itself. Common unsupervised methods include:</p>
+<ul class="simple">
+<li><p><strong>Principal Component Analysis (PCA)</strong>: A dimensionality reduction technique that transforms the original features into a new set of uncorrelated variables called principal components, which capture the maximum variance in the data. This allows for the selection of the most informative components.</p></li>
+<li><p><strong>t-Distributed Stochastic Neighbor Embedding (t-SNE)</strong>: Primarily used for visualization, t-SNE can help identify clusters in high-dimensional data, guiding the selection of features that contribute most to the separation of these clusters.</p></li>
+</ul>
+<p>Unsupervised methods are valuable when labeled data is scarce but may not directly correspond to the target variable.</p>
+</section>
+<section id="wrapper-methods">
+<h3>Wrapper Methods<a class="headerlink" href="#wrapper-methods" title="Link to this heading">#</a></h3>
+<p>Wrapper methods evaluate feature subsets by training and testing a model on them, using the model’s performance to determine the best features. This class of methods includes:</p>
+<ul class="simple">
+<li><p><strong>Forward Selection</strong>: Starting with no features, it adds one feature at a time that improves model performance until no further improvement is observed.</p></li>
+<li><p><strong>Backward Elimination</strong>: Beginning with all features, it removes one feature at a time that least impacts model performance until no improvement can be achieved.</p></li>
+<li><p><strong>Recursive Feature Elimination (RFE)</strong>: This method iteratively removes the least important features based on model coefficients or feature importance scores until a specified number of features is retained.</p></li>
+</ul>
+<p>While wrapper methods often provide better feature subsets tailored to a specific model, they are computationally expensive, especially with large datasets.</p>
+</section>
+<section id="embedded-methods">
+<h3>Embedded Methods<a class="headerlink" href="#embedded-methods" title="Link to this heading">#</a></h3>
+<p>Embedded methods integrate feature selection into the model training process. These techniques are often more efficient than wrapper methods and can include:</p>
+<ul class="simple">
+<li><p><strong>Lasso Regression</strong>: A linear regression technique that adds an L1 regularization penalty, effectively shrinking some coefficients to zero and thus selecting features that contribute most to the prediction.</p></li>
+<li><p><strong>Tree-Based Methods</strong>: Algorithms like Random Forest and Gradient Boosting provide feature importance scores based on how often a feature is used in splits across all trees, allowing for natural selection of the most significant features.</p></li>
+</ul>
+<p>Embedded methods strike a balance between filter and wrapper methods, often yielding high-quality feature subsets with lower computational costs.</p>
+</section>
+</section>
+<section id="code-example-the-mobile-price-dataset">
+<h2>Code Example: The Mobile Price dataset<a class="headerlink" href="#code-example-the-mobile-price-dataset" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>The data is already tidy and partitioned into training and testing csv files.</p></li>
+<li><p>There are 2000 observations in the training set and 1000 in testing.</p></li>
+<li><p>Each observation consisits of 20 phone features (columns) and one categorical label (final column) describing the phone’s price range.</p></li>
+</ol>
+<section id="data-description">
+<h3>Data description<a class="headerlink" href="#data-description" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>battery_power</p></td>
+<td><p>Total energy a battery can store in one time measured in mAh</p></td>
+</tr>
+<tr class="row-odd"><td><p>blue</p></td>
+<td><p>Has Bluetooth or not</p></td>
+</tr>
+<tr class="row-even"><td><p>clock_speed</p></td>
+<td><p>the speed at which microprocessor executes instructions</p></td>
+</tr>
+<tr class="row-odd"><td><p>dual_sim</p></td>
+<td><p>Has dual sim support or not</p></td>
+</tr>
+<tr class="row-even"><td><p>fc</p></td>
+<td><p>Front Camera megapixels</p></td>
+</tr>
+<tr class="row-odd"><td><p>four_g</p></td>
+<td><p>Has 4G or not</p></td>
+</tr>
+<tr class="row-even"><td><p>int_memory</p></td>
+<td><p>Internal Memory in Gigabytes</p></td>
+</tr>
+<tr class="row-odd"><td><p>m_dep</p></td>
+<td><p>Mobile Depth in cm</p></td>
+</tr>
+<tr class="row-even"><td><p>mobile_wt</p></td>
+<td><p>Weight of mobile phone</p></td>
+</tr>
+<tr class="row-odd"><td><p>n_cores</p></td>
+<td><p>Number of cores of the processor</p></td>
+</tr>
+<tr class="row-even"><td><p>pc</p></td>
+<td><p>Primary Camera megapixels</p></td>
+</tr>
+<tr class="row-odd"><td><p>px_height</p></td>
+<td><p>Pixel Resolution Height</p></td>
+</tr>
+<tr class="row-even"><td><p>px_width</p></td>
+<td><p>Pixel Resolution Width</p></td>
+</tr>
+<tr class="row-odd"><td><p>ram</p></td>
+<td><p>Random Access Memory in MegaBytes</p></td>
+</tr>
+<tr class="row-even"><td><p>sc_h</p></td>
+<td><p>Screen Height of mobile in cm</p></td>
+</tr>
+<tr class="row-odd"><td><p>sc_w</p></td>
+<td><p>Screen Width of mobile in cm</p></td>
+</tr>
+<tr class="row-even"><td><p>talk_time</p></td>
+<td><p>the longest time that a single battery charge will last when you are</p></td>
+</tr>
+<tr class="row-odd"><td><p>three_g</p></td>
+<td><p>Has 3G or not</p></td>
+</tr>
+<tr class="row-even"><td><p>touch_screen</p></td>
+<td><p>Has touch screen or not</p></td>
+</tr>
+<tr class="row-odd"><td><p>wifi</p></td>
+<td><p>Has wifi or not</p></td>
+</tr>
+<tr class="row-even"><td><p>price_range</p></td>
+<td><p>This is the target variable with a value of 0(low cost), 1(medium cost), 2(high cost) and 3(very high cost).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="setup">
+<h3>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h3>
+<p>Let’s get all the requirements sorted before we move on to the excercise. Don’t worry too much about the models we’ll be using or how to train them for now.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Globals</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">1017</span>
+
+<span class="c1">#imports</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">tableone</span> <span class="kn">import</span> <span class="n">TableOne</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="kn">import</span> <span class="n">RFECV</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+
+<span class="c1">#magic</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>To demonstrate the utility of feature selection, we compare predictive power in a model with and without feature selection. So, for every parsimonious model we train let’s compare its performance with that of its couterpart prodigious model (i.e. model that uses all the features).</p>
+</section>
+<section id="loading-the-data">
+<h3>Loading the data<a class="headerlink" href="#loading-the-data" title="Link to this heading">#</a></h3>
+<p>We should have a look at how the features are distributed grouped by the labels. For this we’ll generate a table 1.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data as a pandas dataframe</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;datasets/ch02_data/train.csv&quot;</span><span class="p">)</span>
+<span class="n">df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;datasets/ch02_data/test.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Generate table 1</span>
+<span class="n">TableOne</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+         <span class="n">pval</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+         <span class="n">dip_test</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+         <span class="n">normal_test</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+         <span class="n">tukey_test</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th colspan="7" halign="left">Grouped by price_range</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th></th>
+      <th>Missing</th>
+      <th>Overall</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>P-Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>n</th>
+      <th></th>
+      <td></td>
+      <td>2000</td>
+      <td>500</td>
+      <td>500</td>
+      <td>500</td>
+      <td>500</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>battery_power, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>1238.5 (439.4)</td>
+      <td>1116.9 (410.8)</td>
+      <td>1228.9 (438.6)</td>
+      <td>1228.3 (452.9)</td>
+      <td>1380.0 (415.0)</td>
+      <td>&lt;0.001</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">blue, n (%)</th>
+      <th>0</th>
+      <td></td>
+      <td>1010 (50.5)</td>
+      <td>257 (51.4)</td>
+      <td>255 (51.0)</td>
+      <td>257 (51.4)</td>
+      <td>241 (48.2)</td>
+      <td>0.698</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td></td>
+      <td>990 (49.5)</td>
+      <td>243 (48.6)</td>
+      <td>245 (49.0)</td>
+      <td>243 (48.6)</td>
+      <td>259 (51.8)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>clock_speed, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>1.5 (0.8)</td>
+      <td>1.6 (0.8)</td>
+      <td>1.5 (0.8)</td>
+      <td>1.5 (0.8)</td>
+      <td>1.5 (0.8)</td>
+      <td>0.687</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">dual_sim, n (%)</th>
+      <th>0</th>
+      <td></td>
+      <td>981 (49.0)</td>
+      <td>250 (50.0)</td>
+      <td>245 (49.0)</td>
+      <td>251 (50.2)</td>
+      <td>235 (47.0)</td>
+      <td>0.732</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td></td>
+      <td>1019 (50.9)</td>
+      <td>250 (50.0)</td>
+      <td>255 (51.0)</td>
+      <td>249 (49.8)</td>
+      <td>265 (53.0)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>fc, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>4.3 (4.3)</td>
+      <td>4.1 (4.2)</td>
+      <td>4.3 (4.5)</td>
+      <td>4.5 (4.3)</td>
+      <td>4.3 (4.3)</td>
+      <td>0.510</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">four_g, n (%)</th>
+      <th>0</th>
+      <td></td>
+      <td>957 (47.9)</td>
+      <td>241 (48.2)</td>
+      <td>238 (47.6)</td>
+      <td>253 (50.6)</td>
+      <td>225 (45.0)</td>
+      <td>0.365</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td></td>
+      <td>1043 (52.1)</td>
+      <td>259 (51.8)</td>
+      <td>262 (52.4)</td>
+      <td>247 (49.4)</td>
+      <td>275 (55.0)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>int_memory, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>32.0 (18.1)</td>
+      <td>31.2 (18.1)</td>
+      <td>32.1 (18.0)</td>
+      <td>30.9 (18.4)</td>
+      <td>34.0 (17.9)</td>
+      <td>0.033</td>
+    </tr>
+    <tr>
+      <th>m_dep, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>0.5 (0.3)</td>
+      <td>0.5 (0.3)</td>
+      <td>0.5 (0.3)</td>
+      <td>0.5 (0.3)</td>
+      <td>0.5 (0.3)</td>
+      <td>0.212</td>
+    </tr>
+    <tr>
+      <th>mobile_wt, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>140.2 (35.4)</td>
+      <td>140.6 (36.4)</td>
+      <td>140.5 (35.7)</td>
+      <td>143.6 (34.3)</td>
+      <td>136.3 (34.9)</td>
+      <td>0.013</td>
+    </tr>
+    <tr>
+      <th rowspan="8" valign="top">n_cores, n (%)</th>
+      <th>1</th>
+      <td></td>
+      <td>242 (12.1)</td>
+      <td>49 (9.8)</td>
+      <td>76 (15.2)</td>
+      <td>52 (10.4)</td>
+      <td>65 (13.0)</td>
+      <td>0.488</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td></td>
+      <td>247 (12.3)</td>
+      <td>69 (13.8)</td>
+      <td>59 (11.8)</td>
+      <td>57 (11.4)</td>
+      <td>62 (12.4)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td></td>
+      <td>246 (12.3)</td>
+      <td>62 (12.4)</td>
+      <td>69 (13.8)</td>
+      <td>56 (11.2)</td>
+      <td>59 (11.8)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td></td>
+      <td>274 (13.7)</td>
+      <td>67 (13.4)</td>
+      <td>76 (15.2)</td>
+      <td>73 (14.6)</td>
+      <td>58 (11.6)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td></td>
+      <td>246 (12.3)</td>
+      <td>59 (11.8)</td>
+      <td>51 (10.2)</td>
+      <td>66 (13.2)</td>
+      <td>70 (14.0)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td></td>
+      <td>230 (11.5)</td>
+      <td>61 (12.2)</td>
+      <td>54 (10.8)</td>
+      <td>57 (11.4)</td>
+      <td>58 (11.6)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td></td>
+      <td>259 (13.0)</td>
+      <td>66 (13.2)</td>
+      <td>55 (11.0)</td>
+      <td>69 (13.8)</td>
+      <td>69 (13.8)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td></td>
+      <td>256 (12.8)</td>
+      <td>67 (13.4)</td>
+      <td>60 (12.0)</td>
+      <td>70 (14.0)</td>
+      <td>59 (11.8)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>pc, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>9.9 (6.1)</td>
+      <td>9.6 (6.1)</td>
+      <td>9.9 (6.1)</td>
+      <td>10.0 (6.0)</td>
+      <td>10.2 (6.1)</td>
+      <td>0.480</td>
+    </tr>
+    <tr>
+      <th>px_height, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>645.1 (443.8)</td>
+      <td>536.4 (372.8)</td>
+      <td>666.9 (441.4)</td>
+      <td>632.3 (445.8)</td>
+      <td>744.8 (483.7)</td>
+      <td>&lt;0.001</td>
+    </tr>
+    <tr>
+      <th>px_width, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>1251.5 (432.2)</td>
+      <td>1150.3 (413.0)</td>
+      <td>1251.9 (433.6)</td>
+      <td>1234.0 (427.8)</td>
+      <td>1369.8 (426.8)</td>
+      <td>&lt;0.001</td>
+    </tr>
+    <tr>
+      <th>ram, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>2124.2 (1084.7)</td>
+      <td>785.3 (362.8)</td>
+      <td>1679.5 (465.9)</td>
+      <td>2582.8 (496.2)</td>
+      <td>3449.2 (393.0)</td>
+      <td>&lt;0.001</td>
+    </tr>
+    <tr>
+      <th>sc_h, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>12.3 (4.2)</td>
+      <td>12.3 (4.2)</td>
+      <td>12.2 (4.2)</td>
+      <td>12.0 (4.2)</td>
+      <td>12.7 (4.2)</td>
+      <td>0.083</td>
+    </tr>
+    <tr>
+      <th>sc_w, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>5.8 (4.4)</td>
+      <td>5.7 (4.2)</td>
+      <td>5.5 (4.2)</td>
+      <td>5.7 (4.3)</td>
+      <td>6.1 (4.7)</td>
+      <td>0.171</td>
+    </tr>
+    <tr>
+      <th>talk_time, mean (SD)</th>
+      <th></th>
+      <td>0</td>
+      <td>11.0 (5.5)</td>
+      <td>10.6 (5.4)</td>
+      <td>11.4 (5.6)</td>
+      <td>11.0 (5.4)</td>
+      <td>11.1 (5.4)</td>
+      <td>0.181</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">three_g, n (%)</th>
+      <th>0</th>
+      <td></td>
+      <td>477 (23.8)</td>
+      <td>127 (25.4)</td>
+      <td>122 (24.4)</td>
+      <td>113 (22.6)</td>
+      <td>115 (23.0)</td>
+      <td>0.712</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td></td>
+      <td>1523 (76.1)</td>
+      <td>373 (74.6)</td>
+      <td>378 (75.6)</td>
+      <td>387 (77.4)</td>
+      <td>385 (77.0)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">touch_screen, n (%)</th>
+      <th>0</th>
+      <td></td>
+      <td>994 (49.7)</td>
+      <td>238 (47.6)</td>
+      <td>239 (47.8)</td>
+      <td>265 (53.0)</td>
+      <td>252 (50.4)</td>
+      <td>0.275</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td></td>
+      <td>1006 (50.3)</td>
+      <td>262 (52.4)</td>
+      <td>261 (52.2)</td>
+      <td>235 (47.0)</td>
+      <td>248 (49.6)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">wifi, n (%)</th>
+      <th>0</th>
+      <td></td>
+      <td>986 (49.3)</td>
+      <td>252 (50.4)</td>
+      <td>248 (49.6)</td>
+      <td>248 (49.6)</td>
+      <td>238 (47.6)</td>
+      <td>0.836</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td></td>
+      <td>1014 (50.7)</td>
+      <td>248 (49.6)</td>
+      <td>252 (50.4)</td>
+      <td>252 (50.4)</td>
+      <td>262 (52.4)</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+</div><br />[1] Hartigan's Dip Test reports possible
+                                    multimodal distributions for: clock_speed, fc, int_memory, m_dep, mobile_wt, pc, sc_h, sc_w, talk_time.<br />[2] Normality test reports non-normal
+                                    distributions for: battery_power, clock_speed, fc, int_memory, m_dep, mobile_wt, pc, px_height, px_width, ram, sc_h, sc_w, talk_time.<br /></div></div>
+</div>
+</section>
+</section>
+<section id="comparing-models">
+<h2>Comparing Models<a class="headerlink" href="#comparing-models" title="Link to this heading">#</a></h2>
+<p>Let’s define a function that will calculate the prodigious and parsimonious model performance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#define function that compares selected features to full model</span>
+<span class="k">def</span> <span class="nf">compare_models</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">selfeat</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;compare parsimonious and full linear model&quot;&quot;&quot;</span>
+    
+    <span class="c1"># get predictors and labels</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;price_range&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1">#independent columns</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;price_range&#39;</span><span class="p">]</span>    <span class="c1">#target column i.e price range</span>
+
+    <span class="c1">#get selected feature indecies</span>
+    <span class="n">isel</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span> <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">selfeat</span> <span class="k">if</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
+    
+    <span class="c1">#70-30 split</span>
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+ 
+
+    <span class="c1">#define the prodigious and parsimonious logistic models</span>
+    <span class="n">prodmodel</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+    <span class="n">parsmodel</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+
+    <span class="c1">#Fit the models</span>
+    <span class="n">prodmodel</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">parsmodel</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">selfeat</span><span class="p">],</span> <span class="n">y_train</span><span class="p">)</span> 
+
+    <span class="c1">#Report errors</span>
+    <span class="n">display</span><span class="p">(</span><span class="s1">&#39;Prodigious Model Score: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span><span class="k">prodmodel</span>.score(X_test, y_test))
+    <span class="n">display</span><span class="p">(</span><span class="s1">&#39;Parsimonious Model Score: </span><span class="si">%.3f</span><span class="s1">&#39;</span> <span class="o">%</span><span class="k">parsmodel</span>.score(X_test[selfeat], y_test))
+
+    <span class="k">return</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id1">
+<h3>Filtering<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Filtering techniques preprocess features to remove ones that are unlikely to be useful for the model. For example, one could compute the correlation or mutual information between each feature and the response variable, and filter out the features that fall below a threshold. Filtering techniques are much cheaper than the wrapper techniques described next, but they do not take into account the model being employed. Hence, they may not be able to select the right features for the model. It is best to do prefiltering conservatively, so as not to inadvertently eliminate useful features before they even make it to the model training step.</p>
+<blockquote>
+<div><p>The Table 1 conveniently has calculated the association of each feature with the outcome. Let’s select only those features that are significatly (p&lt;.05) associated.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">selfeat</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;battery_power&#39;</span><span class="p">,</span> <span class="s1">&#39;int_memory&#39;</span><span class="p">,</span> <span class="s1">&#39;mobile_wt&#39;</span><span class="p">,</span> <span class="s1">&#39;px_height&#39;</span><span class="p">,</span> <span class="s1">&#39;px_width&#39;</span><span class="p">,</span> <span class="s1">&#39;ram&#39;</span><span class="p">,</span> <span class="s1">&#39;sc_h&#39;</span><span class="p">]</span>
+<span class="n">compare_models</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">selfeat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Prodigious Model Score: 0.914&#39;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Parsimonious Model Score: 0.915&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<div><p>By keeping only 7 features the parsimonious model has the essentially the same score as the full model that uses all 20 features.</p>
+</div></blockquote>
+</section>
+<section id="id2">
+<h3>Unsupervised Methods<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p><strong>Remove highly correlated features</strong>: to remove the correlated features, we can make use of the corr() method of the pandas dataframe.</p>
+<blockquote>
+<div><p>The <strong>corr() method</strong> returns a correlation matrix containing correlation between all the columns of the dataframe. A useful way to visualize the correlations is with a heatmap.</p>
+</div></blockquote>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a correlation matrix for the columns in the dataset</span>
+<span class="n">correlation_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+
+<span class="c1"># Set up the matplotlib figure with improved size and aspect ratio</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+
+<span class="c1"># Use seaborn&#39;s heatmap with improved aesthetics</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">correlation_matrix</span><span class="p">,</span> 
+                <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>          <span class="c1"># Annotate cells with correlation coefficients</span>
+                <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span>           <span class="c1"># Format the annotations to 2 decimal places</span>
+                <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span>      <span class="c1"># Use a diverging colormap</span>
+                <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>             <span class="c1"># Set the midpoint of the colormap at 0</span>
+                <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>          <span class="c1"># Make each cell square-shaped</span>
+                <span class="n">linewidths</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>         <span class="c1"># Add gridlines between cells</span>
+                <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>    <span class="c1"># Gridline color</span>
+                <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;shrink&#39;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">},</span>  <span class="c1"># Shrink the color bar for better fitting</span>
+                <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>    <span class="c1"># Annotation text size</span>
+
+<span class="c1"># Improve title and labels for clarity</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Correlation Matrix Heatmap&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>  <span class="c1"># Rotate and align the x-tick labels</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>  <span class="c1"># Keep y-tick labels horizontal</span>
+
+<span class="c1"># Add tight layout for better spacing</span>
+<span class="c1"># plt.tight_layout()</span>
+
+<span class="c1"># Display the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/ba3f5af03167f3de0682b1e8f10488ebac8d6a9802bc1247ac45b5841f0a11a8.png" src="../_images/ba3f5af03167f3de0682b1e8f10488ebac8d6a9802bc1247ac45b5841f0a11a8.png" />
+</div>
+</div>
+<p>We can loop through all the columns in the correlation_matrix and keep track of the features with a correlation value &gt; 0.5. This 0.5 cut-off is quite strict and chosen for demonstration purposes. A more reasonable value is 80-90%.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#init an empty set that will contain the names of the correlated features</span>
+<span class="n">correlated_features</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="c1">#loop over lower triangle of pairs of features</span>
+<span class="c1">#     do not consider the last feature which is the label </span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">correlation_matrix</span> <span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">correlation_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="c1">#accumulate the names of the second correlated feature</span>
+            <span class="n">colname</span> <span class="o">=</span> <span class="n">correlation_matrix</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">correlated_features</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">colname</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#display the correlated features</span>
+<span class="n">display</span><span class="p">(</span><span class="n">correlated_features</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;fc&#39;, &#39;four_g&#39;, &#39;px_height&#39;, &#39;sc_h&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<p>These features are correlated to at least one other feature and can be considered redundant. Let’s not include them in our parsimonious set and see how it effects model performance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#add label to the correlated features which we will drop</span>
+<span class="n">correlated_features</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">&#39;price_range&#39;</span><span class="p">)</span>
+<span class="n">selfeat</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">correlated_features</span><span class="p">)</span>
+<span class="n">compare_models</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">selfeat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Prodigious Model Score: 0.914&#39;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Parsimonious Model Score: 0.904&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<blockquote>
+<div><p>In this case the parsimonious model scores (goodness of fit) lower than the full model.</p>
+</div></blockquote>
+</section>
+<section id="id3">
+<h3>Wrapper methods<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>These techniques are expensive, but they allow you to try out subsets of features, which means you won’t accidentally prune away features that are uninformative by themselves but useful when taken in combination. The wrapper method treats the model as a black box that provides a quality score of a proposed subset for features. There is a separate method that iteratively refines the subset.</p>
+<blockquote>
+<div><p><strong>Recursive feature elimination (RFE)</strong> is a stepwise feature selection process implemented in sklearn. Recall, the model used for feature selection does not have to be the same as the predictive model. Here we will use a tree based model for RFE.</p>
+</div></blockquote>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;price_range&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;price_range&#39;</span><span class="p">]</span>
+
+<span class="c1"># Use a tree-based model for RFE</span>
+<span class="n">rfe</span> <span class="o">=</span> <span class="n">RFECV</span><span class="p">(</span><span class="n">estimator</span><span class="o">=</span><span class="n">DecisionTreeClassifier</span><span class="p">(),</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Fit RFE</span>
+<span class="n">rfe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Create a DataFrame to summarize feature selection results</span>
+<span class="n">summary_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Feature&#39;</span><span class="p">:</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+    <span class="s1">&#39;Selected&#39;</span><span class="p">:</span> <span class="n">rfe</span><span class="o">.</span><span class="n">support_</span><span class="p">,</span>
+    <span class="s1">&#39;Rank&#39;</span><span class="p">:</span> <span class="n">rfe</span><span class="o">.</span><span class="n">ranking_</span>
+<span class="p">})</span>
+
+<span class="c1"># Display the results as a table</span>
+<span class="n">display</span><span class="p">(</span><span class="n">summary_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Feature</th>
+      <th>Selected</th>
+      <th>Rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>battery_power</td>
+      <td>True</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>blue</td>
+      <td>False</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>clock_speed</td>
+      <td>False</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>dual_sim</td>
+      <td>False</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>fc</td>
+      <td>False</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>four_g</td>
+      <td>False</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>int_memory</td>
+      <td>False</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>m_dep</td>
+      <td>False</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>mobile_wt</td>
+      <td>False</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>n_cores</td>
+      <td>False</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>pc</td>
+      <td>False</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>px_height</td>
+      <td>True</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>px_width</td>
+      <td>True</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>ram</td>
+      <td>True</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>sc_h</td>
+      <td>False</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>sc_w</td>
+      <td>False</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>talk_time</td>
+      <td>False</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>three_g</td>
+      <td>False</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>touch_screen</td>
+      <td>False</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>wifi</td>
+      <td>False</td>
+      <td>17</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We can see which features were selected by their column index. They correspond to features ‘battery_power’, ‘px_height’, ‘px_width’, and ‘ram’ . Let’s compare the parsimonious linear model with the full model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#get the column indecies</span>
+<span class="n">selcol</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">]</span>
+<span class="c1">#get the column names</span>
+<span class="n">selfeat</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">selcol</span><span class="p">]</span>
+<span class="c1">#compare models</span>
+<span class="n">compare_models</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">selfeat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Prodigious Model Score: 0.914&#39;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Parsimonious Model Score: 0.914&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h3>Embedded methods<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>These methods perform feature selection as part of the model training process. For example, a decision tree inherently performs feature selection because it selects one feature on which to split the tree at each training step. Another example is the <span class="math notranslate nohighlight">\(L_1\)</span> regularizer, which can be added to the training objective of any linear model. The <span class="math notranslate nohighlight">\(L_1\)</span> regularizer encourages models that use a few features as opposed to a lot of features, so it’s also known as a sparsity constraint on the model.</p>
+<p>Embedded methods are not as powerful as wrapper methods, but they are nowhere near as expensive. Compared to filtering, embedded methods select features that are specific to the model. In this sense, embedded methods strike a balance between computational expense and quality of results.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LassoCV</span>
+
+<span class="c1"># Get predictors and labels</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;price_range&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;price_range&#39;</span><span class="p">])</span>
+
+<span class="c1"># Train Lasso model with 5-fold cross-validation</span>
+<span class="n">lasso</span> <span class="o">=</span> <span class="n">LassoCV</span><span class="p">(</span><span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Display the model score</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model Score: </span><span class="si">{</span><span class="n">lasso</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get feature importance based on coefficients</span>
+<span class="n">importance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lasso</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="n">feature_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;price_range&#39;</span><span class="p">))</span>
+
+<span class="c1"># Set up the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">feature_names</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">importance</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+
+<span class="c1"># Adding labels and title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Feature Importances via Lasso Coefficients&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Features&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Coefficient Magnitude&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Improve the appearance of the x-axis</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Tight layout for better spacing</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="c1"># Show plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model Score: 0.92
+</pre></div>
+</div>
+<img alt="../_images/68e99d03a7dfd6fc02ee0d72fe404e47f7db265edc9344964884398d64bfff90.png" src="../_images/68e99d03a7dfd6fc02ee0d72fe404e47f7db265edc9344964884398d64bfff90.png" />
+</div>
+</div>
+<blockquote>
+<div><p>Again we see battery power, px_height, px_width, and ram are the most important features that influence price.</p>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="11_machine_learning_fundamentals_ES.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Fundamentos del Aprendizaje Automático</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="13_categorical_variables.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Categorical Variables</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-counts">Dealing with Counts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-or-binning">Quantization or Binning</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-width-binning">Fixed-Width Binning</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#quantile-binning">Quantile Binning</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#log-transformation">Log Transformation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#power-transforms-generalization-of-the-log-transform">Power Transforms: Generalization of the Log Transform</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-scaling-and-normalization">Feature Scaling and Normalization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#min-max-scaling">Min-Max Scaling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-scaling-standardization">Variance Scaling (Standardization)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#l2-normalization">L2 Normalization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection">Feature Selection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering">Filtering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupervised-methods">Unsupervised Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapper-methods">Wrapper Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#embedded-methods">Embedded Methods</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-example-the-mobile-price-dataset">Code Example: The Mobile Price dataset</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-description">Data description</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-the-data">Loading the data</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-models">Comparing Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Filtering</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Unsupervised Methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Wrapper methods</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Embedded methods</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Biagio Mandracchia
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
