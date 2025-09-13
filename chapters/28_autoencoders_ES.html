@@ -175,7 +175,7 @@
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Computational Tools</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Python: una introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_python_primer.html">Introducción a Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_data_science_with_pandas.html">Data Science with Python and Pandas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_jupyter_markdown.html">Jupyter &amp; Markdown</a></li>
 </ul>
@@ -481,8 +481,8 @@ El vector de características se denomina <strong>cuello de botella (<em>bottlen
 -\mathrm{KL}\!\big(q_\phi(\mathbf{z}\mid\mathbf{x})\,\|\,p(\mathbf{z})\big)}_{\displaystyle \mathcal{L}(\theta,\phi;\mathbf{x})\;\text{(ELBO)}}
 \;+\;\underbrace{\mathrm{KL}\!\big(q_\phi(\mathbf{z}\mid\mathbf{x})\,\|\,p_\theta(\mathbf{z}\mid\mathbf{x})\big)}_{\ge 0}.
 \]</div>
-<p>Dado que el último término es no negativo, $\mathcal{L}$ es una <strong>cota inferior</strong> de la log-verosimilitud exacta. Maximizar la ELBO incrementa la verosimilitud de los datos y acerca el posterior aproximado $q_\phi(\mathbf{z}\mid\mathbf{x})$ al posterior verdadero $p_\theta(\mathbf{z}\mid\mathbf{x})$; la cota se vuelve ajustada cuando ambos coinciden.</p>
-<p>Maximizar la log-verosimilitud exacta $\log p_\theta(\mathbf{x})$ es intratable, por lo que los VAEs maximizan la <strong>evidence lower bound (ELBO)</strong>:</p>
+<p>Dado que el último término es no negativo, <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> es una <strong>cota inferior</strong> de la log-verosimilitud exacta. Maximizar la ELBO incrementa la verosimilitud de los datos y acerca el posterior aproximado <span class="math notranslate nohighlight">\(q_\phi(\mathbf{z}\mid\mathbf{x})\)</span> al posterior verdadero <span class="math notranslate nohighlight">\(p_\theta(\mathbf{z}\mid\mathbf{x})\)</span>; la cota se vuelve ajustada cuando ambos coinciden.</p>
+<p>Maximizar la log-verosimilitud exacta <span class="math notranslate nohighlight">\(\log p_\theta(\mathbf{x})\)</span> es intratable, por lo que los VAEs maximizan la <strong>evidence lower bound (ELBO)</strong>:</p>
 <div class="math notranslate nohighlight">
 \[
 \mathcal{L}(\theta,\phi;\mathbf{x})
@@ -495,27 +495,27 @@ El vector de características se denomina <strong>cuello de botella (<em>bottlen
 <li><p>El primer término fuerza a que las reconstrucciones se parezcan a los datos.</p></li>
 <li><p>El segundo mantiene los latentes inferidos cerca del prior, dando lugar a un espacio latente bien estructurado.</p></li>
 </ul>
-<p>La conexión con las pérdidas de reconstrucción comunes proviene de la elección de la verosimilitud $p_\theta(\mathbf{x}\mid\mathbf{z})$:</p>
+<p>La conexión con las pérdidas de reconstrucción comunes proviene de la elección de la verosimilitud <span class="math notranslate nohighlight">\(p_\theta(\mathbf{x}\mid\mathbf{z})\)</span>:</p>
 <ul class="simple">
-<li><p>Si $p_\theta(\mathbf{x}\mid\mathbf{z})$ es Bernoulli factorada (típico para datos en $[0,1]$):</p></li>
+<li><p>Si <span class="math notranslate nohighlight">\(p_\theta(\mathbf{x}\mid\mathbf{z})\)</span> es Bernoulli factorada (típico para datos en <span class="math notranslate nohighlight">\([0,1]\)</span>):</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[
 \log p_\theta(\mathbf{x}\mid\mathbf{z})
 =\sum_i x_i\log \hat{x}_i+(1-x_i)\log(1-\hat{x}_i),
 \]</div>
-<p>con $\hat{x}=\sigma(f_\theta(\mathbf{z}))$.
-El negativo de esto es exactamente la entropía cruzada binaria (BCE). Así, maximizar el término de reconstrucción equivale a minimizar la BCE, salvo por la expectativa sobre $q_\phi(\mathbf{z}\mid\mathbf{x})$ (normalmente aproximada por una o pocas muestras).</p>
+<p>con <span class="math notranslate nohighlight">\(\hat{x}=\sigma(f_\theta(\mathbf{z}))\)</span>.
+El negativo de esto es exactamente la entropía cruzada binaria (BCE). Así, maximizar el término de reconstrucción equivale a minimizar la BCE, salvo por la expectativa sobre <span class="math notranslate nohighlight">\(q_\phi(\mathbf{z}\mid\mathbf{x})\)</span> (normalmente aproximada por una o pocas muestras).</p>
 <ul class="simple">
-<li><p>Si $p_\theta(\mathbf{x}\mid\mathbf{z})$ es Gaussiana con varianza fija $\sigma^2 I$ y media $\mu_\theta(\mathbf{z})$:</p></li>
+<li><p>Si <span class="math notranslate nohighlight">\(p_\theta(\mathbf{x}\mid\mathbf{z})\)</span> es Gaussiana con varianza fija <span class="math notranslate nohighlight">\(\sigma^2 I\)</span> y media <span class="math notranslate nohighlight">\(\mu_\theta(\mathbf{z})\)</span>:</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[
 \log p_\theta(\mathbf{x}\mid\mathbf{z})
 =-\frac{1}{2\sigma^2}\|\mathbf{x}-\mu_\theta(\mathbf{z})\|_2^2 - \tfrac{D}{2}\log(2\pi\sigma^2),
 \]</div>
-<p>entonces maximizar el término de reconstrucción equivale a minimizar el error cuadrático medio (MSE), de nuevo salvo por una constante y un factor $1/(2\sigma^2)$.
-Cuando $\sigma^2$ se aprende (Gaussiana heterocedástica), la reconstrucción se convierte en un <em>MSE ponderado</em> más una penalización sobre la log-varianza predicha.</p>
+<p>entonces maximizar el término de reconstrucción equivale a minimizar el error cuadrático medio (MSE), de nuevo salvo por una constante y un factor <span class="math notranslate nohighlight">\(1/(2\sigma^2)\)</span>.
+Cuando <span class="math notranslate nohighlight">\(\sigma^2\)</span> se aprende (Gaussiana heterocedástica), la reconstrucción se convierte en un <em>MSE ponderado</em> más una penalización sobre la log-varianza predicha.</p>
 <blockquote>
 <div><p>En resumen, el objetivo de un VAE es <em>la pérdida de reconstrucción negativa (BCE o MSE, según la verosimilitud asumida) más una penalización KL en los latentes</em>. La elección entre BCE o MSE no es arbitraria: codifica la suposición sobre el modelo de ruido de las observaciones — tipo Bernoulli para datos binarios/normalizados, Gaussiano para datos continuos con ruido aditivo.</p>
 </div></blockquote>
