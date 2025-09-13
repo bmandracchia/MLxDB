@@ -27,9 +27,9 @@ parts:
   - file: chapters/22_NN_as_UA_ES
   - file: chapters/23_Loss_Metrics_and_Optimizers_ES
   - file: chapters/24_MLP_ES
-  - file: chapters/25_convolutions
-  - file: chapters/26_resnet2
-  - file: chapters/27_transformers
-  - file: chapters/28_autoencoders
+  - file: chapters/25_convolutions_ES
+  - file: chapters/26_resnet2_ES
+  - file: chapters/27_transformers_ES
+  - file: chapters/28_autoencoders_ES
   - file: chapters/28b_probabilistic_ES
-  - file: chapters/29_PBDL
+  - file: chapters/29_PBDL_ES
