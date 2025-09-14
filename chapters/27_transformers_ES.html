@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -473,19 +473,19 @@ document.write(`
 \[
 \text{Attention}(\mathbf{q}, \mathcal{D}) = \sum_{i=1}^m \alpha(\mathbf{q}, \mathbf{k}_i)\,\mathbf{v}_i ,
 \]</div>
-<p>donde cada peso $\alpha(\mathbf{q}, \mathbf{k}_i)$ mide qué tan fuerte la clave $\mathbf{k}_i$ coincide con la consulta $\mathbf{q}$. Normalizar los pesos con una <em>softmax</em> asegura que sean no negativos y sumen 1, convirtiéndolos en una distribución de probabilidad que puede interpretarse (con cautela) como “importancia relativa”. Esto permite cubrir varios casos útiles: coincidencia exacta (un peso = 1), promediado (todos los pesos iguales) o combinaciones suaves de elementos relevantes.</p>
+<p>donde cada peso <span class="math notranslate nohighlight">\(\alpha(\mathbf{q}, \mathbf{k}_i)\)</span> mide qué tan fuerte la clave <span class="math notranslate nohighlight">\(\mathbf{k}_i\)</span> coincide con la consulta <span class="math notranslate nohighlight">\(\mathbf{q}\)</span>. Normalizar los pesos con una <em>softmax</em> asegura que sean no negativos y sumen 1, convirtiéndolos en una distribución de probabilidad que puede interpretarse (con cautela) como “importancia relativa”. Esto permite cubrir varios casos útiles: coincidencia exacta (un peso = 1), promediado (todos los pesos iguales) o combinaciones suaves de elementos relevantes.</p>
 <p>Las principales fortalezas de la atención son que es <strong>diferenciable</strong>, <strong>escalable a entradas grandes</strong> y <strong>eficiente en parámetros</strong>, lo que hace posible que un modelo “se enfoque” de manera flexible sin comprimir todo en un cuello de botella de longitud fija.</p>
 <p><img alt="QKV" src="../_images/attention.png" /></p>
 <section id="la-funcion-de-puntuacion">
 <h3>La Función de Puntuación<a class="headerlink" href="#la-funcion-de-puntuacion" title="Link to this heading">#</a></h3>
 <p>Una estrategia común para asegurar que los pesos sumen 1 es normalizarlos mediante</p>
 <p><span class="math notranslate nohighlight">\(\alpha(\mathbf{q}, \mathbf{k}_i) = \frac{\alpha(\mathbf{q}, \mathbf{k}_i)}{{\sum_j} \alpha(\mathbf{q}, \mathbf{k}_j)}.\)</span></p>
-<p>En particular, para garantizar que los pesos también sean no negativos, se puede recurrir a la exponenciación. Esto significa que ahora podemos elegir <em>cualquier</em> <strong>función de puntuación</strong> $a(\mathbf{q}, \mathbf{k})$ y luego aplicarle la operación <em>softmax</em> usada en los modelos multinomiales:</p>
+<p>En particular, para garantizar que los pesos también sean no negativos, se puede recurrir a la exponenciación. Esto significa que ahora podemos elegir <em>cualquier</em> <strong>función de puntuación</strong> <span class="math notranslate nohighlight">\(a(\mathbf{q}, \mathbf{k})\)</span> y luego aplicarle la operación <em>softmax</em> usada en los modelos multinomiales:</p>
 <div class="math notranslate nohighlight">
 \[
 \alpha(\mathbf{q}, \mathbf{k}_i) = \frac{\exp(a(\mathbf{q}, \mathbf{k}_i))}{\sum_{j=1}^m \exp(a(\mathbf{q}, \mathbf{k}_j))}.
 \]</div>
-<p>Varias formas importantes de $a$ se usan comúnmente:</p>
+<p>Varias formas importantes de <span class="math notranslate nohighlight">\(a\)</span> se usan comúnmente:</p>
 <ul>
 <li><p><strong>Atención por producto punto</strong></p>
 <div class="math notranslate nohighlight">
@@ -499,27 +499,27 @@ document.write(`
 \[
   a(\mathbf{q}, \mathbf{k}_i) = \frac{\mathbf{q}^\top \mathbf{k}_i}{\sqrt{d}} ,
   \]</div>
-<p>donde $d$ es la dimensión de los vectores. Cuando $d$ es grande, el producto punto puede volverse de gran magnitud, llevando a la <em>softmax</em> a producir distribuciones extremadamente afiladas con gradientes que se desvanecen. Dividir entre $\sqrt{d}$ contrarresta este efecto, manteniendo las puntuaciones en un rango que permite un entrenamiento estable. Esta es la forma usada en la arquitectura Transformer.</p>
+<p>donde <span class="math notranslate nohighlight">\(d\)</span> es la dimensión de los vectores. Cuando <span class="math notranslate nohighlight">\(d\)</span> es grande, el producto punto puede volverse de gran magnitud, llevando a la <em>softmax</em> a producir distribuciones extremadamente afiladas con gradientes que se desvanecen. Dividir entre <span class="math notranslate nohighlight">\(\sqrt{d}\)</span> contrarresta este efecto, manteniendo las puntuaciones en un rango que permite un entrenamiento estable. Esta es la forma usada en la arquitectura Transformer.</p>
 </li>
 <li><p><strong>Atención aditiva (Bahdanau)</strong></p>
 <div class="math notranslate nohighlight">
 \[
   a(\mathbf{q}, \mathbf{k}_i) = \mathbf{w}^\top \tanh(W_q \mathbf{q} + W_k \mathbf{k}_i) ,
   \]</div>
-<p>donde $W_q$ y $W_k$ son matrices de proyección aprendibles y $\mathbf{w}$ es un vector aprendible. En lugar de comparar consultas y claves directamente, primero se mapean a un espacio conjunto y se combinan mediante una transformación no lineal. La <em>tanh</em> introduce no linealidad, permitiendo al modelo aprender relaciones complejas más allá de la similitud lineal. Esta formulación es más flexible pero típicamente más costosa computacionalmente que la atención por producto punto.</p>
+<p>donde <span class="math notranslate nohighlight">\(W_q\)</span> y <span class="math notranslate nohighlight">\(W_k\)</span> son matrices de proyección aprendibles y <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> es un vector aprendible. En lugar de comparar consultas y claves directamente, primero se mapean a un espacio conjunto y se combinan mediante una transformación no lineal. La <em>tanh</em> introduce no linealidad, permitiendo al modelo aprender relaciones complejas más allá de la similitud lineal. Esta formulación es más flexible pero típicamente más costosa computacionalmente que la atención por producto punto.</p>
 </li>
 <li><p><strong>Atención bilineal</strong></p>
 <div class="math notranslate nohighlight">
 \[
   a(\mathbf{q}, \mathbf{k}_i) = \mathbf{q}^\top W \mathbf{k}_i ,
   \]</div>
-<p>donde $W$ es una matriz de pesos aprendible. Esto generaliza el producto punto al permitir una transformación lineal de las claves antes de compararlas, dando al modelo mayor capacidad para aprender nociones de similitud específicas de la tarea.</p>
+<p>donde <span class="math notranslate nohighlight">\(W\)</span> es una matriz de pesos aprendible. Esto generaliza el producto punto al permitir una transformación lineal de las claves antes de compararlas, dando al modelo mayor capacidad para aprender nociones de similitud específicas de la tarea.</p>
 </li>
 <li><p><strong>Formas generales</strong>
-En principio, cualquier función diferenciable puede servir como $a$, siempre que produzca puntuaciones escalares que puedan exponenciarse y normalizarse. Esto puede incluir redes neuronales más profundas, funciones kernel o medidas de similitud específicas de la tarea.</p></li>
+En principio, cualquier función diferenciable puede servir como <span class="math notranslate nohighlight">\(a\)</span>, siempre que produzca puntuaciones escalares que puedan exponenciarse y normalizarse. Esto puede incluir redes neuronales más profundas, funciones kernel o medidas de similitud específicas de la tarea.</p></li>
 </ul>
 <blockquote>
-<div><p>Cada formulación de $a$ representa una manera distinta de medir la relevancia, intercambiando costo computacional, expresividad y estabilidad. La elección de la función de puntuación es crítica para el comportamiento y la efectividad del mecanismo de atención.</p>
+<div><p>Cada formulación de <span class="math notranslate nohighlight">\(a\)</span> representa una manera distinta de medir la relevancia, intercambiando costo computacional, expresividad y estabilidad. La elección de la función de puntuación es crítica para el comportamiento y la efectividad del mecanismo de atención.</p>
 </div></blockquote>
 <p>Para entender mejor cómo distintas funciones de puntuación moldean el mecanismo de atención, construyamos un pequeño ejemplo con solo dos consultas y tres claves. Cada consulta y cada clave se representa como un vector de 4 dimensiones. Aplicando distintas funciones de puntuación —producto punto, producto punto escalado, aditiva (Bahdanau) y bilineal— podemos calcular las puntuaciones de atención, normalizarlas con una <em>softmax</em> para obtener pesos, y visualizar las distribuciones resultantes como mapas de calor. Estas gráficas muestran cómo cada consulta presta atención de manera distinta a las claves disponibles según la medida de similitud elegida.</p>
 <div class="cell tag_hide-input docutils container">
@@ -606,15 +606,15 @@ En principio, cualquier función diferenciable puede servir como $a$, siempre qu
 <section id="atencion-multi-cabeza">
 <h2>Atención Multi-Cabeza<a class="headerlink" href="#atencion-multi-cabeza" title="Link to this heading">#</a></h2>
 <p>Un solo mecanismo de atención solo puede capturar un tipo de dependencia entre consultas, claves y valores. En la práctica, sin embargo, a menudo queremos modelar distintos tipos de relaciones simultáneamente —por ejemplo, dependencias de corto y largo alcance en una secuencia—. Para lograrlo, la <strong>atención multi-cabeza</strong> proyecta consultas, claves y valores en múltiples subespacios de representación y aplica atención en paralelo.</p>
-<p>Formalmente, dada una consulta $\mathbf{q}\in\mathbb{R}^{d_q}$, una clave $\mathbf{k}\in\mathbb{R}^{d_k}$ y un valor $\mathbf{v}\in\mathbb{R}^{d_v}$, cada cabeza $\mathbf{h}_i$ ($i=1,\dots,h$) se calcula como</p>
+<p>Formalmente, dada una consulta <span class="math notranslate nohighlight">\(\mathbf{q}\in\mathbb{R}^{d_q}\)</span>, una clave <span class="math notranslate nohighlight">\(\mathbf{k}\in\mathbb{R}^{d_k}\)</span> y un valor <span class="math notranslate nohighlight">\(\mathbf{v}\in\mathbb{R}^{d_v}\)</span>, cada cabeza <span class="math notranslate nohighlight">\(\mathbf{h}_i\)</span> (<span class="math notranslate nohighlight">\(i=1,\dots,h\)</span>) se calcula como</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbf{h}_i = f(\mathbf{W}_i^{(q)}\mathbf{q}, \; \mathbf{W}_i^{(k)}\mathbf{k}, \; \mathbf{W}_i^{(v)}\mathbf{v}) \in \mathbb{R}^{p_v},
 \]</div>
-<p>donde $\mathbf{W}_i^{(q)} \in \mathbb{R}^{p_q \times d_q}$,
-$\mathbf{W}_i^{(k)} \in \mathbb{R}^{p_k \times d_k}$ y
-$\mathbf{W}_i^{(v)} \in \mathbb{R}^{p_v \times d_v}$ son proyecciones aprendidas, y $f$ es una función de atención (por ejemplo, producto punto escalado).</p>
-<p>Las salidas de todas las $h$ cabezas se concatenan y se mapean a la dimensión final $p_o$ mediante</p>
+<p>donde <span class="math notranslate nohighlight">\(\mathbf{W}_i^{(q)} \in \mathbb{R}^{p_q \times d_q}\)</span>,
+<span class="math notranslate nohighlight">\(\mathbf{W}_i^{(k)} \in \mathbb{R}^{p_k \times d_k}\)</span> y
+<span class="math notranslate nohighlight">\(\mathbf{W}_i^{(v)} \in \mathbb{R}^{p_v \times d_v}\)</span> son proyecciones aprendidas, y <span class="math notranslate nohighlight">\(f\)</span> es una función de atención (por ejemplo, producto punto escalado).</p>
+<p>Las salidas de todas las <span class="math notranslate nohighlight">\(h\)</span> cabezas se concatenan y se mapean a la dimensión final <span class="math notranslate nohighlight">\(p_o\)</span> mediante</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \mathbf{W}_o 
@@ -623,10 +623,10 @@ $\mathbf{W}_i^{(v)} \in \mathbb{R}^{p_v \times d_v}$ son proyecciones aprendidas
 \end{bmatrix}
 \in \mathbb{R}^{p_o},
 \end{split}\]</div>
-<p>con $\mathbf{W}_o \in \mathbb{R}^{p_o \times hp_v}$.</p>
+<p>con <span class="math notranslate nohighlight">\(\mathbf{W}_o \in \mathbb{R}^{p_o \times hp_v}\)</span>.</p>
 <p>De este modo, cada cabeza puede centrarse en distintos aspectos de la entrada, lo que permite al modelo representar relaciones más ricas que un único mecanismo de atención.</p>
 <p>En la práctica, para mantener el cómputo manejable, se fija
-$p_q = p_k = p_v = p_o/h$. Esto asegura que cada cabeza tenga menor dimensionalidad, mientras que su concatenación preserva el tamaño total del modelo. Las cabezas pueden calcularse en paralelo proyectando consultas, claves y valores en dimensiones $hp_q, hp_k, hp_v$, y luego dividiéndolos entre las cabezas.</p>
+<span class="math notranslate nohighlight">\(p_q = p_k = p_v = p_o/h\)</span>. Esto asegura que cada cabeza tenga menor dimensionalidad, mientras que su concatenación preserva el tamaño total del modelo. Las cabezas pueden calcularse en paralelo proyectando consultas, claves y valores en dimensiones <span class="math notranslate nohighlight">\(hp_q, hp_k, hp_v\)</span>, y luego dividiéndolos entre las cabezas.</p>
 <p>Para construir intuición sobre la atención multi-cabeza, podemos plantear un ejemplo sencillo con dos consultas (q1, q2) y cuatro claves (k1–k4). El espacio de características se divide en dos mitades, de modo que cada cabeza de atención opere sobre un subespacio distinto:</p>
 <ul class="simple">
 <li><p><strong>Cabeza 1:</strong> se centra en las tres primeras dimensiones.</p></li>
@@ -723,7 +723,7 @@ características fuertes en las tres últimas dimensiones. Aquí q1 es en gran p
 <hr class="docutils" />
 <section id="autoatencion-self-attention">
 <h2>Autoatención (<em>Self-Attention</em>)<a class="headerlink" href="#autoatencion-self-attention" title="Link to this heading">#</a></h2>
-<p>La autoatención permite que cada token en una secuencia atienda directamente a todos los demás tokens. Dadas incrustaciones de entrada $\mathbf{x}_1, \ldots, \mathbf{x}_n \in \mathbb{R}^d$, la autoatención produce salidas $\mathbf{y}_1, \ldots, \mathbf{y}_n$ de la misma dimensión, donde cada salida es una combinación ponderada de todos los tokens de la secuencia. Los pesos se determinan por la compatibilidad entre la consulta de un token y las claves de los demás tokens.</p>
+<p>La autoatención permite que cada token en una secuencia atienda directamente a todos los demás tokens. Dadas incrustaciones de entrada <span class="math notranslate nohighlight">\(\mathbf{x}_1, \ldots, \mathbf{x}_n \in \mathbb{R}^d\)</span>, la autoatención produce salidas <span class="math notranslate nohighlight">\(\mathbf{y}_1, \ldots, \mathbf{y}_n\)</span> de la misma dimensión, donde cada salida es una combinación ponderada de todos los tokens de la secuencia. Los pesos se determinan por la compatibilidad entre la consulta de un token y las claves de los demás tokens.</p>
 <p>Este mecanismo permite que cada token incorpore información contextual de toda la secuencia, sin estar restringido por la distancia (como en las RNNs) ni por la localidad (como en las CNNs). Cuando se extiende a atención multi-cabeza, varias cabezas de atención permiten al modelo enfocarse en diferentes tipos de dependencias en paralelo.</p>
 <p>En general, la autoatención es muy eficaz para capturar relaciones de largo alcance. Sin embargo, tiene complejidad computacional cuadrática respecto a la longitud de la secuencia, lo que la hace prohibitivamente lenta para secuencias muy largas. Para incluir la información del orden, se puede inyectar información posicional absoluta o relativa añadiendo <strong>codificaciones posicionales</strong> a las representaciones de entrada.</p>
 <section id="codificacion-posicional">
@@ -735,10 +735,10 @@ características fuertes en las tres últimas dimensiones. Aquí q1 es en gran p
 p_{i,2j} = \sin\!\left(\frac{i}{10000^{2j/d}}\right), \quad
 p_{i,2j+1} = \cos\!\left(\frac{i}{10000^{2j/d}}\right),
 \]</div>
-<p>donde $i$ es la posición del token, $d$ es la dimensión de la incrustación, y $j$ indexa las dimensiones. Estas codificaciones crean patrones suaves y continuos de frecuencias variables a lo largo de las dimensiones, asegurando que cada posición tenga una representación única.</p>
+<p>donde <span class="math notranslate nohighlight">\(i\)</span> es la posición del token, <span class="math notranslate nohighlight">\(d\)</span> es la dimensión de la incrustación, y <span class="math notranslate nohighlight">\(j\)</span> indexa las dimensiones. Estas codificaciones crean patrones suaves y continuos de frecuencias variables a lo largo de las dimensiones, asegurando que cada posición tenga una representación única.</p>
 <ul class="simple">
 <li><p><strong>Posición absoluta:</strong> cada fila codifica un índice específico.</p></li>
-<li><p><strong>Posición relativa:</strong> se representa de forma natural, ya que la codificación en la posición $i+\delta$ puede expresarse como una proyección lineal de la codificación en $i$, gracias a las identidades trigonométricas de desplazamiento.</p></li>
+<li><p><strong>Posición relativa:</strong> se representa de forma natural, ya que la codificación en la posición <span class="math notranslate nohighlight">\(i+\delta\)</span> puede expresarse como una proyección lineal de la codificación en <span class="math notranslate nohighlight">\(i\)</span>, gracias a las identidades trigonométricas de desplazamiento.</p></li>
 </ul>
 <p>Esta doble propiedad hace que las codificaciones sinusoidales sean eficientes y potentes.</p>
 </section>
@@ -757,7 +757,7 @@ p_{i,2j+1} = \cos\!\left(\frac{i}{10000^{2j/d}}\right),
 <li><p>Autoatención multi-cabeza.</p></li>
 <li><p>Red feed-forward por posición (FFN).</p></li>
 </ol>
-<p>Ambas subcapas usan conexiones residuales seguidas de normalización por capas. El codificador produce una secuencia de vectores de dimensión $d$.</p>
+<p>Ambas subcapas usan conexiones residuales seguidas de normalización por capas. El codificador produce una secuencia de vectores de dimensión <span class="math notranslate nohighlight">\(d\)</span>.</p>
 </li>
 <li><p><strong>Decodificador:</strong> Cada capa tiene tres subcapas:</p>
 <ol class="arabic simple">
@@ -779,7 +779,7 @@ p_{i,2j+1} = \cos\!\left(\frac{i}{10000^{2j/d}}\right),
 \[
 \text{FFN}(x) = W_2 \, \text{ReLU}(W_1 x + b_1) + b_2,
 \]</div>
-<p>transformando la dimensión oculta $d$ en $d_\text{ff}$ y de regreso.</p>
+<p>transformando la dimensión oculta <span class="math notranslate nohighlight">\(d\)</span> en <span class="math notranslate nohighlight">\(d_\text{ff}\)</span> y de regreso.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -954,7 +954,7 @@ p_{i,2j+1} = \cos\!\left(\frac{i}{10000^{2j/d}}\right),
 <section id="codificador">
 <h4>Codificador<a class="headerlink" href="#codificador" title="Link to this heading">#</a></h4>
 <p>Un bloque del codificador = Autoatención multi-cabeza → Add&amp;Norm → FFN → Add&amp;Norm.
-Apilar $N$ de estos bloques forma el codificador. Las incrustaciones de entrada se reescalan por $\sqrt{d}$ antes de añadir las codificaciones posicionales.</p>
+Apilar <span class="math notranslate nohighlight">\(N\)</span> de estos bloques forma el codificador. Las incrustaciones de entrada se reescalan por <span class="math notranslate nohighlight">\(\sqrt{d}\)</span> antes de añadir las codificaciones posicionales.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1048,7 +1048,7 @@ Apilar $N$ de estos bloques forma el codificador. Las incrustaciones de entrada 
 <section id="decodificador">
 <h4>Decodificador<a class="headerlink" href="#decodificador" title="Link to this heading">#</a></h4>
 <p>Un bloque del decodificador = Autoatención multi-cabeza enmascarada → Add&amp;Norm → Atención codificador–decodificador → Add&amp;Norm → FFN → Add&amp;Norm.
-Apilar $N$ de estos bloques forma el decodificador, seguido de una capa densa que proyecta al vocabulario.</p>
+Apilar <span class="math notranslate nohighlight">\(N\)</span> de estos bloques forma el decodificador, seguido de una capa densa que proyecta al vocabulario.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TransformerDecoderBlock</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -1238,9 +1238,9 @@ De forma crucial, los ViTs escalan de manera fluida con el tamaño del modelo y 
 <p><img alt="ViT" src="../_images/image-1.png" /></p>
 <section id="modelo">
 <h3>Modelo<a class="headerlink" href="#modelo" title="Link to this heading">#</a></h3>
-<p>Los Vision Transformers (ViTs) tratan una imagen como una secuencia de tokens, igual que las palabras en una oración. Una imagen de entrada de altura $h$, anchura $w$ y $c$ canales se divide en parches no superpuestos de tamaño $p \times p$, dando como resultado $m=\frac{hw}{p^2}$ parches.
-Cada parche se aplana y se proyecta linealmente a una incrustación de dimensión $d$. Se antepone un token especial <strong>[CLS]</strong> aprendible a la secuencia de parches, y se añade una incrustación posicional aprendible a todos los tokens.
-Una pila de bloques de codificador Transformer (pre-norm) produce $m{+}1$ vectores de salida; la salida del token <strong>[CLS]</strong> resume la imagen y se pasa a una cabeza clasificadora.</p>
+<p>Los Vision Transformers (ViTs) tratan una imagen como una secuencia de tokens, igual que las palabras en una oración. Una imagen de entrada de altura <span class="math notranslate nohighlight">\(h\)</span>, anchura <span class="math notranslate nohighlight">\(w\)</span> y <span class="math notranslate nohighlight">\(c\)</span> canales se divide en parches no superpuestos de tamaño <span class="math notranslate nohighlight">\(p \times p\)</span>, dando como resultado <span class="math notranslate nohighlight">\(m=\frac{hw}{p^2}\)</span> parches.
+Cada parche se aplana y se proyecta linealmente a una incrustación de dimensión <span class="math notranslate nohighlight">\(d\)</span>. Se antepone un token especial <strong>[CLS]</strong> aprendible a la secuencia de parches, y se añade una incrustación posicional aprendible a todos los tokens.
+Una pila de bloques de codificador Transformer (pre-norm) produce <span class="math notranslate nohighlight">\(m{+}1\)</span> vectores de salida; la salida del token <strong>[CLS]</strong> resume la imagen y se pasa a una cabeza clasificadora.</p>
 </section>
 <section id="embedding-de-parches">
 <h3>Embedding de Parches<a class="headerlink" href="#embedding-de-parches" title="Link to this heading">#</a></h3>

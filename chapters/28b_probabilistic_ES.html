@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -400,7 +400,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problemas-directos-o-inversos">¿Problemas Directos o Inversos?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inferencia-basada-en-simulaciones">Inferencia Basada en Simulaciones</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aprovechando-el-aprendizaje-profundo">Aprovechando el aprendizaje profundo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aprender-una-distribucion-de-probabilidad">Aprender una distribución de probabilidad</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aprendiendo-una-distribucion-de-probabilidad">Aprendiendo una distribución de probabilidad</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentos-un-objetivo-de-entrenamiento">Fundamentos: un objetivo de entrenamiento</a></li>
 </ul>
 </li>
@@ -413,7 +413,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#super-resolucion-espaciotemporal">Super-resolución espacio–temporal</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aprender-distribuciones-con-flujos-normalizantes">Aprender distribuciones con Flujos Normalizantes</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aprendiendo-distribuciones-con-flujos-normalizantes">Aprendiendo distribuciones con Flujos Normalizantes</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mapeos-invertibles">Mapeos invertibles</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#densidad-exacta-via-cambio-de-variables">Densidad exacta vía cambio de variables</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformar-densidades-y-correccion-de-volumen">Transformar densidades y corrección de volumen</a></li>
@@ -515,8 +515,8 @@ q_\psi(\theta \mid x, y)
 </ul>
 <p>Desarrollaremos una familia de modelos ampliamente usada y notablemente efectiva—los <strong>métodos basados en difusión</strong>—para aprender tales densidades. En lugar de saltar directamente al algoritmo final, lo construiremos desde primeros principios, ya que el camino introduce varias ideas influyentes del aprendizaje automático moderno. Nos centraremos aquí en la <strong>construcción central</strong> y más adelante volveremos a variantes sensibilizadas por la física que integran <strong>simuladores diferenciables</strong>.</p>
 </section>
-<section id="aprender-una-distribucion-de-probabilidad">
-<h2>Aprender una distribución de probabilidad<a class="headerlink" href="#aprender-una-distribucion-de-probabilidad" title="Link to this heading">#</a></h2>
+<section id="aprendiendo-una-distribucion-de-probabilidad">
+<h2>Aprendiendo una distribución de probabilidad<a class="headerlink" href="#aprendiendo-una-distribucion-de-probabilidad" title="Link to this heading">#</a></h2>
 <p>Una cuestión central en el modelado probabilístico es: <strong>¿cómo podemos aprender una distribución de probabilidad desconocida a partir de datos?</strong> Cuando hay conocimiento previo disponible, podemos plantear una <strong>familia paramétrica</strong> (por ejemplo, una Gaussiana en el caso más simple). Dadas muestras extraídas de la distribución objetivo, ajustamos los parámetros minimizando una medida de discrepancia entre la distribución objetivo y nuestra aproximación paramétrica. Esto formula el aprendizaje de distribuciones como un problema de optimización sobre medidas de probabilidad.</p>
 <section id="fundamentos-un-objetivo-de-entrenamiento">
 <h3>Fundamentos: un objetivo de entrenamiento<a class="headerlink" href="#fundamentos-un-objetivo-de-entrenamiento" title="Link to this heading">#</a></h3>
@@ -666,8 +666,8 @@ q_\theta(x)\ge 0
 <p>Comparaciones de <strong>derivadas temporales</strong> u otras cantidades motivadas por la física a menudo muestran que las GANs espacio–temporales capturan mejor la dinámica que los modelos por fotogramas, alineándose más con referencias de alta fidelidad.</p>
 </section>
 </section>
-<section id="aprender-distribuciones-con-flujos-normalizantes">
-<h2>Aprender distribuciones con Flujos Normalizantes<a class="headerlink" href="#aprender-distribuciones-con-flujos-normalizantes" title="Link to this heading">#</a></h2>
+<section id="aprendiendo-distribuciones-con-flujos-normalizantes">
+<h2>Aprendiendo distribuciones con Flujos Normalizantes<a class="headerlink" href="#aprendiendo-distribuciones-con-flujos-normalizantes" title="Link to this heading">#</a></h2>
 <p>Las GANs son modelos generativos prominentes y nos proporcionan un mecanismo de muestreo para generar nuevos datos. Sin embargo, no aprenden explícitamente la función de densidad de probabilidad <span class="math notranslate nohighlight">\(p(x)\)</span> de los datos reales de entrada.
 Los <strong>Flujos Normalizantes</strong> (Normalizing Flows), en cambio, modelan realmente la distribución de los datos y nos proporcionan una estimación exacta de la verosimilitud.
 La idea clave es usar una secuencia de mapeos invertibles y diferenciables como capas de la red neuronal.</p>
@@ -821,7 +821,7 @@ h_0=x,\quad h_k=f_k(h_{k-1}),\quad z=h_K,
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problemas-directos-o-inversos">¿Problemas Directos o Inversos?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inferencia-basada-en-simulaciones">Inferencia Basada en Simulaciones</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aprovechando-el-aprendizaje-profundo">Aprovechando el aprendizaje profundo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aprender-una-distribucion-de-probabilidad">Aprender una distribución de probabilidad</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aprendiendo-una-distribucion-de-probabilidad">Aprendiendo una distribución de probabilidad</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentos-un-objetivo-de-entrenamiento">Fundamentos: un objetivo de entrenamiento</a></li>
 </ul>
 </li>
@@ -834,7 +834,7 @@ h_0=x,\quad h_k=f_k(h_{k-1}),\quad z=h_K,
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#super-resolucion-espaciotemporal">Super-resolución espacio–temporal</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aprender-distribuciones-con-flujos-normalizantes">Aprender distribuciones con Flujos Normalizantes</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aprendiendo-distribuciones-con-flujos-normalizantes">Aprendiendo distribuciones con Flujos Normalizantes</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mapeos-invertibles">Mapeos invertibles</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#densidad-exacta-via-cambio-de-variables">Densidad exacta vía cambio de variables</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformar-densidades-y-correccion-de-volumen">Transformar densidades y corrección de volumen</a></li>

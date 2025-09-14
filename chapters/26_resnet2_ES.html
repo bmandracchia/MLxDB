@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -414,7 +414,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capas-bottleneck-para-un-entrenamiento-eficiente-en-imagen-medica">Capas <em>Bottleneck</em> para un Entrenamiento Eficiente en Imagen Médica</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenar-un-resnet-de-ultima-generacion">Entrenar un ResNet de Última Generación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenando-un-resnet-de-ultima-generacion">Entrenando un ResNet de Última Generación</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paisaje-de-perdida-mejorado-con-resnet">Paisaje de Pérdida Mejorado con ResNet</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resnext-y-convoluciones-agrupadas">ResNeXt y Convoluciones Agrupadas</a></li>
 </ul>
@@ -821,8 +821,8 @@ H(x) = F(x) + x
 </div>
 </div>
 </section>
-<section id="entrenar-un-resnet-de-ultima-generacion">
-<h2>Entrenar un ResNet de Última Generación<a class="headerlink" href="#entrenar-un-resnet-de-ultima-generacion" title="Link to this heading">#</a></h2>
+<section id="entrenando-un-resnet-de-ultima-generacion">
+<h2>Entrenando un ResNet de Última Generación<a class="headerlink" href="#entrenando-un-resnet-de-ultima-generacion" title="Link to this heading">#</a></h2>
 <p>En el artículo <a class="reference external" href="https://arxiv.org/abs/1812.01187">“Bag of Tricks for Image Classification with Convolutional Neural Networks”</a>, Tong He et al. exploran una serie de modificaciones a la arquitectura ResNet que añaden un coste computacional mínimo y pocos parámetros adicionales. Ajustando finamente la arquitectura ResNet-50 e incorporando <em>Mixup</em>—una técnica de aumento de datos—obtuvieron una precisión <em>top-5</em> del 94.6% en el conjunto ImageNet, frente al 92.2% del ResNet-50 estándar sin <em>Mixup</em>. Notablemente, esta mejora supera la de modelos ResNet mucho más profundos, que además de ser más lentos son más propensos al sobreajuste. Implementaremos este diseño optimizado de ResNet al ampliar hacia un modelo completo, dado su mejor rendimiento.</p>
 <p>Esta versión optimizada comienza con una estructura ligeramente diferente: en lugar de iniciar directamente con bloques ResNet, utiliza una serie de capas convolucionales iniciales seguidas de una capa de <em>max pooling</em>. Estas capas iniciales, conocidas como el <em>stem</em> de la red, están diseñadas de la siguiente manera:</p>
 <div class="cell docutils container">
@@ -1065,7 +1065,7 @@ H(x) = F(x) + x
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capas-bottleneck-para-un-entrenamiento-eficiente-en-imagen-medica">Capas <em>Bottleneck</em> para un Entrenamiento Eficiente en Imagen Médica</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenar-un-resnet-de-ultima-generacion">Entrenar un ResNet de Última Generación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entrenando-un-resnet-de-ultima-generacion">Entrenando un ResNet de Última Generación</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#paisaje-de-perdida-mejorado-con-resnet">Paisaje de Pérdida Mejorado con ResNet</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resnext-y-convoluciones-agrupadas">ResNeXt y Convoluciones Agrupadas</a></li>
 </ul>

@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -415,9 +415,9 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-de-una-red-neuronal-convolucional">Construcción de una Red Neuronal Convolucional</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-una-cnn">Crear una CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creando-una-cnn">Creando una CNN</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-de-las-capas-convolucionales">Definición de las capas convolucionales</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-el-learner">Crear el <em>Learner</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creando-el-learner">Creando el <em>Learner</em></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comprendiendo-la-aritmetica-de-las-convoluciones">Comprendiendo la Aritmética de las Convoluciones</a></li>
 </ul>
 </li>
@@ -434,7 +434,7 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#de-capas-totalmente-conectadas-a-convoluciones">De Capas Totalmente Conectadas a Convoluciones</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#invariancia-por-que-la-ubicacion-no-deberia-importar">Invariancia: Por Qué la Ubicación No Debería Importar</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#restringir-el-mlp">Restringir el MLP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#restringiendo-el-mlp">Restringiendo el MLP</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-1-invariancia-por-traslacion">Paso 1: Invariancia por Traslación</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-2-localidad">Paso 2: Localidad</a></li>
 </ul>
@@ -741,8 +741,8 @@ tensor([[[[-3., -2.,  1.,  3.],
 </div>
 </div>
 </div>
-<section id="crear-una-cnn">
-<h3>Crear una CNN<a class="headerlink" href="#crear-una-cnn" title="Link to this heading">#</a></h3>
+<section id="creando-una-cnn">
+<h3>Creando una CNN<a class="headerlink" href="#creando-una-cnn" title="Link to this heading">#</a></h3>
 <p>Empezemos con una red básica:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -824,8 +824,8 @@ tensor([[[[-3., -2.,  1.,  3.],
 </div>
 </div>
 </section>
-<section id="crear-el-learner">
-<h3>Crear el <em>Learner</em><a class="headerlink" href="#crear-el-learner" title="Link to this heading">#</a></h3>
+<section id="creando-el-learner">
+<h3>Creando el <em>Learner</em><a class="headerlink" href="#creando-el-learner" title="Link to this heading">#</a></h3>
 <p>Vamos a crear un <code class="docutils literal notranslate"><span class="pre">Learner</span></code> para entrenar este modelo:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1432,8 +1432,8 @@ y_i = \gamma \hat{x}_i + \beta
 </ol>
 <p>Juntos, estos principios permiten que las CNN aprendan modelos efectivos con muchos menos parámetros.</p>
 </section>
-<section id="restringir-el-mlp">
-<h3>Restringir el MLP<a class="headerlink" href="#restringir-el-mlp" title="Link to this heading">#</a></h3>
+<section id="restringiendo-el-mlp">
+<h3>Restringiendo el MLP<a class="headerlink" href="#restringiendo-el-mlp" title="Link to this heading">#</a></h3>
 <p>Para ver cómo surgen las convoluciones, partamos de una capa totalmente conectada. Supongamos que la imagen de entrada es <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> y la representación oculta es <span class="math notranslate nohighlight">\(\mathbf{H}\)</span>, ambas tratadas como matrices 2D de la misma forma. Entonces, cada unidad oculta <span class="math notranslate nohighlight">\([\mathbf{H}]_{i,j}\)</span> depende de todos los píxeles de entrada:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1570,9 +1570,9 @@ y_i = \gamma \hat{x}_i + \beta
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-de-una-red-neuronal-convolucional">Construcción de una Red Neuronal Convolucional</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-una-cnn">Crear una CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creando-una-cnn">Creando una CNN</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definicion-de-las-capas-convolucionales">Definición de las capas convolucionales</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crear-el-learner">Crear el <em>Learner</em></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creando-el-learner">Creando el <em>Learner</em></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comprendiendo-la-aritmetica-de-las-convoluciones">Comprendiendo la Aritmética de las Convoluciones</a></li>
 </ul>
 </li>
@@ -1589,7 +1589,7 @@ y_i = \gamma \hat{x}_i + \beta
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#de-capas-totalmente-conectadas-a-convoluciones">De Capas Totalmente Conectadas a Convoluciones</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#invariancia-por-que-la-ubicacion-no-deberia-importar">Invariancia: Por Qué la Ubicación No Debería Importar</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#restringir-el-mlp">Restringir el MLP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#restringiendo-el-mlp">Restringiendo el MLP</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-1-invariancia-por-traslacion">Paso 1: Invariancia por Traslación</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#paso-2-localidad">Paso 2: Localidad</a></li>
 </ul>

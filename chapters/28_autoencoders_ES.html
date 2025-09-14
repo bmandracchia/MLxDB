@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -396,7 +396,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construir-un-autoencoder">Construir un Autoencoder</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construiendo-un-autoencoder">Construiendo un Autoencoder</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imagenes-fuera-de-distribucion">Imágenes Fuera de Distribución</a></li>
 </ul>
 </li>
@@ -424,8 +424,8 @@ document.write(`
 <h1>Autoencoders<a class="headerlink" href="#autoencoders" title="Link to this heading">#</a></h1>
 <p>Los <strong>Autoencoders (AE)</strong> se entrenan para codificar datos de entrada en un vector de características más pequeño y luego reconstruirlo mediante una segunda red neuronal llamada <em>decoder</em> (decodificador).
 El vector de características se denomina <strong>cuello de botella (<em>bottleneck</em>)</strong> de la red, ya que buscamos comprimir los datos de entrada en una cantidad menor de características. Esta propiedad es útil en muchas aplicaciones, especialmente en la compresión de datos o en la comparación de imágenes usando métricas más allá de las comparaciones a nivel de píxel.</p>
-<section id="construir-un-autoencoder">
-<h2>Construir un Autoencoder<a class="headerlink" href="#construir-un-autoencoder" title="Link to this heading">#</a></h2>
+<section id="construiendo-un-autoencoder">
+<h2>Construiendo un Autoencoder<a class="headerlink" href="#construiendo-un-autoencoder" title="Link to this heading">#</a></h2>
 <p>Un autoencoder aprende a reproducir su entrada pasando por un <strong>cuello de botella</strong> que obliga a una representación compacta. Un <em>encoder</em> <span class="math notranslate nohighlight">\(f_\theta\)</span> mapea una entrada <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> a un código latente <span class="math notranslate nohighlight">\(\mathbf{z}\)</span>, y un <em>decoder</em> <span class="math notranslate nohighlight">\(g_\phi\)</span> mapea <span class="math notranslate nohighlight">\(\mathbf{z}\)</span> de nuevo a una reconstrucción <span class="math notranslate nohighlight">\(\hat{\mathbf{x}}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -642,7 +642,7 @@ x \approx Wz+\mu+\varepsilon, \quad \varepsilon\sim \mathcal{N}(0,\sigma^2 I).
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construir-un-autoencoder">Construir un Autoencoder</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construiendo-un-autoencoder">Construiendo un Autoencoder</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imagenes-fuera-de-distribucion">Imágenes Fuera de Distribución</a></li>
 </ul>
 </li>
