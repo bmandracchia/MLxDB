@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -832,18 +832,18 @@ as follows:</p>
 <p><span class="math notranslate nohighlight">\(y = \theta^\top \mathbf{x} + \epsilon \textrm{ donde } \epsilon \sim \mathcal{N}(0, \sigma^2).\)</span></p>
 <p>Así, podemos escribir la <em>verosimilitud</em> de observar un valor <span class="math notranslate nohighlight">\(y\)</span> dado un <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> como</p>
 <p><span class="math notranslate nohighlight">\( P(y \mid \mathbf{x}) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{1}{2 \sigma^2} (y - \theta^\top \mathbf{x})^2\right).\)</span></p>
-<p>La verosimilitud se factoriza. Según el <em>principio de máxima verosimilitud</em>, los mejores valores de los parámetros <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> y <span class="math notranslate nohighlight">\(b\)</span> son aquellos que maximizan la <em>verosimilitud</em> de todo el conjunto de datos:</p>
+<p>La verosimilitud se factoriza. Según el <em>principio de máxima verosimilitud</em>, los mejores valores de los parámetros <span class="math notranslate nohighlight">\(\theta\)</span> son aquellos que maximizan la <em>verosimilitud</em> de todo el conjunto de datos:</p>
 <p><span class="math notranslate nohighlight">\(P(\mathbf y \mid \mathbf X) = \prod_{i=1}^{n} p(y^{(i)} \mid \mathbf{x}^{(i)}).\)</span></p>
 <p>La igualdad se cumple porque todos los pares <span class="math notranslate nohighlight">\((\mathbf{x}^{(i)}, y^{(i)})\)</span> se extrajeron de manera independiente unos de otros. Los estimadores obtenidos siguiendo el principio de máxima verosimilitud se llaman <em>estimadores de máxima verosimilitud</em>. Aunque maximizar el producto de muchas funciones exponenciales parece difícil, podemos simplificarlo significativamente, sin cambiar el objetivo, maximizando el logaritmo de la verosimilitud en su lugar.</p>
 <p>Por razones históricas, las optimizaciones se suelen expresar como problemas de minimización en lugar de maximización. Así, sin cambiar nada, podemos <em>minimizar</em> la <em>log-verosimilitud negativa</em>, que se expresa como:</p>
 <p><span class="math notranslate nohighlight">\(-\log P(\mathbf y \mid \mathbf X) = \sum_{i=1}^n \frac{1}{2} \log(2 \pi \sigma^2) + \frac{1}{2 \sigma^2} \left(y^{(i)} - \theta^\top \mathbf{x}^{(i)} \right)^2.\)</span></p>
-<p>Si asumimos que <span class="math notranslate nohighlight">\(\sigma\)</span> es fijo, podemos ignorar el primer término, ya que no depende de <span class="math notranslate nohighlight">\(\mathbf{w}\)</span> ni de <span class="math notranslate nohighlight">\(b\)</span>. El segundo término es idéntico a la pérdida cuadrática presentada antes, salvo por la constante multiplicativa <span class="math notranslate nohighlight">\(\frac{1}{\sigma^2}\)</span>. Afortunadamente, la solución tampoco depende de <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<p>Si asumimos que <span class="math notranslate nohighlight">\(\sigma\)</span> es fijo, podemos ignorar el primer término, ya que no depende de <span class="math notranslate nohighlight">\(\theta\)</span>. El segundo término es idéntico a la pérdida cuadrática presentada antes, salvo por la constante multiplicativa <span class="math notranslate nohighlight">\(\frac{1}{\sigma^2}\)</span>. Afortunadamente, la solución tampoco depende de <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
 <p>Se concluye que minimizar el error cuadrático medio es equivalente a la estimación de máxima verosimilitud de un modelo lineal bajo la suposición de ruido gaussiano aditivo.</p>
 </section>
 </section>
 <section id="la-ecuacion-normal">
 <h3>La Ecuación Normal<a class="headerlink" href="#la-ecuacion-normal" title="Link to this heading">#</a></h3>
-<p>Para encontrar el valor de $\theta$ que minimiza la función de coste, existe una solución en forma cerrada —es decir, una ecuación matemática que da directamente el resultado.</p>
+<p>Para encontrar el valor de <span class="math notranslate nohighlight">\(\theta\)</span> que minimiza la función de coste, existe una solución en forma cerrada —es decir, una ecuación matemática que da directamente el resultado.</p>
 <p>Esto se llama la <em>Ecuación Normal</em>:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -854,10 +854,10 @@ as follows:</p>
 </pre></div>
 </div>
 <blockquote>
-<div><p>Sin embargo, la complejidad computacional de invertir una matriz de este tipo suele ser de aproximadamente $O(n^{2.4})$ a $O(n^3)$ (dependiendo de la implementación).</p>
+<div><p>Sin embargo, la complejidad computacional de invertir una matriz de este tipo suele ser de aproximadamente <span class="math notranslate nohighlight">\(O(n^{2.4})\)</span> a <span class="math notranslate nohighlight">\(O(n^3)\)</span> (dependiendo de la implementación).</p>
 </div></blockquote>
-<p>En otras palabras, si duplicas el número de características, multiplicas el tiempo de cómputo aproximadamente por $2^{2.4} = 5.3$ a $2^3 = 8$.</p>
-<p>En su lugar, el enfoque usado por la clase <code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code> de <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> es de alrededor de $O(n^2)$.</p>
+<p>En otras palabras, si duplicas el número de características, multiplicas el tiempo de cómputo aproximadamente por <span class="math notranslate nohighlight">\(2^{2.4} = 5.3\)</span> a <span class="math notranslate nohighlight">\(2^3 = 8\)</span>.</p>
+<p>En su lugar, el enfoque usado por la clase <code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code> de <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code> es de alrededor de <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</p>
 <p>Si duplicas el número de características, multiplicas el tiempo de cómputo aproximadamente por 4.</p>
 </section>
 <section id="minimizacion-por-minimos-cuadrados">
